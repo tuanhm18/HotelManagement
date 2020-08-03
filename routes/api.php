@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+Route::get('/admin/rooms', 'Api\RoomController@get');
+
+// Route::group(['middleware'=>'auth'], function() {
+//     Route::get('/admin/rooms', 'Api/RoomController@get');
+// });

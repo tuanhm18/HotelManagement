@@ -13,9 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/admin', function () {
-    return view('welcome');
-});
+
+Route::get('/admin/login',  ['as' => 'login', 'uses' => 'Admin\UserController@login']);
+
+Route::post('/admin/login', 'Admin\UserController@doLogin');
+ Route::group(['middleware'=>'auth'], function() {
+     Route::get('/admin', 'Admin\SiteController@index');
+     Route::get('/admin/logout', 'Admin\UserController@doLogout');
+     Route::get('/admin/booking', 'Admin\BookingController@view');
+     Route::get('/admin/rooms', 'Admin\RoomController@view');
+ });

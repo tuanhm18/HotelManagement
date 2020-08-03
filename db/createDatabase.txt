@@ -5,35 +5,40 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema hotelManagement
+-- Schema hotelmanagement
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema hotelManagement
+-- Schema hotelmanagement
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `hotelManagement` DEFAULT CHARACTER SET utf8 ;
-USE `hotelManagement` ;
+CREATE SCHEMA IF NOT EXISTS `hotelmanagement` DEFAULT CHARACTER SET utf8 ;
+USE `hotelmanagement` ;
 
 -- -----------------------------------------------------
--- Table `hotelManagement`.`Users`
+-- Table `hotelmanagement`.`Users`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `hotelManagement`.`Users` (
+CREATE TABLE IF NOT EXISTS `hotelmanagement`.`Users` (
   `USE_ID` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
   `FirstName` VARCHAR(45) NOT NULL,
   `LastName` VARCHAR(45) NOT NULL,
-  `LoginDate` DATE NOT NULL,
-  `UpdateUser` VARCHAR(45) NULL,
+  `LastLoginDate` DATE NOT NULL,
+  `UpdatedBy` VARCHAR(45) NULL,
   `UpdatedDate` DATE NULL,
+  `LastLoginIp` VARCHAR(45) NULL,
+  `Role` VARCHAR(45) NULL,
+  `CreatedBy` VARCHAR(45) NULL,
+  `CreatedDate` DATE NULL,
+  `Avatar` VARCHAR(255) NULL,
   PRIMARY KEY (`USE_ID`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `hotelManagement`.`Positions`
+-- Table `hotelmanagement`.`Positions`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `hotelManagement`.`Positions` (
+CREATE TABLE IF NOT EXISTS `hotelmanagement`.`Positions` (
   `POS_ID` INT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(45) NOT NULL,
   `CreatedDate` DATE NULL,
@@ -45,9 +50,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `hotelManagement`.`Employees`
+-- Table `hotelmanagement`.`Employees`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `hotelManagement`.`Employees` (
+CREATE TABLE IF NOT EXISTS `hotelmanagement`.`Employees` (
   `EMP_ID` INT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(45) NOT NULL,
   `IdentityNumber` VARCHAR(45) NOT NULL,
@@ -63,16 +68,16 @@ CREATE TABLE IF NOT EXISTS `hotelManagement`.`Employees` (
   INDEX `fk_Employees_Positions_idx` (`POS_ID` ASC) VISIBLE,
   CONSTRAINT `fk_Employees_Positions`
     FOREIGN KEY (`POS_ID`)
-    REFERENCES `hotelManagement`.`Positions` (`POS_ID`)
+    REFERENCES `hotelmanagement`.`Positions` (`POS_ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `hotelManagement`.`Customers`
+-- Table `hotelmanagement`.`Customers`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `hotelManagement`.`Customers` (
+CREATE TABLE IF NOT EXISTS `hotelmanagement`.`Customers` (
   `CUS_ID` INT NOT NULL AUTO_INCREMENT,
   `FirstName` VARCHAR(45) NULL,
   `LastName` VARCHAR(45) NULL,
@@ -85,9 +90,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `hotelManagement`.`Bills`
+-- Table `hotelmanagement`.`Bills`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `hotelManagement`.`Bills` (
+CREATE TABLE IF NOT EXISTS `hotelmanagement`.`Bills` (
   `BIL_ID` INT NOT NULL AUTO_INCREMENT,
   `CheckInDate` DATE NULL,
   `CheckOutDate` DATE NULL,
@@ -99,21 +104,41 @@ CREATE TABLE IF NOT EXISTS `hotelManagement`.`Bills` (
   INDEX `fk_Bills_Customers1_idx` (`CUS_ID` ASC) VISIBLE,
   CONSTRAINT `fk_Bills_Employees1`
     FOREIGN KEY (`EMP_ID`)
-    REFERENCES `hotelManagement`.`Employees` (`EMP_ID`)
+    REFERENCES `hotelmanagement`.`Employees` (`EMP_ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Bills_Customers1`
     FOREIGN KEY (`CUS_ID`)
-    REFERENCES `hotelManagement`.`Customers` (`CUS_ID`)
+    REFERENCES `hotelmanagement`.`Customers` (`CUS_ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `hotelManagement`.`RoomType`
+-- Table `hotelmanagement`.`Booking`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `hotelManagement`.`RoomType` (
+CREATE TABLE IF NOT EXISTS `hotelmanagement`.`Booking` (
+  `BOO_ID` INT NOT NULL AUTO_INCREMENT,
+  `IdentityNumber` VARCHAR(45) NULL,
+  `Email` VARCHAR(45) NULL,
+  `Phone` VARCHAR(45) NULL,
+  `CheckInDate` DATE NULL,
+  `CheckOutDate` DATE NULL,
+  `Status` TINYINT NULL,
+  `CreatedDate` DATE NULL,
+  `CreatedBy` VARCHAR(45) NULL,
+  `UpdatedDate` DATE NULL,
+  `UpdatedBy` VARCHAR(45) NULL,
+  PRIMARY KEY (`BOO_ID`),
+  UNIQUE INDEX `IdentityNumber_UNIQUE` (`IdentityNumber` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `hotelmanagement`.`RoomType`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `hotelmanagement`.`RoomType` (
   `RTYP_ID` INT NOT NULL AUTO_INCREMENT,
   `NumberOfBeds` INT NULL,
   `NumberOfRests` INT NULL,
@@ -127,9 +152,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `hotelManagement`.`Rooms`
+-- Table `hotelmanagement`.`Rooms`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `hotelManagement`.`Rooms` (
+CREATE TABLE IF NOT EXISTS `hotelmanagement`.`Rooms` (
   `ROO_ID` VARCHAR(45) NOT NULL,
   `Status` TINYINT NULL,
   `CreatedBy` VARCHAR(45) NULL,
@@ -137,47 +162,23 @@ CREATE TABLE IF NOT EXISTS `hotelManagement`.`Rooms` (
   `UpdatedBy` VARCHAR(45) NULL,
   `UpdatedDate` DATE NULL,
   `RTYP_ID` INT NOT NULL,
+  `Avatar` VARCHAR(255) NULL,
+  `Roomscol` VARCHAR(45) NOT NULL,
+  `IsHot` TINYINT NULL,
   PRIMARY KEY (`ROO_ID`),
   INDEX `fk_Rooms_RoomType1_idx` (`RTYP_ID` ASC) VISIBLE,
   CONSTRAINT `fk_Rooms_RoomType1`
     FOREIGN KEY (`RTYP_ID`)
-    REFERENCES `hotelManagement`.`RoomType` (`RTYP_ID`)
+    REFERENCES `hotelmanagement`.`RoomType` (`RTYP_ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `hotelManagement`.`Booking`
+-- Table `hotelmanagement`.`DetailsBill`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `hotelManagement`.`Booking` (
-  `BOO_ID` INT NOT NULL AUTO_INCREMENT,
-  `IdentityNumber` VARCHAR(45) NULL,
-  `Email` VARCHAR(45) NULL,
-  `Phone` VARCHAR(45) NULL,
-  `CheckInDate` DATE NULL,
-  `CheckOutDate` DATE NULL,
-  `Status` TINYINT NULL,
-  `CreatedDate` DATE NULL,
-  `CreatedBy` VARCHAR(45) NULL,
-  `UpdatedDate` DATE NULL,
-  `UpdatedBy` VARCHAR(45) NULL,
-  `ROO_ID` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`BOO_ID`),
-  UNIQUE INDEX `IdentityNumber_UNIQUE` (`IdentityNumber` ASC) VISIBLE,
-  INDEX `fk_Booking_Rooms1_idx` (`ROO_ID` ASC) VISIBLE,
-  CONSTRAINT `fk_Booking_Rooms1`
-    FOREIGN KEY (`ROO_ID`)
-    REFERENCES `hotelManagement`.`Rooms` (`ROO_ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `hotelManagement`.`DetailsBill`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `hotelManagement`.`DetailsBill` (
+CREATE TABLE IF NOT EXISTS `hotelmanagement`.`DetailsBill` (
   `DBIL_ID` INT NOT NULL AUTO_INCREMENT,
   `BIL_ID` INT NOT NULL,
   `Rooms_ROO_ID` VARCHAR(45) NOT NULL,
@@ -186,21 +187,21 @@ CREATE TABLE IF NOT EXISTS `hotelManagement`.`DetailsBill` (
   INDEX `fk_DetailsBill_Rooms1_idx` (`Rooms_ROO_ID` ASC) VISIBLE,
   CONSTRAINT `fk_DetailsBill_Bills1`
     FOREIGN KEY (`BIL_ID`)
-    REFERENCES `hotelManagement`.`Bills` (`BIL_ID`)
+    REFERENCES `hotelmanagement`.`Bills` (`BIL_ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_DetailsBill_Rooms1`
     FOREIGN KEY (`Rooms_ROO_ID`)
-    REFERENCES `hotelManagement`.`Rooms` (`ROO_ID`)
+    REFERENCES `hotelmanagement`.`Rooms` (`ROO_ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `hotelManagement`.`ServiceBill`
+-- Table `hotelmanagement`.`ServiceBill`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `hotelManagement`.`ServiceBill` (
+CREATE TABLE IF NOT EXISTS `hotelmanagement`.`ServiceBill` (
   `SBIL_ID` INT NOT NULL AUTO_INCREMENT,
   `Date` DATE NULL,
   `Price` FLOAT NULL,
@@ -209,16 +210,16 @@ CREATE TABLE IF NOT EXISTS `hotelManagement`.`ServiceBill` (
   INDEX `fk_ServiceBill_DetailsBill1_idx` (`DBIL_ID` ASC) VISIBLE,
   CONSTRAINT `fk_ServiceBill_DetailsBill1`
     FOREIGN KEY (`DBIL_ID`)
-    REFERENCES `hotelManagement`.`DetailsBill` (`DBIL_ID`)
+    REFERENCES `hotelmanagement`.`DetailsBill` (`DBIL_ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `hotelManagement`.`Services`
+-- Table `hotelmanagement`.`Services`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `hotelManagement`.`Services` (
+CREATE TABLE IF NOT EXISTS `hotelmanagement`.`Services` (
   `SER_ID` INT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(45) NULL,
   `Price` FLOAT NULL,
@@ -231,21 +232,44 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `hotelManagement`.`ServiceBillService`
+-- Table `hotelmanagement`.`ServiceBillService`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `hotelManagement`.`ServiceBillService` (
+CREATE TABLE IF NOT EXISTS `hotelmanagement`.`ServiceBillService` (
   `SBIL_ID` INT NOT NULL,
   `SER_ID` INT NOT NULL,
   INDEX `fk_ServiceBill_has_Service_Service1_idx` (`SER_ID` ASC) VISIBLE,
   INDEX `fk_ServiceBill_has_Service_ServiceBill1_idx` (`SBIL_ID` ASC) VISIBLE,
   CONSTRAINT `fk_ServiceBill_has_Service_ServiceBill1`
     FOREIGN KEY (`SBIL_ID`)
-    REFERENCES `hotelManagement`.`ServiceBill` (`SBIL_ID`)
+    REFERENCES `hotelmanagement`.`ServiceBill` (`SBIL_ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_ServiceBill_has_Service_Service1`
     FOREIGN KEY (`SER_ID`)
-    REFERENCES `hotelManagement`.`Services` (`SER_ID`)
+    REFERENCES `hotelmanagement`.`Services` (`SER_ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `hotelmanagement`.`BookingRoom`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `hotelmanagement`.`BookingRoom` (
+  `BROO_ID` INT NOT NULL AUTO_INCREMENT,
+  `BOO_ID` INT NOT NULL,
+  `ROO_ID` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`BROO_ID`),
+  INDEX `fk_BookingRoom_Booking1_idx` (`BOO_ID` ASC) VISIBLE,
+  INDEX `fk_BookingRoom_Rooms1_idx` (`ROO_ID` ASC) VISIBLE,
+  CONSTRAINT `fk_BookingRoom_Booking1`
+    FOREIGN KEY (`BOO_ID`)
+    REFERENCES `hotelmanagement`.`Booking` (`BOO_ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_BookingRoom_Rooms1`
+    FOREIGN KEY (`ROO_ID`)
+    REFERENCES `hotelmanagement`.`Rooms` (`ROO_ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
