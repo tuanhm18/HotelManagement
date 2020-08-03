@@ -209,6 +209,15 @@
                   </a>
                 </li>
               </ul>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{action('Admin\ServiceController@view')}}" id="services" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Service</p>
+                  </a>
+                </li>
+              </ul>
+
             </li>
 
           </ul>

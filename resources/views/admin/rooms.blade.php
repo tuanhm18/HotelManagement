@@ -27,22 +27,18 @@
                 <button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary float-right">Add</button>
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Position</th>
-
+                        <th>Room number</th>
+                        <th>Status</th>
+                        <th>Number of beds</th>
+                        <th>Number of rests</th>
+                        <th>Room type name</th>
+                        <th>Price</th>
                     </tr>
                 </thead>
                 <tbody>
 
                     </tr>
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <th>Name</th>
-                        <th>Position</th>
-
-                    </tr>
-                </tfoot>
             </table>
         </div>
     </section>
@@ -52,23 +48,21 @@
 @section('js')
 <script>
     $('#rooms').addClass("active");
-    $.ajax({
-        type: "GET",
-        url: "http://localhost/HotelManagement/api/admin/rooms",
-        error: function() {
-            console.log("fails");
-        },  
-        success: function(response) {
-            var data = response.data;
-            console.log(data);
-            $('#roomTable').DataTable({
-                columns: [
-                    {data: "ROO_ID"},
-                    {data: "Status"}
-                ]
-            });
+    $('#roomTable').DataTable( {
+        destroy:true,
+        ajax: {
+           url:  "http://localhost/HotelManagement/api/admin/rooms",
+           method: "GET",
         },
-    });
+        columns: [
+            { data: "ROO_ID" },
+            { data: "Status" },
+            { data: "NumberOfBeds" },
+            { data: "NumberOfRests" },
+            { data: "RoomName" },
+            { data: "Price" },
+        ]
+    } );
     $(document).ready(function() {
 
     });

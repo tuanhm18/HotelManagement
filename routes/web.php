@@ -22,4 +22,5 @@ Route::post('/admin/login', 'Admin\UserController@doLogin');
      Route::get('/admin/logout', 'Admin\UserController@doLogout');
      Route::get('/admin/booking', 'Admin\BookingController@view');
      Route::get('/admin/rooms', 'Admin\RoomController@view');
+     Route::get('admin/services', 'Admin\ServiceController@view');
  });

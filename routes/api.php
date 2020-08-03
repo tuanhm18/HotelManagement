@@ -15,8 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/admin/rooms', 'Api\RoomController@get');
-
+Route::get('/admin/rooms/{id?}', 'Api\RoomController@get');
+Route::get('admin/services/{id?}', 'Api\ServiceController@get');
+Route::post('admin/rooms', 'Api\RoomController@create');
+Route::put('admin/rooms', 'Api\RoomController@update');
+Route::delete('admin/rooms/{id}','Api\RoomController@delete');
 // Route::group(['middleware'=>'auth'], function() {
 //     Route::get('/admin/rooms', 'Api/RoomController@get');
 // });
