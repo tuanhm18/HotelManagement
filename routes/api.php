@@ -23,15 +23,20 @@ Route::post('admin/rooms', 'Api\RoomController@create');
 Route::put('admin/rooms', 'Api\RoomController@update');
 Route::delete('admin/rooms/{id}','Api\RoomController@delete');
 
-Route::get('/admin/positions/{id?}', 'Api\Positonstroller@get');
-Route::post('admin/positions', 'Api\Positonstroller@create');
-Route::put('admin/positions', 'Api\Positonstroller@update');
-Route::delete('admin/positions/{id}','Api\Positonstroller@delete');
+Route::get('/admin/positions/{id?}', 'Api\PositionController@get');
+Route::post('admin/positions', 'Api\PositionController@create');
+Route::put('admin/positions', 'Api\PositionController@update');
+Route::delete('admin/positions/{id}','Api\PositionController@delete');
 
-Route::get('/admin/customers/{id?}', 'Api\Customerstroller@get');
-Route::post('admin/customers', 'Api\Customerstroller@create');
-Route::put('admin/customers', 'Api\Customerstroller@update');
-Route::delete('admin/customers/{id}','Api\Customerstroller@delete');
+Route::get('/admin/customers/{id?}', 'Api\CustomerController@get');
+Route::post('admin/customers', 'Api\CustomerController@create');
+Route::put('admin/customers', 'Api\CustomerController@update');
+Route::delete('admin/customers/{id}','Api\CustomerController@delete');
+
+Route::get('/admin/bills/{id?}', 'Api\BillController@get');
+Route::post('admin/bills', 'Api\BillController@create');
+Route::put('admin/bills', 'Api\BillController@update');
+Route::delete('admin/bills/{id}','Api\BillController@delete');
 // Route::group(['middleware'=>'auth'], function() {
 //     Route::get('/admin/rooms', 'Api/RoomController@get');
 // });

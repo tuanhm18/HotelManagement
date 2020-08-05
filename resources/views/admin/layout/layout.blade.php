@@ -28,6 +28,16 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <link rel="stylesheet" href="{{url('/public/admin')}}/dist/css/datatables.min.css">
+  <style>
+    .editBtn {
+      cursor: pointer;
+      color: lightgreen;
+    }
+    .deleteBtn {
+      cursor: pointer;
+      color: red;
+    }
+  </style>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -218,6 +228,22 @@
                 </li>
               </ul>
 
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{action('Admin\PositionController@view')}}" id="positions" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Position</p>
+                  </a>
+                </li>
+              </ul>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{action('Admin\CustomerController@view')}}" id="customers" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Customer</p>
+                  </a>
+                </li>
+              </ul>
             </li>
 
           </ul>
@@ -280,8 +306,8 @@
   <script src="{{url('/public/admin')}}/dist/js/pages/dashboard.js"></script>
   <!-- AdminLTE for demo purposes -->
   <script src="{{url('/public/admin')}}/dist/js/demo.js"></script>
-  <script src="{{url('/public/admin')}}/dist/js/site.js"></script>
   <script src="{{url('/public/admin')}}/dist/js/datatables.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   @yield('js')
 </body>
 
