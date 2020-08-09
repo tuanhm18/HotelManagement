@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('admin/services/{id?}', 'Api\ServiceController@get');
+Route::post('admin/services', 'Api\ServiceCotroller@create');
+Route::put('admin/services/}', 'Api\ServiceController@update');
+Route::delete('admin/services/{id}', 'Api\ServiceController@delete');
 
 Route::get('/admin/rooms/{id?}', 'Api\RoomController@get');
 Route::post('admin/rooms', 'Api\RoomController@create');
