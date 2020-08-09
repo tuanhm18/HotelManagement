@@ -32,7 +32,7 @@ Route::put('admin/positions', 'Api\PositionController@update');
 Route::delete('admin/positions/{id}','Api\PositionController@delete');
 
 Route::get('/admin/customers/{id?}', 'Api\CustomerController@get');
-Route::post('admin/customers', 'Api\CustomerController@create');
+Route::post('admin/customers', 'Api\CustomerController@create'); 
 Route::put('admin/customers', 'Api\CustomerController@update');
 Route::delete('admin/customers/{id}','Api\CustomerController@delete');
 
