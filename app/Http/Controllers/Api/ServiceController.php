@@ -24,21 +24,19 @@ class ServiceController extends Controller
     public function create (Request $request){
         $service = new Service;
         $service->Name = $request->Name;
-        $service->Pirce = $request->Price;
-        $service['CreatedBy'] = Cookie::get('username');
-        $service['CreateDate'] = Carbon::now();
+        $service->Price = $request->Price;
+        $service['CreatedDate'] = Carbon::now();
         $service->save();
         return $service; 
     }
 
     public function update(Request $request){
-        $service = Service::findOfFail($request->SER_ID);
+        $service = Service::findOrFail($request->SER_ID);
         $service->SER_ID = $request->SER_ID;
         $service->Name = $request->Name;
         $service->Price = $request->Price;
-        $service['UpdatedBy'] = Cookie::get('username');
         $request['UpdatedDate'] = Carbon::now();
-        $service->save;
+        $service->save();
         return $service;
     }
 

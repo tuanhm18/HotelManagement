@@ -66,7 +66,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -82,9 +82,22 @@
 @endsection
 @section('js')
 <script>
-     $('#serviceModal').on('show.bs.modal', function() {
+    $('#serviceModal').on('show.bs.modal', function() {
         $(this).find("input").val('');
     });
+
+    function edit(id) {
+        $('#serviceModal').modal('show');
+        $.ajax({
+            url: "http://localhost/HotelManagement/api/admin/services/" + id,
+            type: "GET",
+            success: function(response) {
+                $('#name').val(response.data.Name);
+                $('#price').val(response.data.Price);
+                $('#ser_id').val(response.data.SER_ID);
+            }
+        })
+    }
 
     function save() {
         var SER_ID = $('#ser_id').val();
@@ -112,10 +125,66 @@
                     console.log(response);
                 }
             })
+        } else {
+            $.ajax({
+                url: "http://localhost/HotelManagement/api/admin/services",
+                type: "PUT",
+                data: {
+                    Name: name,
+                    Price: price,
+                    SER_ID: SER_ID
+                },
+                cache: false,
+                success: function(response) {
+                    swal({
+                        icon: "success",
+                        title: "Update Successfully",
+                        text: "Servie updated successfully!"
+                    });
+                    loadData();
+                    $('#serviceModal').modal('hide');
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            })
         }
     }
-    
+
+    function remove(id) {
+        swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this imaginary file!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: "http://localhost/HotelManagement/api/admin/services/" + id,
+                        type: "DELETE",
+                        cache: false,
+                        success: function(response) {
+                            swal({
+                                icon: "success",
+                                title: "Delete Successfully",
+                                text: "Service deleted successfully!"
+                            });
+                            loadData();
+                            $('#serviceModal').modal('hide');
+                        },
+                        error: function(response) {
+                            console.log(response);
+                        }
+                    })
+                } else {
+                    swal("Your imaginary file is safe!");
+                }
+            });
+    }
     $('#services').addClass("active");
+
     function loadData() {
         $('#serviceTable').DataTable({
             destroy: true,
@@ -123,10 +192,10 @@
                 url: "http://localhost/HotelManagement/api/admin/services",
                 method: "GET",
             },
-            columns: [ 
-                { data: "SER_ID" },
-                { data: "Name" },
-                { data: "Price" },
+            columns: [
+                { data: "SER_ID"},
+                { data: "Name"},
+                { data: "Price"},
                 {
                     data: null,
                     render: function(data, type, row) {
@@ -136,7 +205,7 @@
                 {
                     data: null,
                     render: function(data, type, row) {
-                        return '<i class="fas fa-trash text-infor pointer deleteBtn" onclick="delete(' + data.SER_ID + ')"></i>';
+                        return '<i class="fas fa-trash text-infor pointer deleteBtn" onclick="remove(' + data.SER_ID + ')"></i>';
                     }
                 }
             ]
