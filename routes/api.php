@@ -17,7 +17,13 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('admin/services/{id?}', 'Api\ServiceController@get');
+<<<<<<< HEAD
 Route::get('/admin/employees/{id?}', 'Api\EmployeeController@get');
+=======
+Route::post('admin/services', 'Api\ServiceController@create');
+Route::put('admin/services/', 'Api\ServiceController@update');
+Route::delete('admin/services/{id}', 'Api\ServiceController@delete');
+>>>>>>> 94886ea21735cba2779028c268f09c49b3f3f49a
 
 Route::get('/admin/rooms/{id?}', 'Api\RoomController@get');
 Route::get('/admin/rooms-available', 'Api\RoomController@getAvailable');
@@ -32,9 +38,15 @@ Route::put('admin/positions', 'Api\PositionController@update');
 Route::delete('admin/positions/{id}','Api\PositionController@delete');
 
 Route::get('/admin/customers/{id?}', 'Api\CustomerController@get');
+<<<<<<< HEAD
 Route::post('/admin/customers', 'Api\CustomerController@create');
 Route::put('/admin/customers', 'Api\CustomerController@update');
 Route::delete('/admin/customers/{id}','Api\CustomerController@delete');
+=======
+Route::post('admin/customers', 'Api\CustomerController@create'); 
+Route::put('admin/customers', 'Api\CustomerController@update');
+Route::delete('admin/customers/{id}','Api\CustomerController@delete');
+>>>>>>> 94886ea21735cba2779028c268f09c49b3f3f49a
 
 Route::get('/admin/bills/{id?}', 'Api\BillController@get');
 Route::post('/admin/bills', 'Api\BillController@create');
