@@ -27,6 +27,7 @@
                 <button type="button" data-toggle="modal" data-target="#positionModal" class="btn btn-primary float-right">Add</button>
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Position ID</th>
                         <th>Name</th>
                         <th>Edit</th>
@@ -71,9 +72,54 @@
 @endsection
 @section('js')
 <script>
-    $('#positionModal').on('show.bs.modal', function() {
+    $('#positionModal').on('hidden.bs.modal', function() {
         $(this).find("input").val('');
     });
+
+    function remove(id) {
+        swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this data!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: "http://localhost/HotelManagement/api/admin/positions/" + id,
+                        type: "DELETE",
+                        success: function(response) {
+                            swal("Your data file has been deleted!", {
+                                icon: "success",
+                            });
+                            loadData();
+                        },
+                        error: function(response) {
+                            swal("Your data is being used! Cannot remove it right now!", {
+                                icon: "warning",
+                            });
+                        }
+                    })
+                } else {
+                    swal("Your imaginary file is safe!");
+                }
+            });
+
+    }
+
+    function edit(id) {
+        $.ajax({
+            url: "http://localhost/HotelManagement/api/admin/positions/" + id,
+            type: "GET",
+            success: function(response) {
+                $("#pos_id").val(response.data.POS_ID);
+                $("#name").val(response.data.Name);
+                $("#positionModal").modal("show");
+            }
+        })
+        $("#positionModal").modal('show');
+    }
 
     function save() {
         var POS_ID = $('#pos_id').val();
@@ -89,8 +135,30 @@
                 success: function(response) {
                     swal({
                         icon: "success",
-                        title: "Success",
+                        title: "Added Successfully",
                         text: "Position added successfully!"
+                    });
+                    loadData();
+                    $('#positionModal').modal('hide');
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            })
+        } else {
+            $.ajax({
+                url: "http://localhost/HotelManagement/api/admin/positions",
+                type: "PUT",
+                data: {
+                    POS_ID: POS_ID,
+                    Name: name
+                },
+                cache: false,
+                success: function(response) {
+                    swal({
+                        icon: "success",
+                        title: "Updated Successfully",
+                        text: "Position updated successfully!"
                     });
                     loadData();
                     $('#positionModal').modal('hide');
@@ -101,16 +169,21 @@
             })
         }
     }
-    
     $('#positions').addClass("active");
+
     function loadData() {
-        $('#positionTable').DataTable({
+        var table = $('#positionTable').DataTable({
             destroy: true,
             ajax: {
                 url: "http://localhost/HotelManagement/api/admin/positions",
                 method: "GET",
             },
-            columns: [{
+            order: [
+                [1, 'asc']
+            ],
+            columns: [
+                {data: null},
+                {
                     data: "POS_ID"
                 },
                 {
@@ -125,11 +198,19 @@
                 {
                     data: null,
                     render: function(data, type, row) {
-                        return '<i class="fas fa-trash text-infor pointer deleteBtn" onclick="delete(' + data.POS_ID + ')"></i>';
+                        return '<i class="fas fa-trash text-infor pointer deleteBtn" onclick="remove(' + data.POS_ID + ')"></i>';
                     }
                 }
             ]
         });
+        table.on('order.dt search.dt', function() {
+            table.column(0, {
+                search: 'applied',
+                order: 'applied'
+            }).nodes().each(function(cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
     }
     $(document).ready(function() {
         loadData();

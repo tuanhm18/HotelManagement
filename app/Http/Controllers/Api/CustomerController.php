@@ -14,15 +14,6 @@ class CustomerController extends Controller
     public function get($id = null) {
         if($id == null) { //lay het
             $customers = Customer::all();
-            foreach ($customers as $customer) {
-                $cusType = Customer::findOrFail($customer->CUS_ID);
-                $customer->CUS_ID = $cusType->CUS_ID;
-                $customer->FirstName = $cusType->FirstName;
-                $customer->LastName = $cusType->LastName;
-                $customer->IdentityNumber = $cusType->IdentityNumber;
-                $customer->Phone = $cusType->Phone;
-                $customer->Email = $cusType->Email;
-            }
             return BaseResult::withData($customers);
         } else {
             $customer = Customer::findOrFail($id);

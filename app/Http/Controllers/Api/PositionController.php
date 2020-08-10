@@ -31,11 +31,7 @@ class PositionController extends Controller
     public function update(Request $request) {
         $position = Position::findOrFail($request->POS_ID);
         $position->POS_ID = $request->POS_ID;
-        $position->FirstName = $request->FirstName;
-        $position->LastName = $request->LastName;
-        $position->IdentityNumber = $request->IdentityNumber;
-        $position->Phone = $request->Phone;
-        $position->Email = $request->Email;
+        $position->Name = $request->Name;
         $position['UpdatedBy'] = Cookie::get('username');
         $position['UpdatedDate'] = Carbon::now();
         $position->save();
