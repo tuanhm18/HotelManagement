@@ -109,7 +109,7 @@
 <script>
     function loadRoomType() {
         $.ajax({
-            
+
         })
     }
     $('#roomModal').on('show.bs.modal', function() {
@@ -213,7 +213,6 @@
                 }
             });
     }
-    $('#services').addClass("active");
 
     function loadData() {
         $('#serviceTable').DataTable({
