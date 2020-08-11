@@ -22,21 +22,26 @@
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{{url('/public/admin')}}/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Daterange picker -->
-  <link rel="stylesheet" href="{{url('/public/admin')}}/plugins/daterangepicker/daterangepicker.css">
+  <link rel="stylesheet" href="{{url('/public/admin')}}/dist/css/bootstrap-datepicker3.min.css">
   <!-- summernote -->
   <link rel="stylesheet" href="{{url('/public/admin')}}/plugins/summernote/summernote-bs4.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <link rel="stylesheet" href="{{url('/public/admin')}}/dist/css/datatables.min.css">
+  <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+  @yield('css')
   <style>
     .editBtn {
       cursor: pointer;
       color: lightgreen;
     }
+
     .deleteBtn {
       cursor: pointer;
       color: red;
     }
+
+    
   </style>
 </head>
 
@@ -244,6 +249,22 @@
                   </a>
                 </li>
               </ul>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{action('Admin\ServiceBillController@view')}}" id="serviceBills" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Service Bill</p>
+                  </a>
+                </li>
+              </ul>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{action('Admin\BillController@view')}}" id="bills" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Bill</p>
+                  </a>
+                </li>
+              </ul>
             </li>
 
           </ul>
@@ -293,7 +314,7 @@
   <script src="{{url('/public/admin')}}/plugins/jquery-knob/jquery.knob.min.js"></script>
   <!-- daterangepicker -->
   <script src="{{url('/public/admin')}}/plugins/moment/moment.min.js"></script>
-  <script src="plugins/daterangepicker/daterangepicker.js"></script>
+  <script src="{{url('/public/admin')}}/dist/js/bootstrap-datepicker.min.js"></script>
   <!-- Tempusdominus Bootstrap 4 -->
   <script src="{{url('/public/admin')}}/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
   <!-- Summernote -->
@@ -307,7 +328,12 @@
   <!-- AdminLTE for demo purposes -->
   <script src="{{url('/public/admin')}}/dist/js/demo.js"></script>
   <script src="{{url('/public/admin')}}/dist/js/datatables.min.js"></script>
+<<<<<<< HEAD
+  <script src="{{url('/public/admin')}}/dist/js/sweetalert.min.js"></script>
+=======
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+>>>>>>> 94886ea21735cba2779028c268f09c49b3f3f49a
   @yield('js')
 </body>
 

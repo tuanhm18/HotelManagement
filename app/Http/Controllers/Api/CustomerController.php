@@ -14,7 +14,10 @@ class CustomerController extends Controller
     public function get($id = null) {
         if($id == null) { //lay het
             $customers = Customer::all();
+<<<<<<< HEAD
            
+=======
+>>>>>>> 37a64be612f764b6f08c2fb3aae0d140316cfc75
             return BaseResult::withData($customers);
         } else {
             $customer = Customer::findOrFail($id);

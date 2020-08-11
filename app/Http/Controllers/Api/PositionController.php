@@ -32,6 +32,10 @@ class PositionController extends Controller
         $position = Position::findOrFail($request->POS_ID);
         $position->POS_ID = $request->POS_ID;
         $position->Name = $request->Name;
+<<<<<<< HEAD
+=======
+        $position['UpdatedBy'] = Cookie::get('username');
+>>>>>>> 37a64be612f764b6f08c2fb3aae0d140316cfc75
         $position['UpdatedDate'] = Carbon::now();
         $position->save();
         return $position;
