@@ -20,6 +20,12 @@ Route::get('admin/services/{id?}', 'Api\ServiceController@get');
 Route::post('admin/services', 'Api\ServiceController@create');
 Route::put('admin/services', 'Api\ServiceController@update');
 Route::delete('admin/services/{id}', 'Api\ServiceController@delete');
+
+Route::get('admin/roomtype/{id?}', 'Api\RoomTypeController@get');
+Route::post('admin/roomtype', 'Api\RoomTypeController@create');
+Route::put('admin/roomtype', 'Api\RoomTypeController@update');
+Route::delete('admin/roomtype/{id}', 'Api\RoomTypeController@delete');
+
 Route::get('/admin/employees/{id?}', 'Api\EmployeeController@get');
 
 Route::get('/admin/rooms/{id?}', 'Api\RoomController@get');

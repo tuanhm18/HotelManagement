@@ -213,7 +213,7 @@
                 }
             });
     }
-
+            
     function loadData() {
         $('#serviceTable').DataTable({
             destroy: true,
