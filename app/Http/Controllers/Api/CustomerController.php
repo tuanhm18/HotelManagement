@@ -14,6 +14,10 @@ class CustomerController extends Controller
     public function get($id = null) {
         if($id == null) { //lay het
             $customers = Customer::all();
+<<<<<<< HEAD
+           
+=======
+>>>>>>> 37a64be612f764b6f08c2fb3aae0d140316cfc75
             return BaseResult::withData($customers);
         } else {
             $customer = Customer::findOrFail($id);
@@ -28,8 +32,6 @@ class CustomerController extends Controller
         $customer->IdentityNumber = $request->IdentityNumber;
         $customer->Phone = $request->Phone;
         $customer->Email = $request->Email;
-        $customer['CreatedBy'] = Cookie::get('username');
-        $customer['CreatedDate'] = Carbon::now();
         $customer->save();
         return $customer;
     }
@@ -41,8 +43,6 @@ class CustomerController extends Controller
         $customer->IdentityNumber = $request->IdentityNumber;
         $customer->Phone = $request->Phone;
         $customer->Email = $request->Email;
-        $customer['UpdatedBy'] = Cookie::get('username');
-        $customer['UpdatedDate'] = Carbon::now();
         $customer->save();
         return $customer;
     }
