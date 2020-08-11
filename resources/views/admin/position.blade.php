@@ -71,9 +71,21 @@
 @endsection
 @section('js')
 <script>
-    $('#positionModal').on('show.bs.modal', function() {
+    $('#positionModal').on('hidden.bs.modal', function() {
         $(this).find("input").val('');
     });
+
+    function edit(id) {
+        $.ajax({
+            url: "http://localhost/HotelManagement/api/admin/positions/" + id,
+            type: "GET",
+            success: function(response) {
+                $('#pos_id').val(response.data.POS_ID);
+                $('#name').val(response.data.Name);
+                $('#positionModal').modal('show');
+            }
+        })
+    }
 
     function save() {
         var POS_ID = $('#pos_id').val();
@@ -99,10 +111,61 @@
                     console.log(response);
                 }
             })
+        } else {
+            $.ajax({
+                url: "http://localhost/HotelManagement/api/admin/positions",
+                type: "PUT",
+                data: {
+                    POS_ID: POS_ID,
+                    Name: name
+                },
+                success: function(response) {
+                    swal({
+                        icon: "success",
+                        title: "Update Successfully",
+                        text: "Position updated successfully!"
+                    });
+                    loadData();
+                    $('#positionModal').modal('hide');
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            })
         }
     }
-    
+
+    function remove(id) {
+        swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this imaginary file!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: "http://localhost/HotelManagement/api/admin/positions/" + id,
+                        type: "DELETE",
+                        success: function(response) {
+                            swal({
+                                icon: "success",
+                                title: "Delete Successfully",
+                                text: "Position deleted successfully!"
+                            });
+                            loadData();
+                            $('#positionModal').modal('hide');
+                        }
+                    })
+                } else {
+                    swal("Your imaginary file is safe!");
+                }
+            });
+
+    }
     $('#positions').addClass("active");
+
     function loadData() {
         $('#positionTable').DataTable({
             destroy: true,
@@ -125,7 +188,7 @@
                 {
                     data: null,
                     render: function(data, type, row) {
-                        return '<i class="fas fa-trash text-infor pointer deleteBtn" onclick="delete(' + data.POS_ID + ')"></i>';
+                        return '<i class="fas fa-trash text-infor pointer deleteBtn" onclick="remove(' + data.POS_ID + ')"></i>';
                     }
                 }
             ]

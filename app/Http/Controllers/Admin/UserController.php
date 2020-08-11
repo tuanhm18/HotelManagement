@@ -83,7 +83,6 @@ class UserController extends Controller
 					if (Auth::attempt($userdata)) {
 						if ($request->has('rememberMe')) {
 							Cookie::queue(Cookie::make('userCredential', json_encode($userdata), 60 * 24 * 365)); // cookie 1 year
-							Cookie::queue(Cookie::make('username', $userdata['username'],60 * 24 * 365));
 						}
 
 						// update db
