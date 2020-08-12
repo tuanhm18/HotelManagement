@@ -15,27 +15,6 @@ CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
 USE `mydb` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`Users`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Users` (
-  `USE_ID` INT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(255) NOT NULL,
-  `FirstName` VARCHAR(45) NOT NULL,
-  `LastName` VARCHAR(45) NOT NULL,
-  `LastLoginDate` DATE NOT NULL,
-  `UpdatedBy` VARCHAR(45) NULL,
-  `UpdatedDate` DATE NULL,
-  `LastLoginIp` VARCHAR(45) NULL,
-  `Role` VARCHAR(45) NULL,
-  `CreatedBy` VARCHAR(45) NULL,
-  `CreatedDate` DATE NULL,
-  `Avatar` VARCHAR(255) NULL,
-  PRIMARY KEY (`USE_ID`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `mydb`.`Positions`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Positions` (
@@ -69,6 +48,35 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Employees` (
   CONSTRAINT `fk_Employees_Positions`
     FOREIGN KEY (`POS_ID`)
     REFERENCES `mydb`.`Positions` (`POS_ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Users`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Users` (
+  `USE_ID` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `FirstName` VARCHAR(45) NOT NULL,
+  `LastName` VARCHAR(45) NOT NULL,
+  `LastLoginDate` DATE NOT NULL,
+  `UpdatedBy` VARCHAR(45) NULL,
+  `UpdatedDate` DATE NULL,
+  `LastLoginIp` VARCHAR(45) NULL,
+  `Role` VARCHAR(45) NULL,
+  `CreatedBy` VARCHAR(45) NULL,
+  `CreatedDate` DATE NULL,
+  `Avatar` VARCHAR(255) NULL,
+  `EMP_ID` INT NULL,
+  PRIMARY KEY (`USE_ID`),
+  INDEX `fk_Users_Employees1_idx` (`EMP_ID` ASC) VISIBLE,
+  UNIQUE INDEX `EMP_ID_UNIQUE` (`EMP_ID` ASC) VISIBLE,
+  CONSTRAINT `fk_Users_Employees1`
+    FOREIGN KEY (`EMP_ID`)
+    REFERENCES `mydb`.`Employees` (`EMP_ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -178,41 +186,18 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`DetailsBill`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`DetailsBill` (
-  `DBIL_ID` INT NOT NULL AUTO_INCREMENT,
-  `BIL_ID` INT NOT NULL,
-  `Rooms_ROO_ID` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`DBIL_ID`),
-  INDEX `fk_DetailsBill_Bills1_idx` (`BIL_ID` ASC) VISIBLE,
-  INDEX `fk_DetailsBill_Rooms1_idx` (`Rooms_ROO_ID` ASC) VISIBLE,
-  CONSTRAINT `fk_DetailsBill_Bills1`
-    FOREIGN KEY (`BIL_ID`)
-    REFERENCES `mydb`.`Bills` (`BIL_ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_DetailsBill_Rooms1`
-    FOREIGN KEY (`Rooms_ROO_ID`)
-    REFERENCES `mydb`.`Rooms` (`ROO_ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `mydb`.`ServiceBill`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`ServiceBill` (
   `SBIL_ID` INT NOT NULL AUTO_INCREMENT,
   `Date` DATE NULL,
   `Price` FLOAT NULL,
-  `DBIL_ID` INT NOT NULL,
+  `ROO_ID` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`SBIL_ID`),
-  INDEX `fk_ServiceBill_DetailsBill1_idx` (`DBIL_ID` ASC) VISIBLE,
-  CONSTRAINT `fk_ServiceBill_DetailsBill1`
-    FOREIGN KEY (`DBIL_ID`)
-    REFERENCES `mydb`.`DetailsBill` (`DBIL_ID`)
+  INDEX `fk_ServiceBill_Rooms1_idx` (`ROO_ID` ASC) VISIBLE,
+  CONSTRAINT `fk_ServiceBill_Rooms1`
+    FOREIGN KEY (`ROO_ID`)
+    REFERENCES `mydb`.`Rooms` (`ROO_ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -249,6 +234,29 @@ CREATE TABLE IF NOT EXISTS `mydb`.`ServiceBillService` (
   CONSTRAINT `fk_ServiceBill_has_Service_Service1`
     FOREIGN KEY (`SER_ID`)
     REFERENCES `mydb`.`Services` (`SER_ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`RoomBill`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`RoomBill` (
+  `RBIL_ID` INT NOT NULL AUTO_INCREMENT,
+  `BIL_ID` INT NOT NULL,
+  `ROO_ID` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`RBIL_ID`),
+  INDEX `fk_DetailsBill_Bills1_idx` (`BIL_ID` ASC) VISIBLE,
+  INDEX `fk_DetailsBill_Rooms1_idx` (`ROO_ID` ASC) VISIBLE,
+  CONSTRAINT `fk_DetailsBill_Bills1`
+    FOREIGN KEY (`BIL_ID`)
+    REFERENCES `mydb`.`Bills` (`BIL_ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_DetailsBill_Rooms1`
+    FOREIGN KEY (`ROO_ID`)
+    REFERENCES `mydb`.`Rooms` (`ROO_ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
