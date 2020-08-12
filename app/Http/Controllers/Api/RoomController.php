@@ -38,7 +38,6 @@ class RoomController extends Controller
         $room->Status = $request->Status;
         $room->RTYP_ID = $request->RTYP_ID;
         $room->IsHot = $request->IsHot;
-        $room['CreatedBy'] = Cookie::get('username');
         $room['CreatedDate'] = Carbon::now();
         $room->save();
         return $room;
@@ -49,7 +48,6 @@ class RoomController extends Controller
         $room->Status = $request->Status;
         $room->RTYP_ID = $request->RTYP_ID;
         $room->IsHot = $request->IsHot;
-        $room['UpdatedBy'] = Cookie::get('username');
         $room['UpdatedDate'] = Carbon::now();
         $room->save();
         return $room;

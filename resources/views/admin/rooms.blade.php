@@ -35,11 +35,14 @@
                 <thead>
                     <tr>
                         <th>Room number</th>
-                        <th>Status</th>
                         <th>Number of beds</th>
                         <th>Number of rests</th>
                         <th>Room type name</th>
                         <th>Price</th>
+                        <th>Hot</th>
+                        <th>Available</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,40 +59,39 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <input value="0" type="hidden" name="ROO_ID" id="roo_id">
+                        <input type="hidden" value="1" id="isAdd">
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-6 form-group form-row">
                                     <label for="numberOfBeds" class="col-sm-4 col-form-label required">Room number</label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="numberOfBeds" name="numberOfBeds" maxlength="200">
+                                        <input type="number" class="form-control" id="roo_id" name="roo_id" maxlength="200">
                                     </div>
                                 </div>
                                 <div class="col-6 form-group form-row">
                                     <!-- Material checked -->
                                     <label for="numberOfBeds" class="col-sm-4 col-form-label required">Status</label>
                                     <div class="col-sm-8 chekbox-status">
-                                    <input type="checkbox" checked data-toggle="toggle" id="status" data-on="Being used" data-off="Available" data-onstyle="danger" data-offstyle="success">
+                                        <input type="checkbox" checked data-toggle="toggle" id="status" data-on="Available" data-off="Using" data-onstyle="success" data-offstyle="danger">
                                     </div>
                                 </div>
+
                             </div>
                             <div class="row">
                                 <div class="col-6 input-group mb-3">
                                     <div class="input-group-prepend">
                                         <label class="input-group-text" for="inputGroupSelect01">Room type</label>
                                     </div>
-                                    <select class="custom-select" id="inputGroupSelect01">
+                                    <select class="custom-select" id="roomTypeSelector">
                                     </select>
                                 </div>
                                 <div class="col-6 form-group form-row">
-                                    <label for="price" class="col-sm-4 col-form-label required">Price</label>
-                                    <div class="col-sm-8">
-                                        <input type="number" class="form-control" id="price" name="price" maxlength="200">
+                                    <!-- Material checked -->
+                                    <label for="numberOfBeds" class="col-sm-4 col-form-label required">Hot</label>
+                                    <div class="col-sm-8 chekbox-status">
+                                        <input type="checkbox" checked data-toggle="toggle" id="isHot" data-on="Yes" data-off="No" data-onstyle="success" data-offstyle="danger">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-
                             </div>
 
                         </div>
@@ -109,11 +111,18 @@
 <script>
     function loadRoomType() {
         $.ajax({
-
+            url: "http://localhost/HotelManagement/api/admin/roomtype",
+            type: 'GET',
+            success: function(response) {
+                response.data.forEach(element => {
+                    $('#roomTypeSelector').append("<option value='" + element.RTYP_ID + "'>" + element.Name + "</option>");
+                });
+            }
         })
     }
-    $('#roomModal').on('show.bs.modal', function() {
+    $('#roomModal').on('hidden.bs.modal', function() {
         $(this).find("input").val('');
+        $('#roo_id').attr("disabled", false);
     });
 
     function edit(id) {
@@ -122,9 +131,14 @@
             url: "http://localhost/HotelManagement/api/admin/rooms/" + id,
             type: "GET",
             success: function(response) {
-                $('#name').val(response.data.Name);
-                $('#price').val(response.data.Price);
-                $('#ser_id').val(response.data.SER_ID);
+                $('#roo_id').attr("disabled", true);
+                $('#isAdd').val(0);
+                $('#roo_id').val(response.data.ROO_ID);
+                $('#status').val(response.data.Status);
+                response.data.Status == 0 ? $('#status').bootstrapToggle('off') : 	$('#status').bootstrapToggle('on')
+                $('#isHot').val(response.data.IsHot);
+                response.data.IsHot == 0 ? 	$('#isHot').bootstrapToggle('off') : 	$('#isHot').bootstrapToggle('on')
+                $("#roomTypeSelector").val(response.data.RTYP_ID);
             }
         })
     }
@@ -132,47 +146,53 @@
     function save() {
         var ROO_ID = $('#roo_id').val();
         var status = document.getElementById('status').checked ? 1 : 0;
-        var price = $('#price').val();
-        if (SER_ID == 0) {
+        var roomType = $('#roomTypeSelector').val();
+        var isHot = document.getElementById('isHot').checked ? 1 : 0;
+        if ($('#isAdd').val() == 1) {
             $.ajax({
-                url: "http://localhost/HotelManagement/api/admin/services",
+                url: "http://localhost/HotelManagement/api/admin/rooms",
                 type: "POST",
                 data: {
-                    Name: name,
-                    Price: price
+                    ROO_ID: ROO_ID,
+                    RTYP_ID: roomType,
+                    Status: status,
+                    IsHot: isHot
                 },
                 cache: false,
                 success: function(response) {
                     swal({
                         icon: "success",
-                        title: "Success",
-                        text: "Position added successfully!"
+                        title: "Added Successfully!",
+                        text: "Room added successfully!"
                     });
                     loadData();
-                    $('#serviceModal').modal('hide');
+                    $('#roomModal').modal('hide');
                 },
                 error: function(response) {
                     console.log(response);
                 }
             })
         } else {
+            console.log(status);
+            console.log(isHot);
             $.ajax({
-                url: "http://localhost/HotelManagement/api/admin/services",
+                url: "http://localhost/HotelManagement/api/admin/rooms",
                 type: "PUT",
                 data: {
-                    Name: name,
-                    Price: price,
-                    SER_ID: SER_ID
+                    ROO_ID: ROO_ID,
+                    RTYP_ID: roomType,
+                    Status: status,
+                    IsHot: isHot
                 },
                 cache: false,
                 success: function(response) {
                     swal({
                         icon: "success",
                         title: "Update Successfully",
-                        text: "Servie updated successfully!"
+                        text: "Room updated successfully!"
                     });
                     loadData();
-                    $('#serviceModal').modal('hide');
+                    $('#roomModal').modal('hide');
                 },
                 error: function(response) {
                     console.log(response);
@@ -192,7 +212,7 @@
             .then((willDelete) => {
                 if (willDelete) {
                     $.ajax({
-                        url: "http://localhost/HotelManagement/api/admin/services/" + id,
+                        url: "http://localhost/HotelManagement/api/admin/rooms/" + id,
                         type: "DELETE",
                         cache: false,
                         success: function(response) {
@@ -205,7 +225,11 @@
                             $('#serviceModal').modal('hide');
                         },
                         error: function(response) {
-                            console.log(response);
+                            swal({
+                                icon: "warning",
+                                title: "Delete failed!",
+                                text: "Data is being used!"
+                            });
                         }
                     })
                 } else {
@@ -213,19 +237,25 @@
                 }
             });
     }
-            
+
     function loadData() {
-        $('#serviceTable').DataTable({
+        $('#roomTable').DataTable({
             destroy: true,
             ajax: {
-                url: "http://localhost/HotelManagement/api/admin/services",
+                url: "http://localhost/HotelManagement/api/admin/rooms",
                 method: "GET",
             },
             columns: [{
-                    data: "SER_ID"
+                    data: "ROO_ID"
                 },
                 {
-                    data: "Name"
+                    data: "NumberOfBeds"
+                },
+                {
+                    data: "NumberOfRests"
+                },
+                {
+                    data: "RoomName"
                 },
                 {
                     data: "Price"
@@ -233,70 +263,37 @@
                 {
                     data: null,
                     render: function(data, type, row) {
-                        return '<i class="fas fa-edit text-infor pointer editBtn"  onclick="edit(' + data.SER_ID + ')"></i>';
+                        return data.IsHot == 1 ? '<i class="fas fa-check text-success"></i>' : "";
                     }
                 },
                 {
                     data: null,
                     render: function(data, type, row) {
-                        return '<i class="fas fa-trash text-infor pointer deleteBtn" onclick="remove(' + data.SER_ID + ')"></i>';
+                        return data.Status == 1 ? '<i class="fas fa-check text-success"></i>' : "";
+                    }
+                },
+                {
+                    data: null,
+                    render: function(data, type, row) {
+                        return '<i class="fas fa-edit text-infor pointer editBtn"  onclick="edit(' + data.ROO_ID + ')"></i>';
+                    }
+                },
+                {
+                    data: null,
+                    render: function(data, type, row) {
+                        return '<i class="fas fa-trash text-infor pointer deleteBtn" onclick="remove(' + data.ROO_ID + ')"></i>';
                     }
                 }
             ]
         });
+        loadRoomType();
     }
     $(document).ready(function() {
         loadData();
-
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
     $('#rooms').addClass("active");
-    $('#roomTable').DataTable({
-        destroy: true,
-        ajax: {
-            url: "http://localhost/HotelManagement/api/admin/rooms",
-            method: "GET",
-        },
-        columns: [{
-                data: "ROO_ID"
-            },
-            {
-                data: "Status"
-            },
-            {
-                data: "NumberOfBeds"
-            },
-            {
-                data: "NumberOfRests"
-            },
-            {
-                data: "RoomName"
-            },
-            {
-                data: "Price"
-            },
-        ]
-    });
-    $(document).ready(function() {
-
-    });
 </script>
 @endsection

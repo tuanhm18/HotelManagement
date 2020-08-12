@@ -27,7 +27,7 @@
                 <button type="button" data-toggle="modal" data-target="#roomTypeModal" class="btn btn-primary float-right">Add</button>
                 <thead>
                     <tr>
-                        <th>Service number</th>
+                        <th>Name</th>
                         <th>Number Of Beds</th>
                         <th>Number Of Rests</th>
                         <th>Price</th>
@@ -51,30 +51,35 @@
                         </div>
                         <input value="0" type="hidden" name="RTYP_ID" id="rtyp_id">
                         <div class="modal-body">
-                            <div class="row">
-                                <div class="col-12 form-group form-row">
-                                    <label for="numberOfBeds" class="col-sm-5 col-form-label required">Number Of Beds</label>
-                                    <div class="col-sm-12">
-                                        <input type="number" class="form-control" id="numberOfBeds" name="NumberOfBeds" maxlength="200">
+                        <div class="row">
+                                <div class="col-6 form-group form-row">
+                                    <label for="price" class="col-sm-4 col-form-label required">Name</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="name" name="name" maxlength="200">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 form-group form-row">
-                                    <label for="numberOfRests" class="col-sm-5 col-form-label required">Number Of Rests</label>
-                                    <div class="col-sm-12">
-                                        <input type="number" class="form-control" id="numberOfRests" name="numberOfRests" maxlength="200">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 form-group form-row">
-                                    <label for="price" class="col-sm-5 col-form-label required">Price</label>
-                                    <div class="col-sm-12">
+                                <div class="col-6 form-group form-row">
+                                    <label for="price" class="col-sm-4 col-form-label required">Price</label>
+                                    <div class="col-sm-8">
                                         <input type="number" class="form-control" id="price" name="price" maxlength="200">
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-6 form-group form-row">
+                                    <label for="numberOfBeds" class="col-sm-4 col-form-label required">Number Of Beds</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" class="form-control" id="numberOfBeds" name="NumberOfBeds" maxlength="200">
+                                    </div>
+                                </div>
+                                <div class="col-6 form-group form-row">
+                                    <label for="numberOfRests" class="col-sm-5 col-form-label required">Number Of Rests</label>
+                                    <div class="col-sm-7">
+                                        <input type="number" class="form-control" id="numberOfRests" name="numberOfRests" maxlength="200">
+                                    </div>
+                                </div>
+                            </div>
+                           
 
                         </div>
                         <div class="modal-footer">
@@ -104,7 +109,8 @@
                 $('#numberOfBeds').val(response.data.NumberOfBeds);
                 $('#numberOfRests').val(response.data.NumberOfRests);
                 $('#price').val(response.data.Price);
-                $('#rtyp_id').val(response.data.RTYP_ID);
+                $('#rtyp_id').val(response.data.RTYP_ID)
+                $('#name').val(response.data.Name);
             }
         })
     }
@@ -114,11 +120,13 @@
         var numberOfBeds = $('#numberOfBeds').val();
         var numberOfRests = $('#numberOfRests').val();
         var price = $('#price').val();
+        var name = $('#name').val();
         if (RTYP_ID == 0) {
             $.ajax({
                 url: "http://localhost/HotelManagement/api/admin/roomtype",
                 type: "POST",
                 data: {
+                    Name: name,
                     NumberOfBeds: numberOfBeds,
                     NumberOfRests: numberOfRests,
                     Price: price
@@ -142,6 +150,7 @@
                 url: "http://localhost/HotelManagement/api/admin/roomtype",
                 type: "PUT",
                 data: {
+                    Name:name,
                     NumberOfBeds: numberOfBeds,
                     NumberOfRests: numberOfRests,
                     Price: price,
@@ -206,7 +215,8 @@
                 method: "GET",
             },
             columns: [
-                { data: "RTYP_ID"},
+                
+                {data: "Name"},
                 { data: "NumberOfBeds"},
                 { data: "NumberOfRests"},
                 { data: "Price"},

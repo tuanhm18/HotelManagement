@@ -76,60 +76,16 @@
         $(this).find("input").val('');
     });
 
-<<<<<<< HEAD
-=======
-    function remove(id) {
-        swal({
-                title: "Are you sure?",
-                text: "Once deleted, you will not be able to recover this data!",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((willDelete) => {
-                if (willDelete) {
-                    $.ajax({
-                        url: "http://localhost/HotelManagement/api/admin/positions/" + id,
-                        type: "DELETE",
-                        success: function(response) {
-                            swal("Your data file has been deleted!", {
-                                icon: "success",
-                            });
-                            loadData();
-                        },
-                        error: function(response) {
-                            swal("Your data is being used! Cannot remove it right now!", {
-                                icon: "warning",
-                            });
-                        }
-                    })
-                } else {
-                    swal("Your imaginary file is safe!");
-                }
-            });
-
-    }
-
->>>>>>> 37a64be612f764b6f08c2fb3aae0d140316cfc75
     function edit(id) {
         $.ajax({
             url: "http://localhost/HotelManagement/api/admin/positions/" + id,
             type: "GET",
             success: function(response) {
-<<<<<<< HEAD
                 $('#pos_id').val(response.data.POS_ID);
                 $('#name').val(response.data.Name);
                 $('#positionModal').modal('show');
             }
         })
-=======
-                $("#pos_id").val(response.data.POS_ID);
-                $("#name").val(response.data.Name);
-                $("#positionModal").modal("show");
-            }
-        })
-        $("#positionModal").modal('show');
->>>>>>> 37a64be612f764b6f08c2fb3aae0d140316cfc75
     }
 
     function save() {
@@ -164,18 +120,10 @@
                     POS_ID: POS_ID,
                     Name: name
                 },
-<<<<<<< HEAD
                 success: function(response) {
                     swal({
                         icon: "success",
                         title: "Update Successfully",
-=======
-                cache: false,
-                success: function(response) {
-                    swal({
-                        icon: "success",
-                        title: "Updated Successfully",
->>>>>>> 37a64be612f764b6f08c2fb3aae0d140316cfc75
                         text: "Position updated successfully!"
                     });
                     loadData();
@@ -187,7 +135,6 @@
             })
         }
     }
-<<<<<<< HEAD
 
     function remove(id) {
         swal({
@@ -218,8 +165,6 @@
             });
 
     }
-=======
->>>>>>> 37a64be612f764b6f08c2fb3aae0d140316cfc75
     $('#positions').addClass("active");
 
     function loadData() {

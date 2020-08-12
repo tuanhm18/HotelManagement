@@ -27,6 +27,7 @@ class RoomTypeController extends Controller
         $roomType->NumberOfBeds = $request->NumberOfBeds;
         $roomType->NumberOfRests = $request->NumberOfRests;
         $roomType->Price = $request->Price;
+        $roomType->Name = $request->Name;
         $roomType['CreatedDate'] = Carbon::now();
         $roomType->save();
         return $roomType; 
@@ -38,6 +39,8 @@ class RoomTypeController extends Controller
         $roomType->NumberOfBeds = $request->NumberOfBeds;
         $roomType->NumberOfRests = $request->NumberOfRests;
         $roomType->Price = $request->Price;
+        $roomType->Name = $request->Name;
+
         $roomType['UpdatedDate'] = Carbon::now();
         $roomType->save();
         return $roomType; 
