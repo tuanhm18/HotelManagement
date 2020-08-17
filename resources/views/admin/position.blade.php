@@ -51,10 +51,11 @@
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-12 form-group form-row">
-                                    <label for="name" class="col-sm-5 col-form-label required">Name</label>
-                                    <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="name" name="Name" maxlength="200">
+                                    <label for="name" class="col-sm-4 col-form-label required">Name</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="name" name="Name" style="text-transform: capitalize" maxlength="200">
                                     </div>
+                                    <div id="validateMessage" class="text-danger col-8 offset-md-4 mt-1"></div>
                                 </div>
                             </div>
                         </div>
@@ -74,6 +75,7 @@
 <script>
     $('#positionModal').on('hidden.bs.modal', function() {
         $(this).find("input").val('');
+        $('#validateMessage').text("");
     });
 
     function edit(id) {
@@ -91,49 +93,64 @@
     function save() {
         var POS_ID = $('#pos_id').val();
         var name = $('#name').val();
-        if (POS_ID == 0) {
-            $.ajax({
-                url: "http://localhost/HotelManagement/api/admin/positions",
-                type: "POST",
-                data: {
-                    Name: name
-                },
-                cache: false,
-                success: function(response) {
-                    swal({
-                        icon: "success",
-                        title: "Added Successfully",
-                        text: "Position added successfully!"
-                    });
-                    loadData();
-                    $('#positionModal').modal('hide');
-                },
-                error: function(response) {
+        // Bắt đầu kiểm tra dữ liệu đúng hay sai
+        $.ajax({    
+            url: "http://localhost/HotelManagement/api/admin/positions-validate",
+            type: "POST",
+            data: {
+                Name: name
+            },
+            success: function(response) {
+                if (response.error == 1) { //Dữ liệu nhập sai
                     console.log(response);
+                    $('#validateMessage').text(response.message);
+                } else {                 // Dữ liệu nhập đúng
+                    if (POS_ID == 0) {
+                        $.ajax({
+                            url: "http://localhost/HotelManagement/api/admin/positions",
+                            type: "POST",
+                            data: {
+                                Name: name
+                            },
+                            cache: false,
+                            success: function(response) {
+                                swal({
+                                    icon: "success",
+                                    title: "Added Successfully",
+                                    text: "Position added successfully!"
+                                });
+                                loadData();
+                                $('#positionModal').modal('hide');
+                            },
+                            error: function(response) {
+                                console.log(response);
+                            }
+                        })
+                    } else {
+                        $.ajax({
+                            url: "http://localhost/HotelManagement/api/admin/positions",
+                            type: "PUT",
+                            data: {
+                                POS_ID: POS_ID,
+                                Name: name
+                            },
+                            success: function(response) {
+                                swal({
+                                    icon: "success",
+                                    title: "Update Successfully",
+                                    text: "Position updated successfully!"
+                                });
+                                loadData();
+                                $('#positionModal').modal('hide');
+                            },
+                            error: function(response) {
+                                console.log(response);
+                            }
+                        })
+                    }
                 }
-            })
-        } else {
-            $.ajax({
-                url: "http://localhost/HotelManagement/api/admin/positions",
-                type: "PUT",
-                data: {
-                    POS_ID: POS_ID,
-                    Name: name
-                },
-                success: function(response) {
-                    swal({
-                        icon: "success",
-                        title: "Update Successfully",
-                        text: "Position updated successfully!"
-                    });
-                    loadData();
-                    $('#positionModal').modal('hide');
-                },
-                error: function(response) {
-                    console.log(response);
-                }
-            })
-        }
+            }
+        });
     }
 
     function remove(id) {
@@ -177,8 +194,9 @@
             order: [
                 [1, 'asc']
             ],
-            columns: [
-                {data: null},
+            columns: [{
+                    data: null
+                },
                 {
                     data: "POS_ID"
                 },

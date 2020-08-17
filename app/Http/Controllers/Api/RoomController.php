@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Cookie;
 class RoomController extends Controller
 {
     public function getAvailable() {
-        $rooms = Room::where(['Status'=>0])->get();
+        $rooms = Room::where(['Status'=>1])->get();
         return BaseResult::withData($rooms);
     }
     public function get($id = null) {

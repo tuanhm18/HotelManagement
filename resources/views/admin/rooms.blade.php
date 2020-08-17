@@ -199,7 +199,7 @@
                 }
             })
         }
-    }
+    }   
 
     function remove(id) {
         swal({

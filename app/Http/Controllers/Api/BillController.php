@@ -68,7 +68,7 @@ class BillController extends Controller
         $roomBills = RoomBill::where(['BIL_ID'=>$bill->BIL_ID])->get();
         foreach ($roomBills as $roomBill) {
             $room = Room::findOrFail($roomBill->ROO_ID);
-            $room->Status = 0;
+            $room->Status = 1;
             $room->save();
             $roomBill->delete();
         }
@@ -78,7 +78,7 @@ class BillController extends Controller
             $roomBill->BIL_ID = $bill->BIL_ID;
             $roomBill->save();
             $room = Room::findOrFail($ROO_ID);
-            $room->Status = 1;
+            $room->Status = 0;
             $room->save();
         }
         $bill->save();

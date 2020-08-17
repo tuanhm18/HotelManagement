@@ -84,12 +84,10 @@ class UserController extends Controller
 						if ($request->has('rememberMe')) {
 							Cookie::queue(Cookie::make('userCredential', json_encode($userdata), 60 * 24 * 365)); // cookie 1 year
 						}
-
-						// update db
 						$user->LastLoginDate = Carbon::now();
 						$user->LastLoginIp = $request->ip();
 						$user->save();
-
+						Cookie::queue(Cookie::make("userFullName", $user->FirstName. ' ' .$user->LastName, 60*24*365));
 						Session::put('user', Auth::user());
 						return Redirect::action('Admin\SiteController@index');
 						// return Redirect::action('Admin\OrderController@index');
@@ -110,6 +108,7 @@ class UserController extends Controller
 	public function doLogout() {
 // 		Auth::logout();
 		Cookie::queue(Cookie::forget('userCredential'));
+		Cookie::queue(Cookie::forget('userFullName'));
 		Session::flush();
 		return Redirect::action('Admin\UserController@login');
 	}

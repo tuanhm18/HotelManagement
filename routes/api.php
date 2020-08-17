@@ -39,7 +39,7 @@ Route::get('/admin/positions/{id?}', 'Api\PositionController@get');
 Route::post('admin/positions', 'Api\PositionController@create');
 Route::put('admin/positions', 'Api\PositionController@update');
 Route::delete('admin/positions/{id}','Api\PositionController@delete');
-
+Route::post('/admin/positions-validate/', 'Api\PositionController@validatePosition');
 Route::get('/admin/customers/{id?}', 'Api\CustomerController@get');
 
 Route::post('/admin/customers', 'Api\CustomerController@create');

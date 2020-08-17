@@ -241,10 +241,13 @@
     var currentCusId = 0;
     var currentEmpId = 0;
     $('#billModal').on('hidden.bs.modal', function() {
-        $('#roomSelected').text("");
-        $("#roomSelector").text("");
-        $(this).find("input").val('');
         loadRoom();
+        $('#firstName').attr("disabled", false);
+        $('#lastName').attr("disabled", false);
+        $('#idNumber').attr("disabled", false);
+        $('#email').attr("disabled", false);
+        $('#phone').attr("disabled", false);
+        $(this).find("input").val('');
     });
     $('select').on('change', function() {
         $('#roomSelected').text("");
@@ -339,8 +342,11 @@
                 $('#checkinDate').val(response.data.CheckInDate);
                 $('#checkoutDate').val(response.data.CheckOutDate);
                 response.data.roomBills.forEach(element => {
-                    var output = "<option value=" + element.ROO_ID + ">" + element.ROO_ID + "</option>";
-                    $('#roomSelector').append(output);
+                    console.log(jQuery.inArray(element.ROO_ID, $('roomSelector').val()));
+                    if (jQuery.inArray(element.ROO_ID, $('roomSelector').val()) == -1) {
+                        var output = "<option value=" + element.ROO_ID + ">" + element.ROO_ID + "</option>";
+                        $('#roomSelector').append(output);
+                    }
                     $("#roomSelector option[value='" + element.ROO_ID + "']").prop("selected", true);
                     $('#roomSelected').append('<li class="list-group-item text-primary">' + element.ROO_ID + '</li>');
                 });
@@ -384,7 +390,6 @@
                     });
                     loadData();
                     $('#billModal').modal('hide');
-                    loadRoom();
                 },
                 error: function(response) {
                     console.log(response);
@@ -409,7 +414,6 @@
                     });
                     loadData();
                     $('#billModal').modal('hide');
-                    loadRoom();
                 },
                 error: function(response) {
                     console.log(response);
@@ -417,6 +421,7 @@
             })
         }
     }
+
     function remove(id) {
         swal({
                 title: "Are you sure?",
@@ -449,6 +454,7 @@
             });
 
     }
+
     function loadData() {
         var table = $('#billTable').DataTable({
             destroy: true,
