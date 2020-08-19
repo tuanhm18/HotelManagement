@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Employees` (
   `UpdatedDate` DATE NULL,
   `POS_ID` INT NOT NULL,
   `UpdatedBy` VARCHAR(45) NULL,
+  `Avatar` VARCHAR(255) NULL,
   PRIMARY KEY (`EMP_ID`),
   UNIQUE INDEX `IdentityNumber_UNIQUE` (`IdentityNumber` ASC) VISIBLE,
   INDEX `fk_Employees_Positions_idx` (`POS_ID` ASC) VISIBLE,
@@ -266,6 +267,38 @@ CREATE TABLE IF NOT EXISTS `mydb`.`RoomBillService` (
     REFERENCES `mydb`.`Services` (`SER_ID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Blogs`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Blogs` (
+  `BLO_ID` INT NOT NULL AUTO_INCREMENT,
+  `Title` VARCHAR(255) NULL,
+  `Description` VARCHAR(255) NULL,
+  `Details` LONGTEXT NULL,
+  `CreatedBy` VARCHAR(45) NULL,
+  `CreatedDate` DATE NULL,
+  `UpdatedDate` DATE NULL,
+  `UpdatedBy` VARCHAR(45) NULL,
+  PRIMARY KEY (`BLO_ID`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Banners`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Banners` (
+  `BAN_ID` INT NOT NULL AUTO_INCREMENT,
+  `Avatar` VARCHAR(255) NULL,
+  `Title` VARCHAR(255) NULL,
+  `Description` VARCHAR(255) NULL,
+  `CreatedBy` VARCHAR(45) NULL,
+  `CreatedDate` DATE NULL,
+  `UpdatedBy` VARCHAR(45) NULL,
+  `UpdatedDate` VARCHAR(45) NULL,
+  PRIMARY KEY (`BAN_ID`))
 ENGINE = InnoDB;
 
 
