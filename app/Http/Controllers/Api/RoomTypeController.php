@@ -13,17 +13,19 @@ use Illuminate\Http\Request;
 
 class RoomTypeController extends Controller
 {
-    
+
     public function validateRoomType(Request $request)
     {
-        $roomType = RoomType::findOrFail($request->RTYP_ID);
-        if($roomType){
-            if($roomType->Name == $request->Name){
-                return  response()->json([
-                    'error' => 0,
-                    'data'=>$request->Name,
-                    'message'=>''
-                ]);
+        if ($request->RTYP_ID != 0) {
+            $roomType = RoomType::findOrFail($request->RTYP_ID);
+            if ($roomType) {
+                if ($roomType->Name == $request->Name) {
+                    return  response()->json([
+                        'error' => 0,
+                        'data' => $request->Name,
+                        'message' => ''
+                    ]);
+                }
             }
         }
         $rules = array(
@@ -35,30 +37,32 @@ class RoomTypeController extends Controller
             return response()->json([
                 'validator' => $validator,
                 'error' => 1,
-                'data'=>$request->Name,
-                'message'=>'This name has been used'
+                'data' => $request->Name,
+                'message' => 'This name has been used'
             ]);
         } else {
             return response()->json([
                 'validator' => $validator,
                 'error' => 0,
-                'data'=>$request->Name,
-                'message'=>'This name has not been used'
+                'data' => $request->Name,
+                'message' => 'This name has not been used'
             ]);
         }
     }
 
-    public function get($id = null) {
+    public function get($id = null)
+    {
         if ($id == null) {
             $roomTypes = RoomType::all();
             return BaseResult::withData($roomTypes);
-        } else{
+        } else {
             $roomType = RoomType::findOrFail($id);
             return BaseResult::withData($roomType);
         }
     }
 
-    public function create (Request $request){
+    public function create(Request $request)
+    {
         $roomType = new RoomType;
         $roomType->NumberOfBeds = $request->NumberOfBeds;
         $roomType->NumberOfRests = $request->NumberOfRests;
@@ -66,10 +70,11 @@ class RoomTypeController extends Controller
         $roomType->Name = $request->Name;
         $roomType['CreatedDate'] = Carbon::now();
         $roomType->save();
-        return $roomType; 
+        return $roomType;
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         $roomType = RoomType::findOrFail($request->RTYP_ID);
         $roomType->RTYP_ID = $request->RTYP_ID;
         $roomType->NumberOfBeds = $request->NumberOfBeds;
@@ -79,10 +84,11 @@ class RoomTypeController extends Controller
 
         $roomType['UpdatedDate'] = Carbon::now();
         $roomType->save();
-        return $roomType; 
+        return $roomType;
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         $roomType = RoomType::findOrFail($id);
         $roomType->delete();
         return $roomType;
