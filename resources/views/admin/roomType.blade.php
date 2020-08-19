@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-dark">Dashboard</h1>
+                    <h1 class="m-0 text-dark">ROOM TYPE</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -57,6 +57,7 @@
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control" id="name" name="name" maxlength="200">
                                     </div>
+                                    <div id="validateMessage" class="text-danger col-8 offset-md-4 mt-1"></div>
                                 </div>
                                 <div class="col-6 form-group form-row">
                                     <label for="price" class="col-sm-4 col-form-label required">Price</label>
@@ -98,6 +99,7 @@
 <script>
     $('#roomTypeModal').on('show.bs.modal', function() {
         $(this).find("input").val('');
+        $('#validateMessage').text("");
     });
 
     function edit(id) {
@@ -121,56 +123,72 @@
         var numberOfRests = $('#numberOfRests').val();
         var price = $('#price').val();
         var name = $('#name').val();
-        if (RTYP_ID == 0) {
-            $.ajax({
-                url: "http://localhost/HotelManagement/api/admin/roomtype",
-                type: "POST",
-                data: {
-                    Name: name,
-                    NumberOfBeds: numberOfBeds,
-                    NumberOfRests: numberOfRests,
-                    Price: price
-                },
-                cache: false,
-                success: function(response) {
-                    swal({
-                        icon: "success",
-                        title: "Success",
-                        text: "Room Type added successfully!"
-                    });
-                    loadData();
-                    $('#roomTypeModal').modal('hide');
-                },
-                error: function(response) {
+
+        $.ajax({
+            url: "http://localhost/HotelManagement/api/admin/roomtype-validate",
+            type: "POST",
+            data: {
+                Name: name,
+                RTYP_ID : RTYP_ID
+            },
+            success: function(response){
+                if (response.error == 1) { //Dữ liệu nhập sai
                     console.log(response);
+                    $('#validateMessage').text(response.message);
+                } else {
+                    if (RTYP_ID == 0) {
+                        $.ajax({
+                            url: "http://localhost/HotelManagement/api/admin/roomtype",
+                            type: "POST",
+                            data: {
+                                Name: name,
+                                NumberOfBeds: numberOfBeds,
+                                NumberOfRests: numberOfRests,
+                                Price: price
+                            },
+                            cache: false,
+                            success: function(response) {
+                                swal({
+                                    icon: "success",
+                                    title: "Success",
+                                    text: "Room Type added successfully!"
+                                });
+                                loadData();
+                                $('#roomTypeModal').modal('hide');
+                            },
+                            error: function(response) {
+                                console.log(response);
+                            }
+                        })
+                    } else {
+                        $.ajax({
+                            url: "http://localhost/HotelManagement/api/admin/roomtype",
+                            type: "PUT",
+                            data: {
+                                Name:name,
+                                NumberOfBeds: numberOfBeds,
+                                NumberOfRests: numberOfRests,
+                                Price: price,
+                                RTYP_ID: RTYP_ID
+                            },
+                            cache: false,
+                            success: function(response) {
+                                swal({
+                                    icon: "success",
+                                    title: "Update Successfully",
+                                    text: "Room Type updated successfully!"
+                                });
+                                loadData();
+                                $('#roomTypeModal').modal('hide');
+                            },
+                            error: function(response) {
+                                console.log(response);
+                            }
+                        })
+                    }
                 }
-            })
-        } else {
-            $.ajax({
-                url: "http://localhost/HotelManagement/api/admin/roomtype",
-                type: "PUT",
-                data: {
-                    Name:name,
-                    NumberOfBeds: numberOfBeds,
-                    NumberOfRests: numberOfRests,
-                    Price: price,
-                    RTYP_ID: RTYP_ID
-                },
-                cache: false,
-                success: function(response) {
-                    swal({
-                        icon: "success",
-                        title: "Update Successfully",
-                        text: "Room Type updated successfully!"
-                    });
-                    loadData();
-                    $('#roomTypeModal').modal('hide');
-                },
-                error: function(response) {
-                    console.log(response);
-                }
-            })
-        }
+            }
+        });     
     }
 
     function remove(id) {

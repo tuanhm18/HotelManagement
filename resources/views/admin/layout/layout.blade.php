@@ -267,9 +267,17 @@
               </ul>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="{{action('Admin\RoomTypeController@view')}}" id="bills" class="nav-link">
+                  <a href="{{action('Admin\RoomTypeController@view')}}" id="roomType" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Room Type</p>
+                  </a>
+                </li>
+              </ul>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{action('Admin\EmployeeController@view')}}" id="employees" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Employee</p>
                   </a>
                 </li>
               </ul>

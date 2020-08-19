@@ -6,23 +6,69 @@ use App\Employee;
 use App\Http\Controllers\Controller;
 use App\Position;
 use App\Response\BaseResult;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
-class EmployeeController extends Controller{
-    public function get($id = null) {
+class EmployeeController extends Controller
+{
+    public function validateEmployee(Request $request)
+    {
+        $employee = new Employee();
+        $employee = Employee::findOrFail($request->EMP_ID   );
+        return $employee;
+        
+    }
+    public function get($id = null)
+    {
         if ($id == null) {
             $employees = Employee::all();
             foreach ($employees as $employee) {
                 $position = Position::findOrFail($employee->POS_ID);
-                $employee['position'] = $position;
+                $employee['Position'] = $position->Name;
             }
             return BaseResult::withData($employees);
         } else {
             $employee = Employee::findOrFail($id);
             $position = Position::findOrFail($employee->POS_ID);
-            $employee['position'] = $position;
+            $employee['Position'] = $position->Name;
             return BaseResult::withData($employee);
         }
     }
 
+    public function create(Request $request)
+    {
+        $employee = new Employee();
+        $employee->Name = $request->Name;
+        $employee->IdentityNumber = $request->IdentityNumber;
+        $employee->Phone = $request->Phone;
+        $employee->Address = $request->Address;
+        $employee->Email = $request->Email;
+        $employee->POS_ID = $request->POS_ID;
+        $employee['CreatedDate'] = Carbon::now();
+        $employee->save();
+        return $employee;
+    }
+
+    public function update(Request $request)
+    {
+        $employee = Employee::findOrFail($request->EMP_ID);
+        $employee = new Employee();
+        $employee->Name = $request->Name;
+        $employee->IdentityNumber = $request->IdentityNumber;
+        $employee->Phone = $request->Phone;
+        $employee->Address = $request->Address;
+        $employee->Email = $request->Email;
+        $employee->POS_ID = $request->POS_ID;
+        $employee['UpdatedDate'] = Carbon::now();
+        $employee->save();
+        return $employee;
+    }
+
+    public function delete($id)
+    {
+        $employee = Employee::findOrFail($id);
+        $employee->delete();
+        return $employee;
+    }
 }
