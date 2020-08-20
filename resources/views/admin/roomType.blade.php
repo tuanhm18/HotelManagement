@@ -187,6 +187,9 @@
                         })
                     }
                 }
+            }, 
+            error: function(response) {
+                console.log(response);
             }
         });     
     }
