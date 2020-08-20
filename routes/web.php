@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\MyEvent;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +16,13 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/admin/login',  ['as' => 'login', 'uses' => 'Admin\UserController@login']);
-
+Route::get('/welcome', function() {
+    return view('welcome');
+});
+Route::get('test', function() {
+    event(new MyEvent('Welcome'));
+    return "Event has been sent";
+});
 Route::post('/admin/login', 'Admin\UserController@doLogin');
  Route::group(['middleware'=>'auth'], function() {
      Route::get('/admin', 'Admin\SiteController@index');
@@ -29,4 +36,5 @@ Route::post('/admin/login', 'Admin\UserController@doLogin');
      Route::get('admin/bills', 'Admin\BillController@view');
      Route::get('admin/roomtypes', 'Admin\RoomTypeController@view');
      Route::get('admin/employees', 'Admin\EmployeeController@view');
+     Route::get('admin/users', 'Admin\UserManagerController@view');
  });
