@@ -14,11 +14,40 @@ class EmployeeController extends Controller
 {
     public function validateEmployee(Request $request)
     {
-        $employee = new Employee();
-        $employee = Employee::findOrFail($request->EMP_ID   );
-        return $employee;
-        
+        if ($request->EMP_ID != 0) {
+            $employee = Employee::findOrFail($request->EMP_ID);
+            if ($employee) {
+                if ($employee->IdentityNumber == $request->IdentityNumber) {
+                    return  response()->json([
+                        'error' => 0,
+                        'data' => $request->IdentityNumber,
+                        'message' => ''
+                    ]);
+                }
+            }
+        }
+        $rules = array(
+            'IdentityNumber' => 'unique:Employees,IdentityNumber'
+        );
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'validator' => $validator,
+                'error' => 1,
+                'data' => $request->IdentityNumber,
+                'message' => 'This identity has been used'
+            ]);
+        } else {
+            return response()->json([
+                'validator' => $validator,
+                'error' => 0,
+                'data' => $request->IdentityNumber,
+                'message' => 'This identity has not been used'
+            ]);
+        }
     }
+
     public function get($id = null)
     {
         if ($id == null) {
