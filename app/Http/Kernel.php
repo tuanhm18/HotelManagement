@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Role;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -29,6 +30,9 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middlewareGroups = [
+        'role' => [
+            \App\Http\Middleware\Role::class,
+        ],
         'auth'=> [
             \App\Http\Middleware\Authenticate::class,
         ],

@@ -60,12 +60,16 @@ Route::get('/admin/bills/{id?}', 'Api\BillController@get');
 Route::post('/admin/bills', 'Api\BillController@create');
 Route::delete('/admin/bills/{id}', 'Api\BillController@delete');
 Route::put('/admin/bills', 'Api\BillController@update');
-// Route::post('admin/bills', 'Api\BillController@create');
+    // Route::post('admin/bills', 'Api\BillController@create');
 // Route::put('admin/bills', 'Api\BillController@update');
 // Route::delete('admin/bills/{id}','Api\BillController@delete');
 
 Route::get('/admin/servicebills/{id?}', 'Api\ServiceBillController@get');
 Route::put('/admin/servicebills', 'Api\ServiceBillController@update');
+Route::get('/admin/users/{id?}', 'Api\UserManagerController@get');
+Route::post('admin/users', 'Api\UserManagerController@create');
+Route::post('admin/users/{id}', 'Api\UserManagerController@update');
+Route::delete('admin/users/{id}', 'Api\UserManagerController@delete');
 // Route::group(['middleware'=>'auth'], function() {
 //     Route::get('/admin/rooms', 'Api/RoomController@get');
 // });

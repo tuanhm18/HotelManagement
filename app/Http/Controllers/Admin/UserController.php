@@ -88,6 +88,7 @@ class UserController extends Controller
 						$user->LastLoginIp = $request->ip();
 						$user->save();
 						Cookie::queue(Cookie::make("userFullName", $user->FirstName. ' ' .$user->LastName, 60*24*365));
+						Cookie::queue(Cookie::make('userRole', $user->Role, 60*24*365));
 						Session::put('user', Auth::user());
 						return Redirect::action('Admin\SiteController@index');
 						// return Redirect::action('Admin\OrderController@index');
@@ -109,6 +110,7 @@ class UserController extends Controller
 // 		Auth::logout();
 		Cookie::queue(Cookie::forget('userCredential'));
 		Cookie::queue(Cookie::forget('userFullName'));
+		Cookie::queue(Cookie::forget('userRole'));
 		Session::flush();
 		return Redirect::action('Admin\UserController@login');
 	}

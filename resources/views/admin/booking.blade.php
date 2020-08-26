@@ -64,9 +64,9 @@
                     <div class="row">
                         <div class="col-lg-6 mt-sm-2">
                             <div class="form-group form-row">
-                                <label for="txtFullName" class="col-sm-5 col-form-label required">First name</label>
+                                <label for="txtFullName"  class="col-sm-5 col-form-label required">First name</label>
                                 <div class="col-sm-7">
-                                    <input type="text" class="form-control" id="firstName" name="firstName" maxlength="200">
+                                    <input type="text" required class="form-control" id="firstName" name="firstName" maxlength="200">
                                 </div>
                             </div>
                         </div>
@@ -74,7 +74,7 @@
                             <div class="form-group form-row">
                                 <label for="txtIdCardNumber" class="col-sm-5 col-xl-4 col-form-label required">Last name</label>
                                 <div class="col-sm-7 col-xl-8">
-                                    <input type="text" class="form-control" id="lastName" name="lastName" maxlength="30">
+                                    <input type="text" class="form-control" required id="lastName" name="lastName" maxlength="30">
                                 </div>
                             </div>
                         </div>
@@ -84,7 +84,7 @@
                             <div class="form-group form-row">
                                 <label for="txtFullName" class="col-sm-5 col-form-label required">Identify number</label>
                                 <div class="col-sm-7">
-                                    <input type="text" class="form-control" id="identifyNumber" name="identifyNumber" maxlength="200">
+                                    <input type="text" class="form-control" required id="identifyNumber" name="identifyNumber" maxlength="200">
                                 </div>
                             </div>
                         </div>
@@ -92,7 +92,7 @@
                             <div class="form-group form-row">
                                 <label for="txtIdCardNumber" class="col-sm-5 col-xl-4 col-form-label required">Email</label>
                                 <div class="col-sm-7 col-xl-8">
-                                    <input type="email" class="form-control" id="email" name="email" maxlength="30">
+                                    <input required type="email" class="form-control" id="email" name="email" maxlength="30">
                                 </div>
                             </div>
                         </div>

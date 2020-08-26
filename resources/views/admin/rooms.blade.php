@@ -110,6 +110,7 @@
 @section('js')
 <script>
     function loadRoomType() {
+        $('#roomTypeSelector').text('');
         $.ajax({
             url: "http://localhost/HotelManagement/api/admin/roomtype",
             type: 'GET',

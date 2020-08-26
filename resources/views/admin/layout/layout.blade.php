@@ -40,8 +40,6 @@
       cursor: pointer;
       color: red;
     }
-
-    
   </style>
 </head>
 
@@ -191,7 +189,8 @@
           <div class="image">
             <img src="{{url('/public/admin')}}/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
           </div>
-          <div class="info">
+          <div class="info text-light">
+              {{Cookie::get('userFullName')}}
           </div>
         </div>
 
@@ -281,6 +280,7 @@
                   </a>
                 </li>
               </ul>
+              @if(Cookie::get('userRole') == 'Admin')
               <ul class="nav nav-treeview">
                 <li class="nav-item">
                   <a href="{{action('Admin\UserManagerController@view')}}" id="users" class="nav-link">
@@ -289,8 +289,8 @@
                   </a>
                 </li>
               </ul>
+              @endif
             </li>
-
           </ul>
         </nav>
         <!-- /.sidebar-menu -->
@@ -352,12 +352,27 @@
   <!-- AdminLTE for demo purposes -->
   <script src="{{url('/public/admin')}}/dist/js/demo.js"></script>
   <script src="{{url('/public/admin')}}/dist/js/datatables.min.js"></script>
-<<<<<<< HEAD
-  <script src="{{url('/public/admin')}}/dist/js/sweetalert.min.js"></script>
-=======
+  <script src="{{url('/public/admin')}}/dist/js/sweetalert.min.js">
+  </script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
->>>>>>> 94886ea21735cba2779028c268f09c49b3f3f49a
+  <script src="{{url('/public/admin')}}/dist/js/site.js"></script>
+  <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+  <script>
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('7399371c9fb779f23b08', {
+      cluster: 'ap1',
+      forceTLS:true
+    });
+
+    var channel = pusher.subscribe('my-event');
+    channel.bind('my-event', function(data) {
+      alert(JSON.stringify(data));
+    });
+  </script>
   @yield('js')
 </body>
 
