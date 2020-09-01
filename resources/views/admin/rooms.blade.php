@@ -338,6 +338,7 @@
         }
     };
     $('#rooms').addClass("active");
+    // Validate room id
     jQuery.validator.addMethod("validRoomId", function(value, element) {
         var valid = false;
         $.ajax({
