@@ -36,9 +36,9 @@ Route::delete('admin/employees/{id}', 'Api\EmployeeController@delete');
 
 Route::get('/admin/rooms/{id?}', 'Api\RoomController@get');
 Route::get('/admin/rooms-available', 'Api\RoomController@getAvailable');
-
+Route::get('/admin/rooms-valid/{id}', 'Api\RoomController@validRoomId');
 Route::post('admin/rooms', 'Api\RoomController@create');
-Route::put('admin/rooms', 'Api\RoomController@update');
+Route::post('admin/rooms/{id}', 'Api\RoomController@update');
 Route::delete('admin/rooms/{id}','Api\RoomController@delete');
 
 Route::get('/admin/positions/{id?}', 'Api\PositionController@get');
@@ -70,6 +70,7 @@ Route::get('/admin/users/{id?}', 'Api\UserManagerController@get');
 Route::post('admin/users', 'Api\UserManagerController@create');
 Route::post('admin/users/{id}', 'Api\UserManagerController@update');
 Route::delete('admin/users/{id}', 'Api\UserManagerController@delete');
+Route::post('/admin/username/{username}', 'Api\UserManagaerController@validateUserName');
 // Route::group(['middleware'=>'auth'], function() {
 //     Route::get('/admin/rooms', 'Api/RoomController@get');
 // });

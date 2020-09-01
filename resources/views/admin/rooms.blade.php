@@ -4,6 +4,10 @@
     .toggle.btn {
         width: 100% !important;
     }
+
+    .error {
+        color: red;
+    }
 </style>
 @endsection
 @section('content')
@@ -61,39 +65,49 @@
                         </div>
                         <input type="hidden" value="1" id="isAdd">
                         <div class="modal-body">
-                            <div class="row">
-                                <div class="col-6 form-group form-row">
-                                    <label for="numberOfBeds" class="col-sm-4 col-form-label required">Room number</label>
-                                    <div class="col-sm-8">
-                                        <input type="number" class="form-control" id="roo_id" name="roo_id" maxlength="200">
+                            <form action="post" id="roomForm">
+                                <div class="row">
+                                    <div class="col-6 form-group form-row">
+                                        <label for="numberOfBeds" class="col-sm-4 col-form-label required">Room number</label>
+                                        <div class="col-sm-8">
+                                            <input type="number" validRoomId="true" required class="form-control" id="roo_id" name="ROO_ID" maxlength="200">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-6 form-group form-row">
-                                    <!-- Material checked -->
-                                    <label for="numberOfBeds" class="col-sm-4 col-form-label required">Status</label>
-                                    <div class="col-sm-8 chekbox-status">
-                                        <input type="checkbox" checked data-toggle="toggle" id="status" data-on="Available" data-off="Using" data-onstyle="success" data-offstyle="danger">
+                                    <div class="col-6 form-group form-row">
+                                        <!-- Material checked -->
+                                        <label for="numberOfBeds" class="col-sm-4 col-form-label required">Status</label>
+                                        <div class="col-sm-8 chekbox-status">
+                                            <input type="checkbox" checked data-toggle="toggle" name="Status" id="status" data-on="Available" data-off="Using" data-onstyle="success" data-offstyle="danger">
+                                        </div>
                                     </div>
-                                </div>
 
-                            </div>
-                            <div class="row">
-                                <div class="col-6 input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <label class="input-group-text" for="inputGroupSelect01">Room type</label>
-                                    </div>
-                                    <select class="custom-select" id="roomTypeSelector">
-                                    </select>
                                 </div>
-                                <div class="col-6 form-group form-row">
-                                    <!-- Material checked -->
-                                    <label for="numberOfBeds" class="col-sm-4 col-form-label required">Hot</label>
-                                    <div class="col-sm-8 chekbox-status">
-                                        <input type="checkbox" checked data-toggle="toggle" id="isHot" data-on="Yes" data-off="No" data-onstyle="success" data-offstyle="danger">
+                                <div class="row">
+                                    <div class="col-6 input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="inputGroupSelect01">Room type</label>
+                                        </div>
+                                        <select class="custom-select" name="RTYP_ID" id="roomTypeSelector">
+                                        </select>
+                                    </div>
+                                    <div class="col-6 form-group form-row">
+                                        <!-- Material checked -->
+                                        <label for="numberOfBeds" class="col-sm-4 col-form-label required">Hot</label>
+                                        <div class="col-sm-8 chekbox-status">
+                                            <input type="checkbox" checked data-toggle="toggle" name="IsHot" id="isHot" data-on="Yes" data-off="No" data-onstyle="success" data-offstyle="danger">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
+                                <div class="row">
+                                    <div class="custom-file">
+                                        <input type="file" name="Images[]" multiple class="custom-file-input" id="roomImages">
+                                        <label class="custom-file-label" for="customFile">Choose file</label>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div id="preview"></div>
+                                </div>
+                            </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -124,6 +138,7 @@
     $('#roomModal').on('hidden.bs.modal', function() {
         $(this).find("input").val('');
         $('#roo_id').attr("disabled", false);
+        $('#preview').text('');
     });
 
     function edit(id) {
@@ -132,13 +147,18 @@
             url: "http://localhost/HotelManagement/api/admin/rooms/" + id,
             type: "GET",
             success: function(response) {
+                response.data.Images.forEach(element => {
+                    url = "{{url('/public/data/rooms')}}" + '/' + element.Image;
+                    $('#preview').append('<img style="height: 100px;"' +
+                        'src="' + url + '"alt="">');
+                });
                 $('#roo_id').attr("disabled", true);
                 $('#isAdd').val(0);
                 $('#roo_id').val(response.data.ROO_ID);
                 $('#status').val(response.data.Status);
-                response.data.Status == 0 ? $('#status').bootstrapToggle('off') : 	$('#status').bootstrapToggle('on')
+                response.data.Status == 0 ? $('#status').bootstrapToggle('off') : $('#status').bootstrapToggle('on')
                 $('#isHot').val(response.data.IsHot);
-                response.data.IsHot == 0 ? 	$('#isHot').bootstrapToggle('off') : 	$('#isHot').bootstrapToggle('on')
+                response.data.IsHot == 0 ? $('#isHot').bootstrapToggle('off') : $('#isHot').bootstrapToggle('on')
                 $("#roomTypeSelector").val(response.data.RTYP_ID);
             }
         })
@@ -149,42 +169,47 @@
         var status = document.getElementById('status').checked ? 1 : 0;
         var roomType = $('#roomTypeSelector').val();
         var isHot = document.getElementById('isHot').checked ? 1 : 0;
+        var form = $('#roomForm')[0];
+        var data = new FormData(form);
         if ($('#isAdd').val() == 1) {
             $.ajax({
                 url: "http://localhost/HotelManagement/api/admin/rooms",
                 type: "POST",
-                data: {
-                    ROO_ID: ROO_ID,
-                    RTYP_ID: roomType,
-                    Status: status,
-                    IsHot: isHot
-                },
+                data: data,
                 cache: false,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
                 success: function(response) {
-                    swal({
-                        icon: "success",
-                        title: "Added Successfully!",
-                        text: "Room added successfully!"
-                    });
-                    loadData();
-                    $('#roomModal').modal('hide');
+                    if (response.error == 0) {
+                        swal({
+                            icon: "success",
+                            title: "Added Successfully!",
+                            text: "Room added successfully!"
+                        });
+                        loadData();
+                        $('#roomModal').modal('hide');
+                    } else {
+                        swal({
+                            icon: "warning",
+                            title: "Added Failed!",
+                            text: response.message
+                        })
+                    }
                 },
                 error: function(response) {
-                    console.log(response);
+                    swal({
+                        icon: "warining",
+                        title: "Added Failed!",
+                        text: response
+                    });
                 }
             })
         } else {
-            console.log(status);
-            console.log(isHot);
             $.ajax({
-                url: "http://localhost/HotelManagement/api/admin/rooms",
-                type: "PUT",
-                data: {
-                    ROO_ID: ROO_ID,
-                    RTYP_ID: roomType,
-                    Status: status,
-                    IsHot: isHot
-                },
+                url: "http://localhost/HotelManagement/api/admin/rooms/" + ROO_ID,
+                type: "POST",
+                data: data,
                 cache: false,
                 success: function(response) {
                     swal({
@@ -196,11 +221,11 @@
                     $('#roomModal').modal('hide');
                 },
                 error: function(response) {
-                    console.log(response);
+                    console.log(response.message);
                 }
             })
         }
-    }   
+    }
 
     function remove(id) {
         swal({
@@ -226,6 +251,7 @@
                             $('#serviceModal').modal('hide');
                         },
                         error: function(response) {
+                            console.log(response.message);
                             swal({
                                 icon: "warning",
                                 title: "Delete failed!",
@@ -264,7 +290,7 @@
                 {
                     data: null,
                     render: function(data, type, row) {
-                        return data.IsHot == 1 ? '<i class="fas fa-check text-success"></i>' : "";
+                        return data.IsHot == 1 ? '<i class="fas fa-check text-success"></>' : "";
                     }
                 },
                 {
@@ -294,7 +320,38 @@
     });
 
 
+    document.querySelector('#roomImages').onchange = function() {
+        $('#preview').text('');
+        var preview = document.querySelector('#preview');
+        [].forEach.call(this.files, function(file) {
+            if (/image\/.*/.test(file.type)) { // use any image format the browser can read
+                var img = new Image;
+                img.onload = remURL; // to remove Object-URL after use
+                img.style.height = "100px"; // use style, "width" defaults to "auto"
+                img.src = (URL || webkitURL).createObjectURL(file);
+                preview.appendChild(img); // add image to preview container
+            }
+        });
 
+        function remURL() {
+            (URL || webkitURL).revokeObjectURL(this.src)
+        }
+    };
     $('#rooms').addClass("active");
+    jQuery.validator.addMethod("validRoomId", function(value, element) {
+        var valid = false;
+        $.ajax({
+            url: "http://localhost/HotelManagement/api/admin/rooms-valid/" + value,
+            method: "GET",
+            async: false,
+            success: function(response) {
+                return valid = response.error;
+            }
+        });
+        return valid;
+    }, "This Id has been taken!");
+    $('#roo_id').focusout(function() {
+        $('#roo_id').valid();
+    })
 </script>
 @endsection

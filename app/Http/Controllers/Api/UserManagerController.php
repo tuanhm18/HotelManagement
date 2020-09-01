@@ -7,9 +7,24 @@ use App\Response\BaseResult;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 
 class UserManagerController extends Controller
 {
+    public function validateUserName($username) {
+        $user = User::where(['username'=>$username])->get();
+        if($user) {
+            return response()->json([
+               "isValid"=>false,
+               "error"=>1
+            ]);
+        } else {
+            return response()->json([
+                "isValid"=>true,
+                "error"=>0
+             ]);
+        }
+    }
     public function get($id = null) {
         if($id == null) {
             return BaseResult::withData(User::all());
@@ -48,11 +63,10 @@ class UserManagerController extends Controller
             if(File::exists(public_path('data/users/'.$oldFile))){
                 File::delete(public_path('data/users/'.$oldFile));
             }
-
             $filename = pathinfo($request->Avatar->getClientOriginalName(), PATHINFO_FILENAME);
             // $extension = pathinfo($request->Image->getClientOriginalName(), PATHINFO_EXTENSION);
             $imageName = $user->USE_ID.'_'.$filename.'_'.time().'.'.$request->Avatar->extension();
-            $request->Image->move(public_path('data/users'), $imageName);
+            $request->Avatar->move(public_path('data/users'), $imageName);
             $user->Avatar = $imageName;
             $user->save();
         }

@@ -174,7 +174,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Rooms` (
   `UpdatedBy` VARCHAR(45) NULL,
   `UpdatedDate` DATE NULL,
   `RTYP_ID` INT NOT NULL,
-  `Avatar` VARCHAR(255) NULL,
   `IsHot` TINYINT NULL,
   PRIMARY KEY (`ROO_ID`),
   INDEX `fk_Rooms_RoomType1_idx` (`RTYP_ID` ASC) VISIBLE,
@@ -299,6 +298,21 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Banners` (
   `UpdatedBy` VARCHAR(45) NULL,
   `UpdatedDate` VARCHAR(45) NULL,
   PRIMARY KEY (`BAN_ID`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Images`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Images` (
+  `ROO_ID` VARCHAR(45) NOT NULL,
+  `Image` VARCHAR(255) NULL,
+  INDEX `fk_Images_Rooms1_idx` (`ROO_ID` ASC) VISIBLE,
+  CONSTRAINT `fk_Images_Rooms1`
+    FOREIGN KEY (`ROO_ID`)
+    REFERENCES `mydb`.`Rooms` (`ROO_ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 

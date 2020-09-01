@@ -186,11 +186,18 @@
       <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+          @php
+            $avatar = Cookie::get('userAvatar');
+            $userFullName = Cookie::get('userFullName');
+          @endphp
           <div class="image">
-            <img src="{{url('/public/admin')}}/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+            <img style="width: 40px;
+                                        height: 40px;
+                                        object-fit: cover;
+                                        border-radius: 50%" src="{{url('public/data/users')}}/{{$avatar}}" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="info text-light">
-              {{Cookie::get('userFullName')}}
+            {{$userFullName}}
           </div>
         </div>
 
@@ -357,15 +364,16 @@
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
   <script src="{{url('/public/admin')}}/dist/js/site.js"></script>
+  <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+
   <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
   <script>
-
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
 
     var pusher = new Pusher('7399371c9fb779f23b08', {
       cluster: 'ap1',
-      forceTLS:true
+      forceTLS: true
     });
 
     var channel = pusher.subscribe('my-event');

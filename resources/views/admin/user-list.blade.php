@@ -73,13 +73,14 @@
                                     <div class="col-6 form-group form-row">
                                         <label for="firstName" class="col-sm-4 col-form-label required">First name</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="firstName" name="FirstName" style="text-transform: capitalize" maxlength="200">
+                                            <input type="text" required class="form-control" id="firstName" name="FirstName" style="text-transform: capitalize" maxlength="200">
                                         </div>
+                                        <div id="validateFirstName"></div>
                                     </div>
                                     <div class="col-6 form-group form-row">
                                         <label for="lastName" class="col-sm-4 col-form-label required">Last name</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="lastName" name="LastName" style="text-transform: capitalize" maxlength="200">
+                                            <input type="text" required class="form-control" id="lastName" name="LastName" style="text-transform: capitalize" maxlength="200">
                                         </div>
                                     </div>
                                 </div>
@@ -87,13 +88,13 @@
                                     <div class="col-6 form-group form-row">
                                         <label for="username" class="col-sm-4 col-form-label required">Username</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" id="username" name="username" style="text-transform: capitalize" maxlength="200">
+                                            <input type="text" required class="form-control" id="username" name="username" style="text-transform: capitalize" maxlength="200">
                                         </div>
                                     </div>
                                     <div class="col-6 form-group form-row">
                                         <label for="password" class="col-sm-4 col-form-label required">Password</label>
                                         <div class="col-sm-8">
-                                            <input type="password" class="form-control" id="password" name="password" style="text-transform: capitalize" maxlength="200">
+                                            <input type="password" required minlength="3" class="form-control" id="password" name="password" style="text-transform: capitalize" maxlength="200">
                                         </div>
                                     </div>
                                 </div>
@@ -116,12 +117,13 @@
                                     </div>
                                 </div>
 
-                            </form>
+                            
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" onclick="save()" class="btn btn-primary">Save changes</button>
+                            <button type="button" onclick="save()" id="submit"  class="btn btn-primary">Save changes</button>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -140,11 +142,25 @@
         $(this).find("input").val('');
         $('#validateMessage').text("");
         $('#password').prop('disabled', false);
+        $('.error').text('');
     });
     $('#userModal').on('show.bs.modal', function() {
         $('#password').val('');
     })
-    
+    function userNameValidator() {
+        var isSuccess = false;
+        var username = $('#username');
+        $.ajax({
+            url: "http://localhost/HotelManagement/api/admin/username/" + username,
+            type: "POST",
+            data: {
+                username: username
+            }, 
+            success: function(response) {
+                return isSuccess = response.isValid;
+            }
+        });
+    }
     function edit(id) {
         $.ajax({
             url: "http://localhost/HotelManagement/api/admin/users/" + id,
@@ -171,7 +187,6 @@
             }
         });
     }
-
     function save() {
         var USE_ID = $('#use_id').val();
         var form = $('#userForm')[0];
@@ -314,6 +329,31 @@
             });
         }).draw();
     }
+    $('#firstName').focusout(function () {
+        $('#firstName').valid();
+    })
+    $('#lastName').focusout(function () {
+        $('#lastName').valid();
+    })
+    $('#password').focusout(function() {
+        $('#password').valid();
+    })
+    $('#userForm').validate({
+        rules: {
+            username: {
+                required: true,
+                userNameValidator: true
+            }
+        },
+        messages: {
+            username: {
+                message:"This username is already taken!"
+            }
+        }
+    });
+    $('#username').focusout(function() {
+        $('#userForm').valid();
+    })
     $(document).ready(function() {
         loadData();
     });

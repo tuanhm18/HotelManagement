@@ -89,6 +89,8 @@ class UserController extends Controller
 						$user->save();
 						Cookie::queue(Cookie::make("userFullName", $user->FirstName. ' ' .$user->LastName, 60*24*365));
 						Cookie::queue(Cookie::make('userRole', $user->Role, 60*24*365));
+						Cookie::queue(Cookie::make('userAvatar', $user->Avatar));
+						Cookie::queue(Cookie::make('userID', $user->USE_ID));
 						Session::put('user', Auth::user());
 						return Redirect::action('Admin\SiteController@index');
 						// return Redirect::action('Admin\OrderController@index');
@@ -111,6 +113,8 @@ class UserController extends Controller
 		Cookie::queue(Cookie::forget('userCredential'));
 		Cookie::queue(Cookie::forget('userFullName'));
 		Cookie::queue(Cookie::forget('userRole'));
+		Cookie::queue(Cookie::forget('userAvatar'));
+		Cookie::queue(Cookie::forget('userID'));
 		Session::flush();
 		return Redirect::action('Admin\UserController@login');
 	}
