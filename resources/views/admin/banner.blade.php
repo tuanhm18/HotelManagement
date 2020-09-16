@@ -109,24 +109,6 @@
     })
     $(document).ready(function() {
         loadData();
-        $('#bannerForm').validate({
-            rules: {
-                Title: {
-                    require: true
-                },
-                Description: {
-                    require: true
-                }
-            },
-            messages: {
-                Title: {
-                    require: "This field is empty"
-                },
-                Description: {
-                    require: "This field is empty"
-                }
-            }
-        });
     });
     function edit(id) {
         $.ajax({
@@ -188,7 +170,7 @@
                     processData: false,
                     contentType: false,
                     success: function(response) {
-                        console.log(data)
+                        console.log(response);
                         swal({
                             icon: "success",
                             title: "Added Successfully",
@@ -236,7 +218,6 @@
                     swal("Your imaginary file is safe!");
                 }
             });
-
     }
     $('#banners').addClass("active");
 
