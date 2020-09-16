@@ -74,3 +74,7 @@ Route::post('/admin/username/{username}', 'Api\UserManagaerController@validateUs
 // Route::group(['middleware'=>'auth'], function() {
 //     Route::get('/admin/rooms', 'Api/RoomController@get');
 // });
+
+Route::get('/admin/booking/{id?}', 'Api\BookingController@get');
+Route::delete('/admin/booking/{id}', 'Api\BillController@delete');
+Route::post('/admin/booking/{id}', 'Api\BookingController@update');
