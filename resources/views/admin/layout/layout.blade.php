@@ -85,6 +85,7 @@
             <a href="#" class="dropdown-item">
               <!-- Message Start -->
               <div class="media">
+              
                 <img src="{{url('/public/admin')}}/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
                 <div class="media-body">
                   <h3 class="dropdown-item-title">
@@ -214,6 +215,14 @@
                   <i class="right fas fa-angle-left"></i>
                 </p>
               </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{action('Admin\BannerController@view')}}" id="booking" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Banners</p>
+                  </a>
+                </li>
+              </ul>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
                   <a href="{{action('Admin\BookingController@view')}}" id="booking" class="nav-link">
@@ -365,6 +374,7 @@
   <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
   <script src="{{url('/public/admin')}}/dist/js/site.js"></script>
   <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+  <script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
 
   <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
   <script>

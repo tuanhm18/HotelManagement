@@ -1,132 +1,209 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <title>LuxuryHotel a Hotel Template</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900|Rubik:300,400,700" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{url('/public/frontend')}}/css/bootstrap.css">
-    <link rel="stylesheet" href="{{url('/public/frontend')}}/css/animate.css">
-    <link rel="stylesheet" href="{{url('/public/frontend')}}/css/owl.carousel.min.css">
+<head>
+  <title>LuxuryHotel a Hotel Template</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900|Rubik:300,400,700" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{url('/public/frontend')}}/fonts/ionicons/css/ionicons.min.css">
-    <link rel="stylesheet" href="{{url('/public/frontend')}}/fonts/fontawesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{{url('/public/frontend')}}/css/magnific-popup.css">
-    <link rel="stylesheet" href="{{url('/public/frontend')}}/css/bootstrap-datepicker.min.css">
-    <!-- Theme Style -->
-    
-    <link rel="stylesheet" href="{{url('/public/frontend')}}/css/style.css">
-    <link rel="stylesheet" href="{{url('/public/frontend')}}/css/bootstrap-select.min.css">
-  </head>
-  <body>
-    
-    <header role="banner">
-     
-      <nav class="navbar navbar-expand-md navbar-dark bg-light">
-        <div class="container">
-          <a class="navbar-brand" href="{{action('FrontEnd\SiteController@view')}}">LuxuryHotel</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
+  <link rel="stylesheet" href="{{url('/public/frontend')}}/css/bootstrap.css">
+  <link rel="stylesheet" href="{{url('/public/frontend')}}/css/animate.css">
+  <link rel="stylesheet" href="{{url('/public/frontend')}}/css/owl.carousel.min.css">
 
-          <div class="collapse navbar-collapse navbar-light" id="navbarsExample05">
-            <ul class="navbar-nav ml-auto pl-lg-5 pl-0">
-              <li class="nav-item">
-                <a class="nav-link" id="home" href="{{action('FrontEnd\SiteController@view')}}">Home</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="rooms" href="{{action('FrontEnd\RoomController@view')}}" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Rooms</a>
-                <div class="dropdown-menu" aria-labelledby="dropdown04">
-                  @php
-                    $roomTypes = \App\RoomType::all();
-                  @endphp
-                  @foreach($roomTypes as $roomType)
-                  <a class="dropdown-item" href="rooms.html">{{$roomType->Name}}</a>
-                  @endforeach
-                </div>
+  <link rel="stylesheet" href="{{url('/public/frontend')}}/fonts/ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="{{url('/public/frontend')}}/fonts/fontawesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{{url('/public/frontend')}}/css/magnific-popup.css">
+  <link rel="stylesheet" href="{{url('/public/frontend')}}/css/bootstrap-datepicker.min.css">
+  <!-- Theme Style -->
 
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="blog" href="">Blog</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="about" href="{{action('FrontEnd\AboutController@view')}}">About</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="contact" href="{{action('FrontEnd\ContactController@view')}}">Contact</a>
-              </li>
+  <link rel="stylesheet" href="{{url('/public/frontend')}}/css/style.css">
+  <link rel="stylesheet" href="{{url('/public/frontend')}}/css/bootstrap-select.min.css">
+</head>
 
-               <li class="nav-item cta">
-                <a class="nav-link" id="booking" href="{{action('FrontEnd\BookingController@view')}}"><span>Book Now</span></a>
-              </li>
-            </ul>
-            
-          </div>
-        </div>
-      </nav>
-    </header>
-    <!-- END header -->
-   @yield('content')
-    <footer class="site-footer">
+<body>
+
+  <header role="banner">
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-light">
       <div class="container">
-        <div class="row mb-5">
-          <div class="col-md-4">
-            <h3>Phone Support</h3>
-            <p>24/7 Call us now.</p>
-            <p class="lead"><a href="tel://">+ 1 332 3093 323</a></p>
-          </div>
-          <div class="col-md-4">
-            <h3>Connect With Us</h3>
-            <p>We are socialized. Follow us</p>
-            <p>
-              <a href="#" class="pl-0 p-3"><span class="fa fa-facebook"></span></a>
-              <a href="#" class="p-3"><span class="fa fa-twitter"></span></a>
-              <a href="#" class="p-3"><span class="fa fa-instagram"></span></a>
-              <a href="#" class="p-3"><span class="fa fa-vimeo"></span></a>
-              <a href="#" class="p-3"><span class="fa fa-youtube-play"></span></a>
-            </p>
-          </div>
-          <div class="col-md-4">
-            <h3>Connect With Us</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime, odio.</p>
-            <form action="#" class="subscribe">
-              <div class="form-group">
-                <button type="submit"><span class="ion-ios-arrow-thin-right"></span></button>
-                <input type="email" class="form-control" placeholder="Enter email">
+        <a class="navbar-brand" href="{{action('FrontEnd\SiteController@view')}}">LuxuryHotel</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample05" aria-controls="navbarsExample05" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse navbar-light" id="navbarsExample05">
+          <ul class="navbar-nav ml-auto pl-lg-5 pl-0">
+            <li class="nav-item">
+              <a class="nav-link" id="home" href="{{action('FrontEnd\SiteController@view')}}">Home</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" id="rooms" href="{{action('FrontEnd\RoomController@view')}}" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Rooms</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown04">
+                @php
+                $roomTypes = \App\RoomType::all();
+                @endphp
+                @foreach($roomTypes as $roomType)
+                <a class="dropdown-item" href="rooms.html">{{$roomType->Name}}</a>
+                @endforeach
               </div>
-              
-            </form>
-          </div>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-md-7 text-center">
-            &copy; <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-          </div>
+
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="blog" href="">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="about" href="{{action('FrontEnd\AboutController@view')}}">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="contact" href="{{action('FrontEnd\ContactController@view')}}">Contact</a>
+            </li>
+
+            <li class="nav-item cta">
+              <a class="nav-link" id="booking" href="{{action('FrontEnd\BookingController@view')}}"><span>Book Now</span></a>
+            </li>
+          </ul>
+
         </div>
       </div>
-    </footer>
-    <!-- END footer -->
-    
-    <!-- loader -->
-    <div id="loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#f4b214"/></svg></div>
+    </nav>
+  </header>
+  <!-- END header -->
+  @php
+  $banners = App\Banner::where(['IsPublished'=>1])->get();
+  @endphp
+  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    </ol>
+    @if(count($banners) > 0)
+    <div class="carousel-inner">
+      <div class="carousel-item active">
 
-    <script src="{{url('/public/frontend')}}/js/jquery-3.2.1.min.js"></script>
-    <script src="{{url('/public/frontend')}}/js/bootstrap-datepicker.min.js"></script>
-    <script src="{{url('/public/frontend')}}/js/jquery-migrate-3.0.0.js"></script>
-    <script src="{{url('/public/frontend')}}/js/popper.min.js"></script>
-    <script src="{{url('/public/frontend')}}/js/bootstrap.min.js"></script>
-    <script src="{{url('/public/frontend')}}/js/owl.carousel.min.js"></script>
-    <script src="{{url('/public/frontend')}}/js/jquery.waypoints.min.js"></script>
-    <script src="{{url('/public/frontend')}}/js/jquery.stellar.min.js"></script>
+        @php
+        $avatar = url('public/data/banners').'/'.$banners[0]->Avatar;
+        @endphp
+        <section class="site-hero site-hero-innerpage overlay" data-stellar-background-ratio="0.5" style="background-image: url({{$avatar}});">
+          <div class="container">
+            <div class="row align-items-center site-hero-inner justify-content-center">
+              <div class="col-md-12 text-center">
 
-    <script src="{{url('/public/frontend')}}/js/jquery.magnific-popup.min.js"></script>
-    <script src="{{url('/public/frontend')}}/js/magnific-popup-options.js"></script>
+                <div class="mb-5 element-animate">
+                  <h1>{{$banners[0]->Title}}</h1>
+                  <p>{{$banners[0]->Description}}</p>
+                </div>
 
-    <script src="{{url('/public/frontend')}}/js/main.js"></script>
-    <script src="{{url('/public/frontend')}}/js/bootstrap-select.min.js"></script>
-    @yield('js')
-  </body>
+
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      @if(count($banners) > 1)
+      @for($i = 1; $i < count($banners); $i++)
+      <div class="carousel-item">
+
+        @php
+        $avatar = url('public/data/banners').'/'.$banners[$i]->Avatar;
+        @endphp
+        <section class="site-hero site-hero-innerpage overlay" data-stellar-background-ratio="0.5" style="background-image: url({{$avatar}});">
+          <div class="container">
+            <div class="row align-items-center site-hero-inner justify-content-center">
+              <div class="col-md-12 text-center">
+
+                <div class="mb-5 element-animate">
+                  <h1>{{$banners[$i]->Title}}</h1>
+                  <p>{{$banners[$i]->Description}}</p>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      @endfor
+      @endif
+    </div>
+    @endif
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+
+  @yield('content')
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row mb-5">
+        <div class="col-md-4">
+          <h3>Phone Support</h3>
+          <p>24/7 Call us now.</p>
+          <p class="lead"><a href="tel://">+ 1 332 3093 323</a></p>
+        </div>
+        <div class="col-md-4">
+          <h3>Connect With Us</h3>
+          <p>We are socialized. Follow us</p>
+          <p>
+            <a href="#" class="pl-0 p-3"><span class="fa fa-facebook"></span></a>
+            <a href="#" class="p-3"><span class="fa fa-twitter"></span></a>
+            <a href="#" class="p-3"><span class="fa fa-instagram"></span></a>
+            <a href="#" class="p-3"><span class="fa fa-vimeo"></span></a>
+            <a href="#" class="p-3"><span class="fa fa-youtube-play"></span></a>
+          </p>
+        </div>
+        <div class="col-md-4">
+          <h3>Connect With Us</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime, odio.</p>
+          <form action="#" class="subscribe">
+            <div class="form-group">
+              <button type="submit"><span class="ion-ios-arrow-thin-right"></span></button>
+              <input type="email" class="form-control" placeholder="Enter email">
+            </div>
+
+          </form>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-7 text-center">
+          &copy;
+          <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+          Copyright &copy;<script>
+            document.write(new Date().getFullYear());
+          </script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+          <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- END footer -->
+
+  <!-- loader -->
+  <div id="loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+      <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
+      <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#f4b214" /></svg></div>
+
+  <script src="{{url('/public/frontend')}}/js/jquery-3.2.1.min.js"></script>
+  <script src="{{url('/public/frontend')}}/js/bootstrap-datepicker.min.js"></script>
+  <script src="{{url('/public/frontend')}}/js/jquery-migrate-3.0.0.js"></script>
+  <script src="{{url('/public/frontend')}}/js/popper.min.js"></script>
+  <script src="{{url('/public/frontend')}}/js/bootstrap.min.js"></script>
+  <script src="{{url('/public/frontend')}}/js/owl.carousel.min.js"></script>
+  <script src="{{url('/public/frontend')}}/js/jquery.waypoints.min.js"></script>
+  <script src="{{url('/public/frontend')}}/js/jquery.stellar.min.js"></script>
+
+  <script src="{{url('/public/frontend')}}/js/jquery.magnific-popup.min.js"></script>
+  <script src="{{url('/public/frontend')}}/js/magnific-popup-options.js"></script>
+
+  <script src="{{url('/public/frontend')}}/js/main.js"></script>
+  <script src="{{url('/public/frontend')}}/js/bootstrap-select.min.js"></script>
+  @yield('js')
+</body>
+
 </html>
