@@ -74,13 +74,11 @@
                                         </div>
                                     </div>
                                     <div class="col-6 form-group form-row">
-                                        <!-- Material checked -->
-                                        <label for="numberOfBeds" class="col-sm-4 col-form-label required">Status</label>
+                                    <label for="numberOfBeds" class="col-sm-4 col-form-label required">Status</label>
                                         <div class="col-sm-8 chekbox-status">
-                                            <input type="checkbox" checked data-toggle="toggle" name="Status" id="status" data-on="Available" data-off="Using" data-onstyle="success" data-offstyle="danger">
+                                            <input type="checkbox" checked data-toggle="toggle" name="Status" id="status" data-on="Available" data-off="Being used" data-onstyle="success" data-offstyle="danger">
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="row">
                                     <div class="col-6 input-group mb-3">
@@ -139,6 +137,7 @@
         $(this).find("input").val('');
         $('#roo_id').attr("disabled", false);
         $('#preview').text('');
+        $('#isAdd').val(1);
     });
 
     function edit(id) {
@@ -155,10 +154,8 @@
                 $('#roo_id').attr("disabled", true);
                 $('#isAdd').val(0);
                 $('#roo_id').val(response.data.ROO_ID);
-                $('#status').val(response.data.Status);
-                response.data.Status == 0 ? $('#status').bootstrapToggle('off') : $('#status').bootstrapToggle('on')
-                $('#isHot').val(response.data.IsHot);
-                response.data.IsHot == 0 ? $('#isHot').bootstrapToggle('off') : $('#isHot').bootstrapToggle('on')
+                response.data.Status == 1 ? $('#status').bootstrapToggle('on') : $('#status').bootstrapToggle('off');
+                response.data.IsHot == 1 ? $('#isHot').bootstrapToggle('on') : $('#isHot').bootstrapToggle('off');
                 $("#roomTypeSelector").val(response.data.RTYP_ID);
             }
         })
@@ -169,8 +166,11 @@
         var status = document.getElementById('status').checked ? 1 : 0;
         var roomType = $('#roomTypeSelector').val();
         var isHot = document.getElementById('isHot').checked ? 1 : 0;
+        $('#status').val(status);
+        $('#isHot').val(isHot);
         var form = $('#roomForm')[0];
         var data = new FormData(form);
+        
         if ($('#isAdd').val() == 1) {
             $.ajax({
                 url: "http://localhost/HotelManagement/api/admin/rooms",
@@ -211,7 +211,11 @@
                 type: "POST",
                 data: data,
                 cache: false,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
                 success: function(response) {
+                    console.log(response);
                     swal({
                         icon: "success",
                         title: "Update Successfully",
@@ -221,7 +225,7 @@
                     $('#roomModal').modal('hide');
                 },
                 error: function(response) {
-                    console.log(response.message);
+                    console.log(response);
                 }
             })
         }
@@ -338,6 +342,7 @@
         }
     };
     $('#rooms').addClass("active");
+    // Validate room id
     jQuery.validator.addMethod("validRoomId", function(value, element) {
         var valid = false;
         $.ajax({

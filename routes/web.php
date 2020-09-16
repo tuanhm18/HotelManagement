@@ -16,9 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/admin/login',  ['as' => 'login', 'uses' => 'Admin\UserController@login']);
-Route::get('/welcome', function() {
-    return view('welcome');
-});
+
 Route::get('/', 'FrontEnd\SiteController@view');
 Route::get('/rooms', 'FrontEnd\RoomController@view');
 Route::get('/about', 'FrontEnd\AboutController@view');
@@ -42,6 +40,7 @@ Route::post('/admin/login', 'Admin\UserController@doLogin');
      Route::get('admin/bills', 'Admin\BillController@view');
      Route::get('admin/roomtypes', 'Admin\RoomTypeController@view');
      Route::get('admin/employees', 'Admin\EmployeeController@view');
+     Route::get('admin/banners', 'Admin\BannerController@view');
     Route::group(['middleware' => 'role'], function() {
         Route::get('user-list', 'Admin\UserManagerController@view');
     });
