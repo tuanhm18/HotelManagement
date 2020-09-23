@@ -248,7 +248,7 @@
                                 text: "Service deleted successfully!"
                             });
                             loadData();
-                            $('#serviceModal').modal('hide');
+                            $('#roomModal').modal('hide');
                         },
                         error: function(response) {
                             console.log(response.message);
