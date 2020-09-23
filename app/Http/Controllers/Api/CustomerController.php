@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Customer;
 use App\Http\Controllers\Controller;
 use App\Response\BaseResult;
 use Illuminate\Http\Request;

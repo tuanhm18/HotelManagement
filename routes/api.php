@@ -23,8 +23,9 @@ Route::delete('admin/services/{id}', 'Api\ServiceController@delete');
 
 Route::get('admin/roomtype/{id?}', 'Api\RoomTypeController@get');
 Route::post('admin/roomtype', 'Api\RoomTypeController@create');
-Route::post('/admin/roomtype-valid/{name}', 'Api\RoomTypeController@validRoomTypeName');
+Route::get('/admin/roomtype-valid/{name}', 'Api\RoomTypeController@validRoomTypeName');
 Route::post('admin/roomtype/{id}', 'Api\RoomTypeController@update');
+Route::put('admin/rootype', 'Api\RoomTypeController@update');
 Route::delete('admin/roomtype/{id}', 'Api\RoomTypeController@delete');
 
 Route::get('/admin/employees/{id?}', 'Api\EmployeeController@get');
