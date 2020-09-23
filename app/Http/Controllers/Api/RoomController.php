@@ -10,7 +10,9 @@ use App\RoomType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class RoomController extends Controller
 {
@@ -56,9 +58,9 @@ class RoomController extends Controller
     {
         $room = new Room;
         $room->ROO_ID = $request->ROO_ID;
-        $room->Status = $request->Status == "on" ? 1 : 0;
+        $room->Status = $request->Status;
         $room->RTYP_ID = $request->RTYP_ID;
-        $room->IsHot = $request->IsHot == "on" ? 1 : 0;
+        $room->IsHot = $request->IsHot;
         $room['CreatedDate'] = Carbon::now();
         try {
             $room->save();
@@ -79,16 +81,40 @@ class RoomController extends Controller
 
         return BaseResult::withData($room);
     }
-    public function update(Request $request)
+    public function update($id, Request $request)
     {
-        $room = Room::findOrFail($request->ROO_ID);
-        $room->ROO_ID = $request->ROO_ID;
+        $room = Room::find($id);
         $room->Status = $request->Status;
         $room->RTYP_ID = $request->RTYP_ID;
         $room->IsHot = $request->IsHot;
         $room['UpdatedDate'] = Carbon::now();
-        $room->save();
-        return $room;
+        try {
+            $room->save();
+        } catch (\Exception $e) {
+            return BaseResult::error('500', $e->getMessage());
+        }
+        if ($request->hasfile('Images')) {
+            $images = Image::where(['ROO_ID' => $room->ROO_ID])->get();
+            if ($images) {
+                foreach ($images as $image) {
+                    $oldFile = $image->Name;
+                    if (File::exists(public_path('data/rooms/' . $oldFile))) {
+                        File::delete(public_path('data/rooms/' . $oldFile));
+                    }
+                    $image->delete();
+                }
+            }
+            foreach ($request->file('Images') as $image) {
+                $newImage = new Image();
+                $newImage->ROO_ID = $id;
+                $fileName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                $imageName = $room->ROO_ID . '_' . $fileName . '_' . time() . '_' . $image->extension();
+                $image->move(public_path('data/rooms'), $imageName);
+                $newImage->Image = $imageName;
+                $newImage->save();
+            }
+        }
+        return BaseResult::withData($room);
     }
     public function delete($id)
     {

@@ -69,6 +69,16 @@ Route::post('admin/users', 'Api\UserManagerController@create');
 Route::post('admin/users/{id}', 'Api\UserManagerController@update');
 Route::delete('admin/users/{id}', 'Api\UserManagerController@delete');
 Route::post('/admin/username/{username}', 'Api\UserManagaerController@validateUserName');
+
+Route::get('/admin/banners/{id?}', 'Api\BannerController@get');
+Route::post('/admin/banners', 'Api\BannerController@create');
+Route::post('/admin/banners/{id?}', 'Api\BannerController@update');
+Route::delete('/admin/banners/{id}', 'Api\BannerController@delete');
+
 // Route::group(['middleware'=>'auth'], function() {
 //     Route::get('/admin/rooms', 'Api/RoomController@get');
 // });
+
+Route::get('/admin/booking/{id?}', 'Api\BookingController@get');
+Route::delete('/admin/booking/{id}', 'Api\BillController@delete');
+Route::post('/admin/booking/{id}', 'Api\BookingController@update');
