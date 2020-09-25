@@ -82,5 +82,5 @@ Route::delete('/admin/banners/{id}', 'Api\BannerController@delete');
 // });
 
 Route::get('/admin/booking/{id?}', 'Api\BookingController@get');
-Route::delete('/admin/booking/{id}', 'Api\BillController@delete');
+Route::delete('/admin/booking/{id}', 'Api\BookingController@delete');
 Route::post('/admin/booking/{id}', 'Api\BookingController@update');

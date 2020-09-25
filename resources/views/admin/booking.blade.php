@@ -27,6 +27,8 @@
                 <button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary float-right">Add</button>
                 <thead>
                     <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
                         <th>IdentityNumber</th>
                         <th>Email</th>
                         <th>Phone</th>
@@ -53,6 +55,24 @@
                 <input value="0" type="hidden" name="BOO_ID" id="boo_id">
                 <div class="modal-body">
                    <form id="bookingForm" action="post">
+                   <div class="row">
+                        <div class="col-lg-6 mt-sm-2">
+                            <div class="form-group form-row">
+                                <label for="txtFullName"  class="col-sm-5 col-form-label required">First name</label>
+                                <div class="col-sm-7">
+                                    <input type="text" required class="form-control" id="firstName" name="FirstName" maxlength="200">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mt-sm-2">
+                            <div class="form-group form-row">
+                                <label for="txtIdCardNumber" class="col-sm-5 col-xl-4 col-form-label required">Last name</label>
+                                <div class="col-sm-7 col-xl-8">
+                                    <input type="text" class="form-control" required id="lastName" name="LastName" maxlength="30">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                    <div class="row">
                         <div class="col-lg-6 mt-sm-2">
                             <div class="form-group form-row">
@@ -124,6 +144,8 @@
     $(document).ready(function() {
         $('#example').DataTable();
     });
+    $('#checkInDate').datepicker();
+    $('#checkOutDate').datepicker();
     function edit(id) {
         $('#bookingModal').modal('show');
         $.ajax({
@@ -137,16 +159,17 @@
                 $('#checkInDate').val(response.data.CheckInDate);
                 $('#checkOutDate').val(response.data.CheckOutDate);
                 $('#status').val(response.data.Status);
+                $('#firstName').val(response.data.FirstName);
+                $('#lastName').val(response.data.LastName);
                 $('#bookingModal').modal('show');
             }
         })
     }
-
+    
     function save() {
         var BOO_ID = $('#boo_id').val();
         var form = $('#bookingForm')[0];
         var data = new FormData(form);
-       
             $.ajax({
                 url: "http://localhost/HotelManagement/api/admin/booking/" + BOO_ID,
                 type: "POST",
@@ -183,6 +206,7 @@
                         url: "http://localhost/HotelManagement/api/admin/booking/" + id,
                         type: "DELETE",
                         success: function(response) {
+                            console.log(response);
                             swal({
                                 icon: "success",
                                 title: "Delete Successfully",
@@ -190,6 +214,9 @@
                             });
                             loadData();
                             $('#bookingModal').modal('hide');
+                        },
+                        error:function(response) {
+                            console.log(response);
                         }
                     })
                 } else {
@@ -207,7 +234,14 @@
                 url: "http://localhost/HotelManagement/api/admin/booking",
                 method: "GET",
             },
-            columns: [{
+            columns: [
+                {
+                    data: "FirstName"
+                },
+                {
+                    data: "LastName"
+                },    
+                {
                     data: "IdentityNumber"
                 },
                 {
