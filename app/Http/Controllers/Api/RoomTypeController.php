@@ -14,38 +14,18 @@ use Illuminate\Http\Request;
 class RoomTypeController extends Controller
 {
 
-    public function validateRoomType(Request $request)
+    public function validRoomTypeName($name)
     {
-        if ($request->RTYP_ID != 0) {
-            $roomType = RoomType::findOrFail($request->RTYP_ID);
-            if ($roomType) {
-                if ($roomType->Name == $request->Name) {
-                    return  response()->json([
-                        'error' => 0,
-                        'data' => $request->Name,
-                        'message' => ''
-                    ]);
-                }
-            }
-        }
-        $rules = array(
-            'Name' => 'unique:RoomType,Name'
-        );
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
+        $roomType = RoomType::where(['Name'=>$name])->first();
+        if ($roomType) return response()->json([
+            'error' => false,
+            'message' => 'This name has been taken'
+        ]);
+        else {
             return response()->json([
-                'validator' => $validator,
-                'error' => 1,
-                'data' => $request->Name,
-                'message' => 'This name has been used'
-            ]);
-        } else {
-            return response()->json([
-                'validator' => $validator,
-                'error' => 0,
-                'data' => $request->Name,
-                'message' => 'This name has not been used'
+                'error' => true,
+                'Name' => $name,
+                "message" => 'Valid name'
             ]);
         }
     }
@@ -69,19 +49,21 @@ class RoomTypeController extends Controller
         $roomType->Price = $request->Price;
         $roomType->Name = $request->Name;
         $roomType['CreatedDate'] = Carbon::now();
-        $roomType->save();
-        return $roomType;
+        try {
+            $roomType->save();
+        } catch (\Exception $e) {
+            return BaseResult::error(500, $e->getMessage());
+        }
+        return BaseResult::withData($roomType);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $roomType = RoomType::findOrFail($request->RTYP_ID);
-        $roomType->RTYP_ID = $request->RTYP_ID;
+        $roomType = RoomType::find($id);
         $roomType->NumberOfBeds = $request->NumberOfBeds;
         $roomType->NumberOfRests = $request->NumberOfRests;
         $roomType->Price = $request->Price;
         $roomType->Name = $request->Name;
-
         $roomType['UpdatedDate'] = Carbon::now();
         $roomType->save();
         return $roomType;

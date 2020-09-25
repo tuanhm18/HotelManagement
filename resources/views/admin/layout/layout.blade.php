@@ -39,7 +39,9 @@
       cursor: pointer;
       color: lightgreen;
     }
-
+    .error {
+      color: red;
+    }
     .deleteBtn {
       cursor: pointer;
       color: red;

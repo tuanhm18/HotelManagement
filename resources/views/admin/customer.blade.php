@@ -50,45 +50,49 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <input value="0" type="hidden" name="CUS_ID" id="cus_id">
+                        <input type="hidden" name="id" id="id">
+                        <input type="hidden" name="oldIdentity" id="oldIdentity">
                         <div class="modal-body">
-                            <div class="row">
-                                <div class="col-6 form-group form-row">
-                                    <label for="firstName" class="col-sm-3 col-form-label required">First Name</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="firstName" name="firstName" maxlength="200">
+                            <form action="post" id="customerForm">
+                                <div class="row">
+                                    <div class="col-6 form-group form-row">
+                                        <label for="firstName" class="col-sm-3 col-form-label required">First Name</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="firstName" name="FirstName" maxlength="200">
+                                        </div>
+                                    </div>
+                                    <div class="col-6 form-group form-row">
+                                        <label for="lastName" class="col-sm-3 col-form-label required">Last Name</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="lastName" name="LastName" maxlength="200">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-6 form-group form-row">
-                                    <label for="lastName" class="col-sm-3 col-form-label required">Last Name</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="lastName" name="lastName" maxlength="200">
+                                <div class="row">
+                                    <div class="col-6 form-group form-row">
+                                        <label for="identityNumber" class="col-sm-3 col-form-label required">ID</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" validIdentity="true" required class="form-control" id="identityNumber" name="IdentityNumber" maxlength="200">
+                                        </div>
+                                    </div>
+                                    <div class="col-6 form-group form-row">
+                                        <label for="phone" class="col-sm-3 col-form-label required">Phone</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="phone" name="Phone" maxlength="200">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6 form-group form-row">
-                                    <label for="identityNumber" class="col-sm-3 col-form-label required">ID</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="identityNumber" name="identityNumber" maxlength="200">
+                                <div class="row">
+                                    <div class="col-12 form-group form-row">
+                                        <label for="email" class="col-sm-1 col-form-label required">Email</label>
+                                        <div class="col-sm-11">
+                                            <input type="text" class="form-control" id="email" name="Email" maxlength="200">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-6 form-group form-row">
-                                    <label for="phone" class="col-sm-3 col-form-label required">Phone</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="phone" name="phone" maxlength="200">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 form-group form-row">
-                                    <label for="email" class="col-sm-1 col-form-label required">Email</label>
-                                    <div class="col-sm-11">
-                                        <input type="text" class="form-control" id="email" name="email" maxlength="200">
-                                    </div>
-                                </div>
-                            </div>
+                            </form>
                         </div>
+                    
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" onclick="save()" class="btn btn-primary">Save changes</button>
@@ -112,74 +116,82 @@
             url: "http://localhost/HotelManagement/api/admin/customers/" + id,
             type: "GET",
             success: function(response) {
-                $('#cus_id').val(response.data.CUS_ID);
+                $('#id').val(response.data.CUS_ID);
                 $('#firstName').val(response.data.FirstName);
                 $('#lastName').val(response.data.LastName);
                 $('#identityNumber').val(response.data.IdentityNumber);
                 $('#phone').val(response.data.Phone);
                 $('#email').val(response.data.Email);
                 $('#customerModal').modal('show');
+                $('#oldIdentity').val(response.data.IdentityNumber);
             }
         })
     }
 
     function save() {
-        var CUS_ID = $('#cus_id').val();
-        var firstName = $('#firstName').val();
-        var lastName = $('#lastName').val();
-        var identityNumber = $('#identityNumber').val();
-        var phone = $('#phone').val();
-        var email = $('#email').val();
-        if (CUS_ID == 0) {
-            $.ajax({
-                url: "http://localhost/HotelManagement/api/admin/customers",
-                type: "POST",
-                data: {
-                    FirstName: firstName,
-                    LastName: lastName,
-                    IdentityNumber: identityNumber,
-                    Phone: phone,
-                    Email: email
-                },
-                cache: false,
-                success: function(response) {
-                    swal({
-                        icon: "success",
-                        title: "Success",
-                        text: "Customer added successfully!"
-                    });
-                    loadData();
-                    $('#customerModal').modal('hide');
-                },
-                error: function(response) {
-                    console.log(response);
-                }
-            })
-        } else {
-            $.ajax({
-                url: "http://localhost/HotelManagement/api/admin/customers",
-                type: "PUT",
-                data: {
-                    CUS_ID: CUS_ID,
-                    FirstName: firstName,
-                    LastName: lastName,
-                    IdentityNumber: identityNumber,
-                    Phone: phone,
-                    Email: email
-                },
-                success: function(response) {
-                    swal({
-                        icon: "success",
-                        title: "Update Successfully",
-                        text: "Customer updated successfully!"
-                    });
-                    loadData();
-                    $('#customerModal').modal('hide');
-                },
-                error: function(response) {
-                    console.log(response);
-                }
-            })
+        var id = $('#id').val();
+        var form = $('#customerForm')[0];
+        var data = new FormData(form);
+        if ($('#customerForm').valid()) {
+            if (id > 0) {
+                $.ajax({
+                    url: "http://localhost/HotelManagement/api/admin/customers/" + id,
+                    type: "POST",
+                    data: data,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        console.log(response);
+                        swal({
+                            icon: "success",
+                            title: "Update Successfully",
+                            text: "Updated successfully!"
+                        });
+                        loadData();
+                        $('#customerModal').modal('hide');
+                    },
+                    error: function(response) {
+                        console.log(response);
+                        console.log(response.message);
+                    }
+                })
+
+            } else {
+                $.ajax({
+                    url: "http://localhost/HotelManagement/api/admin/customers",
+                    type: "POST",
+                    data: data,
+                    cache: false,
+                    dataType: 'json',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.error == 0) {
+                            swal({
+                                icon: "success",
+                                title: "Added Successfully!",
+                                text: "Added successfully!"
+                            });
+                            loadData();
+                            $('#customerModal').modal('hide');
+                        } else {
+                            swal({
+                                icon: "warning",
+                                title: "Added Failed!",
+                                text: response.message
+                            })
+                        }
+                    },
+                    error: function(response) {
+                        swal({
+                            icon: "warining",
+                            title: "Added Failed!",
+                            text: response
+                        });
+                    }
+                })
+            }
         }
     }
 
@@ -234,10 +246,10 @@
                     data: "IdentityNumber"
                 },
                 {
-                    data: "Email"
+                    data: "Phone"
                 },
                 {
-                    data: "Phone"
+                    data: "Email"
                 },
                 {
                     data: null,
@@ -257,5 +269,26 @@
     $(document).ready(function() {
         loadData();
     });
+
+    // Validate identity 
+    jQuery.validator.addMethod("validIdentity", function(value, element) {
+        var valid = false;
+        var oldIdentity = $('#oldIdentity').val();
+        if(oldIdentity == value){
+            valid = true;
+        } else {
+            $.ajax({
+            url: "http://localhost/HotelManagement/api/admin/customers-valid/" + value,
+            method: "GET",
+            async: false,
+            success: function(response) {
+                console.log(response);
+                return valid = response.error;
+                }
+            });
+        }
+        return valid;
+    }, "This Identity has been taken!");
+    
 </script>
 @endsection
