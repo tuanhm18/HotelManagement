@@ -49,39 +49,39 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <input value="0" type="hidden" name="RTYP_ID" id="rtyp_id">
+                        <input type="hidden" name="id" id="id">
+                        <input type="hidden" name="oldName" id="oldName">
                         <div class="modal-body">
-                        <div class="row">
-                                <div class="col-6 form-group form-row">
-                                    <label for="price" class="col-sm-4 col-form-label required">Name</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" id="name" name="name" maxlength="200">
+                            <form action="post" id="roomTypeForm">
+                                <div class="row">
+                                    <div class="col-6 form-group form-row">
+                                        <label for="price" class="col-sm-4 col-form-label required">Name</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" validName="true" required class="form-control" id="name" name="Name" maxlength="200">
+                                        </div>
                                     </div>
-                                    <div id="validateMessage" class="text-danger col-8 offset-md-4 mt-1"></div>
-                                </div>
-                                <div class="col-6 form-group form-row">
-                                    <label for="price" class="col-sm-4 col-form-label required">Price</label>
-                                    <div class="col-sm-8">
-                                        <input type="number" class="form-control" id="price" name="price" maxlength="200">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6 form-group form-row">
-                                    <label for="numberOfBeds" class="col-sm-4 col-form-label required">Number Of Beds</label>
-                                    <div class="col-sm-8">
-                                        <input type="number" class="form-control" id="numberOfBeds" name="NumberOfBeds" maxlength="200">
+                                    <div class="col-6 form-group form-row">
+                                        <label for="price" class="col-sm-4 col-form-label required">Price</label>
+                                        <div class="col-sm-8">
+                                            <input type="number" class="form-control" id="price" name="Price" maxlength="200">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-6 form-group form-row">
-                                    <label for="numberOfRests" class="col-sm-5 col-form-label required">Number Of Rests</label>
-                                    <div class="col-sm-7">
-                                        <input type="number" class="form-control" id="numberOfRests" name="numberOfRests" maxlength="200">
+                                <div class="row">
+                                    <div class="col-6 form-group form-row">
+                                        <label for="numberOfBeds" class="col-sm-4 col-form-label required">Number Of Beds</label>
+                                        <div class="col-sm-8">
+                                            <input type="number" class="form-control" id="numberOfBeds" name="NumberOfBeds" maxlength="200">
+                                        </div>
+                                    </div>
+                                    <div class="col-6 form-group form-row">
+                                        <label for="numberOfRests" class="col-sm-5 col-form-label required">Number Of Rests</label>
+                                        <div class="col-sm-7">
+                                            <input type="number" class="form-control" id="numberOfRests" name="NumberOfRests" maxlength="200">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                           
-
+                            </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -99,7 +99,6 @@
 <script>
     $('#roomTypeModal').on('show.bs.modal', function() {
         $(this).find("input").val('');
-        $('#validateMessage').text("");
     });
 
     function edit(id) {
@@ -111,87 +110,77 @@
                 $('#numberOfBeds').val(response.data.NumberOfBeds);
                 $('#numberOfRests').val(response.data.NumberOfRests);
                 $('#price').val(response.data.Price);
-                $('#rtyp_id').val(response.data.RTYP_ID)
+                $('#id').val(response.data.RTYP_ID)
                 $('#name').val(response.data.Name);
+                $('#oldName').val(response.data.Name);
             }
         })
     }
 
     function save() {
-        var RTYP_ID = $('#rtyp_id').val();
-        var numberOfBeds = $('#numberOfBeds').val();
-        var numberOfRests = $('#numberOfRests').val();
-        var price = $('#price').val();
-        var name = $('#name').val();
-
-        $.ajax({
-            url: "http://localhost/HotelManagement/api/admin/roomtype-validate",
-            type: "POST",
-            data: {
-                Name: name,
-                RTYP_ID : RTYP_ID
-            },
-            success: function(response){
-                if (response.error == 1) { //Dữ liệu nhập sai
-                    console.log(response);
-                    $('#validateMessage').text(response.message);
-                } else {
-                    if (RTYP_ID == 0) {
-                        $.ajax({
-                            url: "http://localhost/HotelManagement/api/admin/roomtype",
-                            type: "POST",
-                            data: {
-                                Name: name,
-                                NumberOfBeds: numberOfBeds,
-                                NumberOfRests: numberOfRests,
-                                Price: price
-                            },
-                            cache: false,
-                            success: function(response) {
-                                swal({
-                                    icon: "success",
-                                    title: "Success",
-                                    text: "Room Type added successfully!"
-                                });
-                                loadData();
-                                $('#roomTypeModal').modal('hide');
-                            },
-                            error: function(response) {
-                                console.log(response);
-                            }
-                        })
-                    } else {
-                        $.ajax({
-                            url: "http://localhost/HotelManagement/api/admin/roomtype",
-                            type: "PUT",
-                            data: {
-                                Name:name,
-                                NumberOfBeds: numberOfBeds,
-                                NumberOfRests: numberOfRests,
-                                Price: price,
-                                RTYP_ID: RTYP_ID
-                            },
-                            cache: false,
-                            success: function(response) {
-                                swal({
-                                    icon: "success",
-                                    title: "Update Successfully",
-                                    text: "Room Type updated successfully!"
-                                });
-                                loadData();
-                                $('#roomTypeModal').modal('hide');
-                            },
-                            error: function(response) {
-                                console.log(response);
-                            }
-                        })
+        var id = $('#id').val();
+        var form = $('#roomTypeForm')[0];
+        var data = new FormData(form);
+        if ($('#roomTypeForm').valid()) {
+            if (id > 0) {
+                $.ajax({
+                    url: "http://localhost/HotelManagement/api/admin/roomtype/" + id,
+                    type: "POST",
+                    data: data,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        console.log(response);
+                        swal({
+                            icon: "success",
+                            title: "Update Successfully",
+                            text: "Updated successfully!"
+                        });
+                        loadData();
+                        $('#roomTypeModal').modal('hide');
+                    },
+                    error: function(response) {
+                        console.log(response.message);
                     }
-                }
-            }, 
-            error: function(response) {
-                console.log(response);
+                })
+
+            } else {
+                $.ajax({
+                    url: "http://localhost/HotelManagement/api/admin/roomtype",
+                    type: "POST",
+                    data: data,
+                    cache: false,
+                    dataType: 'json',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.error == 0) {
+                            swal({
+                                icon: "success",
+                                title: "Added Successfully!",
+                                text: "Added successfully!"
+                            });
+                            loadData();
+                            $('#roomTypeModal').modal('hide');
+                        } else {
+                            swal({
+                                icon: "warning",
+                                title: "Added Failed!",
+                                text: response.message
+                            })
+                        }
+                    },
+                    error: function(response) {
+                        swal({
+                            icon: "warining",
+                            title: "Added Failed!",
+                            text: response
+                        });
+                    }
+                })
             }
-        });     
+        }
     }
 
     function remove(id) {
@@ -236,11 +225,19 @@
                 method: "GET",
             },
             columns: [
-                
-                {data: "Name"},
-                { data: "NumberOfBeds"},
-                { data: "NumberOfRests"},
-                { data: "Price"},
+
+                {
+                    data: "Name"
+                },
+                {
+                    data: "NumberOfBeds"
+                },
+                {
+                    data: "NumberOfRests"
+                },
+                {
+                    data: "Price"
+                },
                 {
                     data: null,
                     render: function(data, type, row) {
@@ -258,6 +255,31 @@
     }
     $(document).ready(function() {
         loadData();
+    });
+    // Validate room type name
+    jQuery.validator.addMethod("validName", function(value, element) {
+        var valid = false;
+        var oldName  = $('#oldName').val();
+        if(oldName == value) {
+            valid = true;
+        } else {
+            $.ajax({
+            url: "http://localhost/HotelManagement/api/admin/roomtype-valid/" + value,
+            method: "GET",
+            async: false,
+            success: function(response) {
+                console.log(response);
+                valid = response.error;
+            }
+        });
+        }        
+        return valid;
+    }, "This name has been taken!");
+    // price only number
+    $(document).ready(function() {
+        $("#price").inputFilter(function(value) {
+            return /^\d*$/.test(value); // Allow digits only, using a RegExp
+        });
     });
 </script>
 @endsection

@@ -23,22 +23,31 @@
   <link rel="stylesheet" href="{{url('/public/admin')}}/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Daterange picker -->
   <link rel="stylesheet" href="{{url('/public/admin')}}/dist/css/bootstrap-datepicker3.min.css">
+  <link rel="stylesheet" href="{{url('/public/admin')}}/dist/css/bootstrap-select.min.css">
+  <link rel="stylesheet" href="{{url('/public/admin')}}/plugins/select2/css/select2.css">
+
   <!-- summernote -->
   <link rel="stylesheet" href="{{url('/public/admin')}}/plugins/summernote/summernote-bs4.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <link rel="stylesheet" href="{{url('/public/admin')}}/dist/css/datatables.min.css">
   <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
   @yield('css')
   <style>
     .editBtn {
       cursor: pointer;
       color: lightgreen;
     }
-
+    .error {
+      color: red;
+    }
     .deleteBtn {
       cursor: pointer;
       color: red;
+    }
+    .select2 .select2-container .select2-container--default {
+      width: 100% !important;
     }
   </style>
 </head>
@@ -282,6 +291,14 @@
               </ul>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
+                  <a href="{{action('Admin\BlogController@view')}}" id="blogs" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Blog</p>
+                  </a>
+                </li>
+              </ul>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
                   <a href="{{action('Admin\RoomTypeController@view')}}" id="roomType" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Room Type</p>
@@ -293,6 +310,14 @@
                   <a href="{{action('Admin\EmployeeController@view')}}" id="employees" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Employee</p>
+                  </a>
+                </li>
+              </ul>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{action('Admin\CategoryController@view')}}" id="categories" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Categories</p>
                   </a>
                 </li>
               </ul>
@@ -375,6 +400,9 @@
   <script src="{{url('/public/admin')}}/dist/js/site.js"></script>
   <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
   <script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+  <script src="{{url('/public/admin')}}/plugins/select2/js/select2.min.js"></script>
+  <script src="{{url('/public/admin')}}/dist/js/bootstrap-select.min.js"></script>
 
   <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
   <script>

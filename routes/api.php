@@ -22,15 +22,16 @@ Route::put('admin/services', 'Api\ServiceController@update');
 Route::delete('admin/services/{id}', 'Api\ServiceController@delete');
 
 Route::get('admin/roomtype/{id?}', 'Api\RoomTypeController@get');
-Route::post('/admin/roomtype-validate', 'Api\RoomTypeController@validateRoomType');
-
 Route::post('admin/roomtype', 'Api\RoomTypeController@create');
-Route::put('admin/roomtype', 'Api\RoomTypeController@update');
+Route::get('/admin/roomtype-valid/{name}', 'Api\RoomTypeController@validRoomTypeName');
+Route::post('admin/roomtype/{id}', 'Api\RoomTypeController@update');
+Route::put('admin/rootype', 'Api\RoomTypeController@update');
 Route::delete('admin/roomtype/{id}', 'Api\RoomTypeController@delete');
 
 Route::get('/admin/employees/{id?}', 'Api\EmployeeController@get');
+Route::get('/admin/employees-validate/{identity}', 'Api\EmployeeController@validEmployeeIdentity');
 Route::post('admin/employees', 'Api\EmployeeController@create');
-Route::post('/admin/employees-validate', 'Api\EmployeeController@validateEmployee');
+Route::post('/admin/employees/{id}', 'Api\EmployeeController@update');
 Route::put('admin/employees', 'Api\EmployeeController@update');
 Route::delete('admin/employees/{id}', 'Api\EmployeeController@delete');
 
@@ -46,15 +47,13 @@ Route::post('admin/positions', 'Api\PositionController@create');
 Route::put('admin/positions', 'Api\PositionController@update');
 Route::delete('admin/positions/{id}','Api\PositionController@delete');
 Route::post('/admin/positions-validate/', 'Api\PositionController@validatePosition');
+
 Route::get('/admin/customers/{id?}', 'Api\CustomerController@get');
-
+Route::get('/admin/customers-valid/{identity}', 'Api\CustomerController@validCustomerIdentity');
 Route::post('/admin/customers', 'Api\CustomerController@create');
-Route::put('/admin/customers', 'Api\CustomerController@update');
+Route::post('/admin/customers/{id}', 'Api\CustomerController@update');
 Route::delete('/admin/customers/{id}','Api\CustomerController@delete');
-
-Route::post('admin/customers', 'Api\CustomerController@create'); 
 Route::put('admin/customers', 'Api\CustomerController@update');
-Route::delete('admin/customers/{id}','Api\CustomerController@delete');
 
 Route::get('/admin/bills/{id?}', 'Api\BillController@get');
 Route::post('/admin/bills', 'Api\BillController@create');
@@ -77,10 +76,20 @@ Route::post('/admin/banners', 'Api\BannerController@create');
 Route::post('/admin/banners/{id?}', 'Api\BannerController@update');
 Route::delete('/admin/banners/{id}', 'Api\BannerController@delete');
 
-// Route::group(['middleware'=>'auth'], function() {
-//     Route::get('/admin/rooms', 'Api/RoomController@get');
-// });
-
 Route::get('/admin/booking/{id?}', 'Api\BookingController@get');
+<<<<<<< HEAD
 Route::delete('/admin/booking/{id}', 'Api\BookingController@delete');
 Route::post('/admin/booking/{id}', 'Api\BookingController@update');
+=======
+Route::delete('/admin/booking/{id}', 'Api\BillController@delete');
+Route::post('/admin/booking/{id}', 'Api\BookingController@update');
+
+Route::get('admin/blogs/{id?}', 'Api\BlogController@get');
+Route::post('admin/blogs', 'Api\BlogController@create');
+Route::post('admin/blogs/{id}', 'Api\BlogController@update');
+
+Route::get('admin/categories/{id?}', 'Api\CategoryController@get');
+Route::post('admin/categories', 'Api\CategoryController@create');
+Route::get('admin/blogs/tags/{id}', 'Api\TagController@getBlogTags');
+Route::get('admin/tags/{id?}', 'Api\TagController@get');
+>>>>>>> 0b6d9e5fb1c3428f6206f4733615186e9ecc4dd9

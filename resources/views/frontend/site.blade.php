@@ -5,7 +5,74 @@ $url = url('/public/frontend/images/big_image_1.jpg');
 @endphp
 
 <!-- END section -->
+@php
+  $banners = App\Banner::where(['IsPublished'=>1])->get();
+  @endphp
+  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    </ol>
+    @if(count($banners) > 0)
+    <div class="carousel-inner">
+      <div class="carousel-item active">
 
+        @php
+        $avatar = url('public/data/banners').'/'.$banners[0]->Avatar;
+        @endphp
+        <section class="site-hero site-hero-innerpage overlay" data-stellar-background-ratio="0.5" style="background-image: url({{$avatar}});">
+          <div class="container">
+            <div class="row align-items-center site-hero-inner justify-content-center">
+              <div class="col-md-12 text-center">
+
+                <div class="mb-5 element-animate">
+                  <h1>{{$banners[0]->Title}}</h1>
+                  <p>{{$banners[0]->Description}}</p>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      @if(count($banners) > 1)
+      @for($i = 1; $i < count($banners); $i++)
+      <div class="carousel-item">
+
+        @php
+        $avatar = url('public/data/banners').'/'.$banners[$i]->Avatar;
+        @endphp
+        <section class="site-hero site-hero-innerpage overlay" data-stellar-background-ratio="0.5" style="background-image: url({{$avatar}});">
+          <div class="container">
+            <div class="row align-items-center site-hero-inner justify-content-center">
+              <div class="col-md-12 text-center">
+
+                <div class="mb-5 element-animate">
+                  <h1>{{$banners[$i]->Title}}</h1>
+                  <p>{{$banners[$i]->Description}}</p>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      @endfor
+      @endif
+    </div>
+    @endif
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
 <section class="site-section">
   <div class="container">
     <div class="row align-items-center">
@@ -122,39 +189,29 @@ $room->Image = $image->Image;
       </div>
     </div>
     <div class="row ">
+      @php
+      $blogs = \App\Blog::where(['IsPublished' => 1, 'IsHot'=>1])->take(3)->get();
+      if($blogs) {
+        foreach($blogs as $blog) {
+          $blog->Url = url('blogs').'/'.$blog->BLO_ID;
+        }
+      }
+      @endphp
+      @if($blogs)
+      @foreach($blogs as $blog)
       <div class="col-md-4">
         <div class="post-entry">
-          <img src="{{url('/public/frontend')}}/images/img_3.jpg" alt="Image placeholder" class="img-fluid">
+          <img src="{{url('/public/data/blogs').'/'.$blog->Avatar}}" alt="Image placeholder" class="img-fluid">
           <div class="body-text">
-            <div class="category">Rooms</div>
-            <h3 class="mb-3"><a href="#">New Rooms</a></h3>
-            <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum deserunt illo quis similique dolore voluptatem culpa voluptas rerum, dolor totam.</p>
-            <p><a href="#" class="btn btn-primary btn-outline-primary btn-sm">Read More</a></p>
+            <div class="category">{{$blog->Title}}</div>
+            <h3 class="mb-3"><a href="{{$blog->Url}}">{{$blog->Title}}</a></h3>
+            <p class="mb-4">{{$blog->Description}}</p>
+            <p><a href="{{$blog->Url}}" class="btn btn-primary btn-outline-primary btn-sm">Read More</a></p>
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="post-entry">
-          <img src="{{url('/public/frontend')}}/images/img_6.jpg" alt="Image placeholder" class="img-fluid">
-          <div class="body-text">
-            <div class="category">News</div>
-            <h3 class="mb-3"><a href="#">New Staff Added</a></h3>
-            <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum deserunt illo quis similique dolore voluptatem culpa voluptas rerum, dolor totam.</p>
-            <p><a href="#" class="btn btn-primary btn-outline-primary btn-sm">Read More</a></p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="post-entry">
-          <img src="{{url('/public/frontend')}}/images/img_5.jpg" alt="Image placeholder" class="img-fluid">
-          <div class="body-text">
-            <div class="category">New Rooms</div>
-            <h3 class="mb-3"><a href="#">Big Rooms for All</a></h3>
-            <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum deserunt illo quis similique dolore voluptatem culpa voluptas rerum, dolor totam.</p>
-            <p><a href="#" class="btn btn-primary btn-outline-primary btn-sm">Read More</a></p>
-          </div>
-        </div>
-      </div>
+      @endforeach
+      @endif
     </div>
   </div>
 </section>

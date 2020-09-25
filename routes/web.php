@@ -23,6 +23,7 @@ Route::get('/about', 'FrontEnd\AboutController@view');
 Route::get('/contact', 'FrontEnd\ContactController@view');
 Route::get('/booking', 'FrontEnd\BookingController@view');
 Route::post('/booking', 'FrontEnd\BookingController@create');
+Route::get('blogs/{id}', 'FrontEnd\BlogController@view');
 Route::get('test', function() {
     event(new MyEvent('Welcome'));
     return "Event has been sent";
@@ -41,6 +42,8 @@ Route::post('/admin/login', 'Admin\UserController@doLogin');
      Route::get('admin/roomtypes', 'Admin\RoomTypeController@view');
      Route::get('admin/employees', 'Admin\EmployeeController@view');
      Route::get('admin/banners', 'Admin\BannerController@view');
+     Route::get('admin/blogs', 'Admin\BlogController@view');
+     Route::get('admin/categories','Admin\CategoryController@view');
     Route::group(['middleware' => 'role'], function() {
         Route::get('user-list', 'Admin\UserManagerController@view');
     });

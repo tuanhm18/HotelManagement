@@ -25,6 +25,7 @@ class BannerController extends Controller
             }
         }
     }
+    
     public function create(Request $request)
     {
         $banner = new Banner();

@@ -52,57 +52,57 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <input value="0" type="hidden" name="EMP_ID" id="emp_id">
+                        <input type="hidden" name="id" id="id">
+                        <input type="hidden" name="oldIden" id="oldIden">
                         <div class="modal-body">
-                            <div class="row">
-                                <div class="col-6 form-group form-row">
-                                    <label for="name" class="col-sm-5 col-form-label required">Name</label>
-                                    <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="name" name="Name" maxlength="200">
+                            <form action="post" id="employeeForm">
+                                <div class="row">
+                                    <div class="col-6 form-group form-row">
+                                        <label for="name" class="col-sm-5 col-form-label required">Name</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control" id="name" name="Name" maxlength="200">
+                                        </div>
+                                    </div>
+                                    <div class="col-6 form-group form-row">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text" for="inputGroupSelect01">Position</label>
+                                        </div>
+                                        <select class="custom-select" id="positionSelector" name="POS_ID">
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="col-6 form-group form-row">
-                                    <div class="input-group-prepend">
-                                        <label class="input-group-text" for="inputGroupSelect01">Position</label>
-                                    </div>
-                                    <select class="custom-select" id="positionSelector">
-                                    </select>
-                                </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-6 form-group form-row">
-                                    <label for="identityNumber" class="col-sm-5 col-form-label required">Identity Number</label>
-                                    <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="identityNumber" name="identityNumber" maxlength="200">
+                                <div class="row">
+                                    <div class="col-6 form-group form-row">
+                                        <label for="identityNumber" class="col-sm-5 col-form-label required">Identity Number</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" validIden="true" require class="form-control" id="identityNumber" name="IdentityNumber" maxlength="200">
+                                        </div>
                                     </div>
-                                    <div id="validateMessage" class="text-danger col-8 offset-md-4 mt-1"></div>
-                                </div>
-                                <div class="col-6 form-group form-row">
-                                    <label for="phone" class="col-sm-5 col-form-label required">Phone</label>
-                                    <div class="col-sm-12">
-                                        <input type="number" class="form-control" id="phone" name="phonr" maxlength="200">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 form-group form-row">
-                                    <label for="address" class="col-sm-5 col-form-label required">Address</label>
-                                    <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="address" name="address" maxlength="200">
+                                    <div class="col-6 form-group form-row">
+                                        <label for="phone" class="col-sm-5 col-form-label required">Phone</label>
+                                        <div class="col-sm-12">
+                                            <input type="number" class="form-control" id="phone" name="Phone" maxlength="200">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 form-group form-row">
-                                    <label for="email" class="col-sm-5 col-form-label required">Email</label>
-                                    <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="email" name="email" maxlength="200">
+                                <div class="row">
+                                    <div class="col-12 form-group form-row">
+                                        <label for="address" class="col-sm-5 col-form-label required">Address</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control" id="address" name="Address" maxlength="200">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-
+                                <div class="row">
+                                    <div class="col-12 form-group form-row">
+                                        <label for="email" class="col-sm-5 col-form-label required">Email</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control" id="email" name="Email" maxlength="200">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -119,7 +119,8 @@
 @section('js')
 <script>
     function loadPosition() {
-        $.ajax({
+        $('positionSelector').text('');
+         $.ajax({
             url: "http://localhost/HotelManagement/api/admin/positions",
             type: 'GET',
             success: function(response) {
@@ -133,10 +134,9 @@
             }
         })
     }
-
+    
     $('#employeeModal').on('show.bs.modal', function() {
         $(this).find("input").val('');
-        $('#validateMessage').text("");
     });
 
     function edit(id) {
@@ -145,98 +145,85 @@
             url: "http://localhost/HotelManagement/api/admin/employees/" + id,
             type: "GET",
             success: function(response) {
-                $('#emp_id').val(response.data.EMP_ID);
+                $('#id').val(response.data.EMP_ID);
                 $('#name').val(response.data.Name);
                 $('#identityNumber').val(response.data.IdentityNumber);
                 $('#phone').val(response.data.Phone);
                 $('#address').val(response.data.Address);
                 $('#email').val(response.data.Email);
                 $("#positionSelector").val(response.data.POS_ID);
+                $('#oldIden').val(response.data.IdentityNumber);
             }
         })
     }
 
     function save() {
-        var EMP_ID = $('#emp_id').val();
-        var name = $('#name').val();
-        var identityNumber = $('#identityNumber').val();
-        var phone = $('#phone').val();
-        var address = $('#address').val();
-        var email = $('#email').val();
-        var position = $('#positionSelector').val();
-
-        $.ajax({
-            url: "http://localhost/HotelManagement/api/admin/employees-validate",
-            type: "POST",
-            data: {
-                IdentityNumber: identityNumber,
-                EMP_ID: EMP_ID
-            },
-            success: function(response) {
-                if (response.error == 1) { //Dữ liệu nhập sai
-                    console.log(response);
-                    $('#validateMessage').text(response.message);
-                } else {
-                    console.log(identityNumber);
-                    if (EMP_ID == 0) {
-                        $.ajax({
-                            url: "http://localhost/HotelManagement/api/admin/employees",
-                            type: "POST",
-                            data: {
-                                EMP_ID: EMP_ID,
-                                Name: name,
-                                IdentityNumber: identityNumber,
-                                Phone: phone,
-                                Address: address,
-                                Email: email,
-                                POS_ID: position
-                            },
-                            cache: false,
-                            success: function(response) {
-                                swal({
-                                    icon: "success",
-                                    title: "Success",
-                                    text: "Added successfully!"
-                                });
-                                loadData();
-                                $('#employeeModal').modal('hide');
-                            },
-                            error: function(response) {
-                                console.log(response);
-                            }
-                        })
-                    } else {
-                        $.ajax({
-                            url: "http://localhost/HotelManagement/api/admin/employees",
-                            type: "PUT",
-                            data: {
-                                EMP_ID: EMP_ID,
-                                Name: name,
-                                IdentityNumber: identityNumber,
-                                Phone: phone,
-                                Address: address,
-                                Email: email,
-                                POS_ID: position
-                            },
-                            cache: false,
-                            success: function(response) {
-                                swal({
-                                    icon: "success",
-                                    title: "Update Successfully",
-                                    text: "Updated successfully!"
-                                });
-                                loadData();
-                                $('#employeeModal').modal('hide');
-                            },
-                            error: function(response) {
-                                console.log(response);
-                            }
-                        })
+        var id = $('#id').val();
+        var form = $('#employeeForm')[0];
+        var data = new FormData(form);
+        if ($('#employeeForm').valid()) {
+            if (id > 0) {
+                $.ajax({
+                    url: "http://localhost/HotelManagement/api/admin/employees/" + id,
+                    type: "POST",
+                    data: data,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        console.log(response);
+                        swal({
+                            icon: "success",
+                            title: "Update Successfully",
+                            text: "Updated successfully!"
+                        });
+                        loadData();
+                        $('#employeeModal').modal('hide');
+                    },
+                    error: function(response) {
+                        console.log(response);
+                        console.log(response.message);
                     }
-                }
+                })
+
+            } else {
+                $.ajax({
+                    url: "http://localhost/HotelManagement/api/admin/employees",
+                    type: "POST",
+                    data: data,
+                    cache: false,
+                    dataType: 'json',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.error == 0) {
+                            swal({
+                                icon: "success",
+                                title: "Added Successfully!",
+                                text: "Added successfully!"
+                            });
+                            loadData();
+                            $('#employeeModal').modal('hide');
+                        } else {
+                            swal({
+                                icon: "warning",
+                                title: "Added Failed!",
+                                text: response.message
+                            })
+                        }
+                    },
+                    error: function(response) {
+                        swal({
+                            icon: "warining",
+                            title: "Added Failed!",
+                            text: response
+                        });
+                    }
+                })
             }
-        });
+        }
     }
+
 
     function remove(id) {
         swal({
@@ -319,5 +306,24 @@
     $(document).ready(function() {
         loadData();
     });
+    // Validate identity 
+    jQuery.validator.addMethod("validIden", function(value, element) {
+        var valid = false;
+        var oldIdentity = $('#oldIden').val();
+        if(oldIdentity == value){
+            valid = true;
+        } else {
+            $.ajax({
+            url: "http://localhost/HotelManagement/api/admin/employees-validate/" + value,
+            method: "GET",
+            async: false,
+            success: function(response) {
+                console.log(response);
+                return valid = response.error;
+                }
+            });
+        }
+        return valid;
+    }, "This Identity has been taken.");
 </script>
 @endsection

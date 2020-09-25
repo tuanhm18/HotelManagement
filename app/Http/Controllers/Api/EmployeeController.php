@@ -12,42 +12,21 @@ use Illuminate\Support\Facades\Validator;
 
 class EmployeeController extends Controller
 {
-    public function validateEmployee(Request $request)
+    public function validEmployeeIdentity($identity)
     {
-        if ($request->EMP_ID != 0) {
-            $employee = Employee::findOrFail($request->EMP_ID);
-            if ($employee) {
-                if ($employee->IdentityNumber == $request->IdentityNumber) {
-                    return  response()->json([
-                        'error' => 0,
-                        'data' => $request->IdentityNumber,
-                        'message' => ''
-                    ]);
-                }
-            }
-        }
-        $rules = array(
-            'IdentityNumber' => 'unique:Employees,IdentityNumber'
-        );
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
+        $employee = Employee::where(['IdentityNumber' => $identity])->first();
+        if ($employee) return response()->json([
+            'error' => false,
+            'message' => 'This identity has been taken'
+        ]);
+        else {
             return response()->json([
-                'validator' => $validator,
-                'error' => 1,
-                'data' => $request->IdentityNumber,
-                'message' => 'This identity has been used'
-            ]);
-        } else {
-            return response()->json([
-                'validator' => $validator,
-                'error' => 0,
-                'data' => $request->IdentityNumber,
-                'message' => 'This identity has not been used'
+                'error' => true,
+                'IdentityNumber' => $identity,
+                "message" => 'Valid Identity'
             ]);
         }
     }
-
     public function get($id = null)
     {
         if ($id == null) {
@@ -74,24 +53,31 @@ class EmployeeController extends Controller
         $employee->Address = $request->Address;
         $employee->Email = $request->Email;
         $employee->POS_ID = $request->POS_ID;
-        $employee['CreatedDate'] = Carbon::now();
-        $employee->save();
-        return $employee;
+        try {
+            $employee->save();
+        } catch (\Exception $e) {
+            return BaseResult::error(500, $e->getMessage());
+        }
+        return BaseResult::withData($employee);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $employee = Employee::findOrFail($request->EMP_ID);
-        $employee = new Employee();
-        $employee->Name = $request->Name;
-        $employee->IdentityNumber = $request->IdentityNumber;
-        $employee->Phone = $request->Phone;
-        $employee->Address = $request->Address;
-        $employee->Email = $request->Email;
-        $employee->POS_ID = $request->POS_ID;
-        $employee['UpdatedDate'] = Carbon::now();
-        $employee->save();
-        return $employee;
+        $employee = Employee::findOrFail($id);
+        if($employee){
+            $employee = new Employee();
+            $employee->Name = $request->Name;
+            $employee->IdentityNumber = $request->IdentityNumber;
+            $employee->Phone = $request->Phone;
+            $employee->Address = $request->Address;
+            $employee->Email = $request->Email;
+            $employee->POS_ID = $request->POS_ID;
+            $employee['UpdatedDate'] = Carbon::now();
+            $employee->save();
+        } else {
+            return BaseResult::error(404, "Not found data");
+        }
+        return BaseResult::withData($employee);
     }
 
     public function delete($id)

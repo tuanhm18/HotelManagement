@@ -135,6 +135,7 @@
     function save() {
         var id = $('#id').val();
         var isPublished = document.getElementById('isPublished').checked ? 1 : 0;
+
         $('#isPublished').val(isPublished);
         var form = $('#bannerForm')[0];
         var data = new FormData(form);
