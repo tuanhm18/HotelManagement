@@ -58,7 +58,7 @@
             <li class="nav-item">
               <a class="nav-link" id="contact" href="{{action('FrontEnd\ContactController@view')}}">Contact</a>
             </li>
-
+  
             <li class="nav-item cta">
               <a class="nav-link" id="booking" href="{{action('FrontEnd\BookingController@view')}}"><span>Book Now</span></a>
             </li>
@@ -69,74 +69,7 @@
     </nav>
   </header>
   <!-- END header -->
-  @php
-  $banners = App\Banner::where(['IsPublished'=>1])->get();
-  @endphp
-  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-    </ol>
-    @if(count($banners) > 0)
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-
-        @php
-        $avatar = url('public/data/banners').'/'.$banners[0]->Avatar;
-        @endphp
-        <section class="site-hero site-hero-innerpage overlay" data-stellar-background-ratio="0.5" style="background-image: url({{$avatar}});">
-          <div class="container">
-            <div class="row align-items-center site-hero-inner justify-content-center">
-              <div class="col-md-12 text-center">
-
-                <div class="mb-5 element-animate">
-                  <h1>{{$banners[0]->Title}}</h1>
-                  <p>{{$banners[0]->Description}}</p>
-                </div>
-
-
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-      @if(count($banners) > 1)
-      @for($i = 1; $i < count($banners); $i++)
-      <div class="carousel-item">
-
-        @php
-        $avatar = url('public/data/banners').'/'.$banners[$i]->Avatar;
-        @endphp
-        <section class="site-hero site-hero-innerpage overlay" data-stellar-background-ratio="0.5" style="background-image: url({{$avatar}});">
-          <div class="container">
-            <div class="row align-items-center site-hero-inner justify-content-center">
-              <div class="col-md-12 text-center">
-
-                <div class="mb-5 element-animate">
-                  <h1>{{$banners[$i]->Title}}</h1>
-                  <p>{{$banners[$i]->Description}}</p>
-                </div>
-
-
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-      @endfor
-      @endif
-    </div>
-    @endif
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-  </div>
+ 
 
   @yield('content')
   <footer class="site-footer">

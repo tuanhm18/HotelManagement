@@ -77,10 +77,15 @@ Route::post('/admin/banners', 'Api\BannerController@create');
 Route::post('/admin/banners/{id?}', 'Api\BannerController@update');
 Route::delete('/admin/banners/{id}', 'Api\BannerController@delete');
 
-// Route::group(['middleware'=>'auth'], function() {
-//     Route::get('/admin/rooms', 'Api/RoomController@get');
-// });
-
 Route::get('/admin/booking/{id?}', 'Api\BookingController@get');
 Route::delete('/admin/booking/{id}', 'Api\BillController@delete');
 Route::post('/admin/booking/{id}', 'Api\BookingController@update');
+
+Route::get('admin/blogs/{id?}', 'Api\BlogController@get');
+Route::post('admin/blogs', 'Api\BlogController@create');
+Route::post('admin/blogs/{id}', 'Api\BlogController@update');
+
+Route::get('admin/categories/{id?}', 'Api\CategoryController@get');
+Route::post('admin/categories', 'Api\CategoryController@create');
+Route::get('admin/blogs/tags/{id}', 'Api\TagController@getBlogTags');
+Route::get('admin/tags/{id?}', 'Api\TagController@get');
