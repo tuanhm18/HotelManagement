@@ -77,6 +77,10 @@ Route::post('/admin/banners/{id?}', 'Api\BannerController@update');
 Route::delete('/admin/banners/{id}', 'Api\BannerController@delete');
 
 Route::get('/admin/booking/{id?}', 'Api\BookingController@get');
+<<<<<<< HEAD
+Route::delete('/admin/booking/{id}', 'Api\BookingController@delete');
+Route::post('/admin/booking/{id}', 'Api\BookingController@update');
+=======
 Route::delete('/admin/booking/{id}', 'Api\BillController@delete');
 Route::post('/admin/booking/{id}', 'Api\BookingController@update');
 
@@ -88,4 +92,8 @@ Route::get('admin/categories/{id?}', 'Api\CategoryController@get');
 Route::post('admin/categories', 'Api\CategoryController@create');
 Route::get('admin/blogs/tags/{id}', 'Api\TagController@getBlogTags');
 Route::get('admin/tags/{id?}', 'Api\TagController@get');
+<<<<<<< HEAD
 Route::get('admin/getBillByDate/', 'Api\BillController@getBillByDate');
+=======
+>>>>>>> 0b6d9e5fb1c3428f6206f4733615186e9ecc4dd9
+>>>>>>> 374a01330e518236a9f69af14427628f1af2cf17
