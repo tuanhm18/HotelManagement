@@ -88,3 +88,4 @@ Route::get('admin/categories/{id?}', 'Api\CategoryController@get');
 Route::post('admin/categories', 'Api\CategoryController@create');
 Route::get('admin/blogs/tags/{id}', 'Api\TagController@getBlogTags');
 Route::get('admin/tags/{id?}', 'Api\TagController@get');
+Route::get('admin/getBillByDate/', 'Api\BillController@getBillByDate');

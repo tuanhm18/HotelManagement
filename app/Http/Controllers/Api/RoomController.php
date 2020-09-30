@@ -61,6 +61,7 @@ class RoomController extends Controller
         $room->Status = $request->Status;
         $room->RTYP_ID = $request->RTYP_ID;
         $room->IsHot = $request->IsHot;
+        $room->Description = $request->Description;
         $room['CreatedDate'] = Carbon::now();
         try {
             $room->save();
@@ -87,6 +88,7 @@ class RoomController extends Controller
         $room->Status = $request->Status;
         $room->RTYP_ID = $request->RTYP_ID;
         $room->IsHot = $request->IsHot;
+        $room->Description = $request->Description;
         $room['UpdatedDate'] = Carbon::now();
         try {
             $room->save();

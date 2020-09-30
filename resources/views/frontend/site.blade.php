@@ -1,227 +1,331 @@
 @extends('frontend.layout.app')
 @section('content')
-@php
-$url = url('/public/frontend/images/big_image_1.jpg');
-@endphp
-
-<!-- END section -->
-@php
-  $banners = App\Banner::where(['IsPublished'=>1])->get();
-  @endphp
-  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-    </ol>
-    @if(count($banners) > 0)
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-
-        @php
-        $avatar = url('public/data/banners').'/'.$banners[0]->Avatar;
-        @endphp
-        <section class="site-hero site-hero-innerpage overlay" data-stellar-background-ratio="0.5" style="background-image: url({{$avatar}});">
-          <div class="container">
-            <div class="row align-items-center site-hero-inner justify-content-center">
-              <div class="col-md-12 text-center">
-
-                <div class="mb-5 element-animate">
-                  <h1>{{$banners[0]->Title}}</h1>
-                  <p>{{$banners[0]->Description}}</p>
-                </div>
-
-
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-      @if(count($banners) > 1)
-      @for($i = 1; $i < count($banners); $i++)
-      <div class="carousel-item">
-
-        @php
-        $avatar = url('public/data/banners').'/'.$banners[$i]->Avatar;
-        @endphp
-        <section class="site-hero site-hero-innerpage overlay" data-stellar-background-ratio="0.5" style="background-image: url({{$avatar}});">
-          <div class="container">
-            <div class="row align-items-center site-hero-inner justify-content-center">
-              <div class="col-md-12 text-center">
-
-                <div class="mb-5 element-animate">
-                  <h1>{{$banners[$i]->Title}}</h1>
-                  <p>{{$banners[$i]->Description}}</p>
-                </div>
-
-
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-      @endfor
-      @endif
-    </div>
-    @endif
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-  </div>
-<section class="site-section">
+<section class="hero-section">
   <div class="container">
-    <div class="row align-items-center">
-      <div class="col-md-4">
-        <div class="heading-wrap text-center element-animate">
-          <h4 class="sub-heading">Stay with our luxury rooms</h4>
-          <h2 class="heading">Stay and Enjoy</h2>
-          <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus illo similique natus, a recusandae? Dolorum, unde a quibusdam est? Corporis deleniti obcaecati quibusdam inventore fuga eveniet! Qui delectus tempore amet!</p>
-          <p><a href="#" class="btn btn-primary btn-sm">More About Us</a></p>
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <div class="hero-text">
+          <h1>1990s A Luxury Hotel</h1>
+          <p>Here are the best hotel booking sites, including recommendations for international
+            travel and for finding low-priced hotel rooms.</p>
+          <a href="#" class="primary-btn">Discover Now</a>
         </div>
       </div>
-      <div class="col-md-1"></div>
-      <div class="col-md-7">
-        <img src="{{url('/public/frontend')}}/images/f_img_1.png" alt="Image placeholder" class="img-md-fluid">
-      </div>
+      
     </div>
+  </div>
+  <div class="hero-slider owl-carousel">
+    @php
+    $banners = App\Banner::where('IsPublished', 1)->get();
+    @endphp
+    @if(isset($banners))
+    @foreach($banners as $banner)
+
+    <div class="hs-item set-bg" data-setbg="{{url('public/data/banners').'/'.$banner->Avatar}}"></div>
+    @endforeach
+    @endif
   </div>
 </section>
-<!-- END section -->
+<!-- Hero Section End -->
+
+<!-- About Us Section Begin -->
 @php
-$featuredRooms = \App\Room::where(['IsHot'=>1])->take(3)->get()->unique('RTYP_ID');
-foreach($featuredRooms as $room) {
-$roomType = \App\RoomType::find($room->RTYP_ID);
-$room->RoomTypeName = $roomType->Name;
-$image = \App\Image::where(['ROO_ID'=>$room->ROO_ID])->first();
-if($image) {
-$room->Image = $image->Image;
-}
+$category = App\Category::where('Code', 'GT')->first();
+if($category) {
+$introBlog = App\Blog::where('CAT_ID', $category->CAT_ID)->first();
 }
 @endphp
-@if(count($featuredRooms) != 0)
-<section class="site-section bg-light">
+@if(isset($introBlog))
+<section class="aboutus-section spad">
   <div class="container">
-    <div class="row mb-5">
-      <div class="col-md-12 heading-wrap text-center">
-        <h4 class="sub-heading">Our Luxury Rooms</h4>
-        <h2 class="heading">Featured Rooms</h2>
-      </div>
-    </div>
-    <div class="row ">
-      <div class="col-md-7">
-        <div class="media d-block room mb-0">
-          <figure>
-            @php
-            $avatarName = $featuredRooms[0]->Image;
-            @endphp
-            <img src="{{url('public/data/rooms/'.$avatarName)}}" alt="Generic placeholder image" class="img-fluid">
-            <div class="overlap-text">
-              <span>
-                {{$featuredRooms[0]->RoomTypeName}}
-                <span class="ion-ios-star"></span>
-                <span class="ion-ios-star"></span>
-                <span class="ion-ios-star"></span>
-              </span>
-            </div>
-          </figure>
-          <div class="media-body">
-            <h3 class="mt-0"><a href="#">Presidential Room</a></h3>
-            <ul class="room-specs">
-              <li><span class="ion-ios-people-outline"></span> 2 Guests</li>
-              <li><span class="ion-ios-crop"></span> 22 ft <sup>2</sup></li>
-            </ul>
-            <p>Nulla vel metus scelerisque ante sollicitudin. Fusce condimentum nunc ac nisi vulputate fringilla. </p>
-            <p><a href="#" class="btn btn-primary btn-sm">Book Now From $20</a></p>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="about-text">
+          <div class="section-title">
+            <span>About Us</span>
+            <h2>{{$introBlog->Title}}</h2>
           </div>
+          <p class="f-para">{{$introBlog->Description}}</p>
         </div>
       </div>
-      <div class="col-md-5 room-thumbnail-absolute">
-        @for($i = 1; $i < count($featuredRooms); $i++) @php $avatar=$featuredRooms[$i]->Image;
-          $url = url('public/data/rooms').'/'.$avatar;
-          @endphp
-          <a href="#" class="media d-block room bg first-room" style="background-image: url('{{$url}}'); ">
-            <!-- <figure> -->
-            <div class="overlap-text">
-              <span>
-                {{$featuredRooms[$i]->RoomTypeName}}
-                <span class="ion-ios-star"></span>
-                <span class="ion-ios-star"></span>
-                <span class="ion-ios-star"></span>
-              </span>
-              <span class="pricing-from">
-                from $22
-              </span>
+      <div class="col-lg-6">
+        <div class="about-pic">
+          <div class="row">
+            <div class="col-sm-12">
+              <img src="{{url('public/data/blogs').'/'.$introBlog->Avatar}}" alt="">
             </div>
-            <!-- </figure> -->
-          </a>
-          @endfor
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 @endif
+<!-- About Us Section End -->
 
-
-<!-- <section class="section-cover" data-stellar-background-ratio="0.5" style="background-image: url(images/img_5.jpg);">
+<!-- Services Section End -->
+<section class="services-section spad">
   <div class="container">
-    <div class="row justify-content-center align-items-center intro">
-      <div class="col-md-9 text-center element-animate">
-        <h2>Relax and Enjoy your Holiday</h2>
-        <p class="lead mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto quidem tempore expedita facere facilis, dolores!</p>
-        <div class="btn-play-wrap"><a href="https://vimeo.com/channels/staffpicks/93951774" class="btn-play popup-vimeo "><span class="ion-ios-play"></span></a></div>
-      </div>
-    </div>
-  </div>
-</section> -->
-<!-- END section -->
-
-<section class="site-section bg-light">
-  <div class="container">
-    <div class="row mb-5">
-      <div class="col-md-12 heading-wrap text-center">
-        <h4 class="sub-heading">Our Blog</h4>
-        <h2 class="heading">Our Recent Blog</h2>
-      </div>
-    </div>
-    <div class="row ">
-      @php
-      $blogs = \App\Blog::where(['IsPublished' => 1, 'IsHot'=>1])->take(3)->get();
-      if($blogs) {
-        foreach($blogs as $blog) {
-          $blog->Url = url('blogs').'/'.$blog->BLO_ID;
-        }
-      }
-      @endphp
-      @if($blogs)
-      @foreach($blogs as $blog)
-      <div class="col-md-4">
-        <div class="post-entry">
-          <img src="{{url('/public/data/blogs').'/'.$blog->Avatar}}" alt="Image placeholder" class="img-fluid">
-          <div class="body-text">
-            <div class="category">{{$blog->Title}}</div>
-            <h3 class="mb-3"><a href="{{$blog->Url}}">{{$blog->Title}}</a></h3>
-            <p class="mb-4">{{$blog->Description}}</p>
-            <p><a href="{{$blog->Url}}" class="btn btn-primary btn-outline-primary btn-sm">Read More</a></p>
-          </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="section-title">
+          <span>What We Do</span>
+          <h2>Discover Our Services</h2>
         </div>
       </div>
-      @endforeach
-      @endif
+    </div>
+    <div class="row">
+      <div class="col-lg-4 col-sm-6">
+        <div class="service-item">
+          <i class="flaticon-036-parking"></i>
+          <h4>Travel Plan</h4>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+            labore et dolore magna.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-sm-6">
+        <div class="service-item">
+          <i class="flaticon-033-dinner"></i>
+          <h4>Catering Service</h4>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+            labore et dolore magna.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-sm-6">
+        <div class="service-item">
+          <i class="flaticon-026-bed"></i>
+          <h4>Babysitting</h4>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+            labore et dolore magna.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-sm-6">
+        <div class="service-item">
+          <i class="flaticon-024-towel"></i>
+          <h4>Laundry</h4>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+            labore et dolore magna.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-sm-6">
+        <div class="service-item">
+          <i class="flaticon-044-clock-1"></i>
+          <h4>Hire Driver</h4>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+            labore et dolore magna.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-sm-6">
+        <div class="service-item">
+          <i class="flaticon-012-cocktail"></i>
+          <h4>Bar & Drink</h4>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+            labore et dolore magna.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
-<!-- END section -->
-<!-- END footer -->
+<!-- Services Section End -->
 
-<!-- loader -->
-</body>
+<!-- Home Room Section Begin -->
+@php
+$featureRooms = App\Room::where(['IsHot'=>1, 'Status'=>1])->distinct('RTYP_ID')->take(4)->get();
+if($featureRooms) {
+foreach($featureRooms as $room) {
+$roomType = App\RoomType::find($room->RTYP_ID);
+if($roomType) {
+$room->RoomType = $roomType;
+}
+$image = App\Image::where('ROO_ID', $room->ROO_ID)->first();
+$room->Avatar = $image;
+}
+}
+@endphp
 
-</html>
+@if(isset($featureRooms))
+<section class="hp-room-section">
+  <div class="container-fluid">
+    <div class="hp-room-items">
+      <div class="row justify-content-center">
+        @foreach($featureRooms as $room)
+        <div class="col-lg-3 col-md-6">
+          <div class="hp-room-item set-bg" data-setbg="{{url('public/data/rooms').'/'.$room->Avatar->Image}}">
+            <div class="hr-text">
+              <h3>{{$room->RoomType->Name}}</h3>
+              <h2>{{$room->RoomType->Price}}<span>/Pernight</span></h2>
+              <table>
+                <tbody>
+                  <tr>
+                    <td class="r-o">Size:</td>
+                    <td>{{$room->RoomType->Size}} ft</td>
+                  </tr>
+                  <tr>
+                    <td class="r-o">Capacity:</td>
+                    <td>Max persion {{$room->RoomType->Capacity}}</td>
+                  </tr>
+                  <tr>
+                    <td class="r-o">Bed:</td>
+                    <td>{{$room->RoomType->NumberOfBeds}} Beds</td>
+                  </tr>
+                  <tr>
+                    <td class="r-o">Rest room:</td>
+                    <td>{{$room->RoomType->NumberOfRests}} Rest rooms</td>
+                  </tr>
+                </tbody>
+              </table>
+              <a href="#" class="primary-btn">More Details</a>
+            </div>
+          </div>
+        </div>
+        @endforeach
+
+      </div>
+    </div>
+  </div>
+</section>
+@endif
+<!-- Home Room Section End -->
+
+<!-- Testimonial Section Begin -->
+<section class="testimonial-section spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="section-title">
+          <span>Testimonials</span>
+          <h2>What Customers Say?</h2>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-8 offset-lg-2">
+        <div class="testimonial-slider owl-carousel">
+          <div class="ts-item">
+            <p>After a construction project took longer than expected, my husband, my daughter and I
+              needed a place to stay for a few nights. As a Chicago resident, we know a lot about our
+              city, neighborhood and the types of housing options available and absolutely love our
+              vacation at 1990s Hotel Hotel.</p>
+            <div class="ti-author">
+              <div class="rating">
+                <i class="icon_star"></i>
+                <i class="icon_star"></i>
+                <i class="icon_star"></i>
+                <i class="icon_star"></i>
+                <i class="icon_star-half_alt"></i>
+              </div>
+              <h5> - Alexander Vasquez</h5>
+            </div>
+            <img src="{{url('public/frontend')}}/img/testimonial-logo.png" alt="">
+          </div>
+          <div class="ts-item">
+            <p>After a construction project took longer than expected, my husband, my daughter and I
+              needed a place to stay for a few nights. As a Chicago resident, we know a lot about our
+              city, neighborhood and the types of housing options available and absolutely love our
+              vacation at 1990s Hotel Hotel.</p>
+            <div class="ti-author">
+              <div class="rating">
+                <i class="icon_star"></i>
+                <i class="icon_star"></i>
+                <i class="icon_star"></i>
+                <i class="icon_star"></i>
+                <i class="icon_star-half_alt"></i>
+              </div>
+              <h5> - Alexander Vasquez</h5>
+            </div>
+            <img src="{{url('public/frontend')}}/img/testimonial-logo.png" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Testimonial Section End -->
+
+<!-- Blog Section Begin -->
+<section class="blog-section spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="section-title">
+          <span>Hotel News</span>
+          <h2>Our Blog & Event</h2>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      @php
+      $hotBlogs = App\Blog::where(['IsHot'=>1, 'IsPublished'=>1])->OrderBy('UpdatedDate', "asc")->take(5)->get();
+      if($hotBlogs) {
+      foreach($hotBlogs as $blog) {
+      $category = App\Category::find($blog->CAT_ID);
+      if($category) {
+      $blog->Category = $category;
+      }
+      }
+      }
+      @endphp
+      @if(isset($hotBlogs))
+      @if(count($hotBlogs) <= 3) @foreach($hotBlogs as $blog) <div class="col-lg-4">
+        <div class="blog-item set-bg" data-setbg="{{url('public/data/blogs').'/'.$blog->Avatar}}">
+          <div class="bi-text">
+            <span class="b-tag">{{$blog->Category->Name}}</span>
+            <h4><a href="{{url('blogs').'/'.$blog->BLO_ID.'-'.$blog->Title}}">{{$blog->Title}}</a></h4>
+            <div class="b-time"><i class="icon_clock_alt"></i> {{$blog->UpdatedDate}}</div>
+          </div>
+        </div>
+    </div>
+    @endforeach
+    @endif
+    @if(count($hotBlogs) > 3)
+    @for($i = 0; $i < 3; $i++) <div class="col-lg-4">
+      <div class="blog-item set-bg" data-setbg="{{url('public/data/blogs').'/'.$hotBlogs[$i]->Avatar}}">
+        <div class="bi-text">
+          <span class="b-tag">{{$hotBlogs[$i]->Category->Name}}</span>
+          <h4><a href="{{url('blogs').'/'.$hotBlogs[$i]->BLO_ID.'-'.$hotBlogs[$i]->Title}}">{{$hotBlogs[$i]->Title}}</a></h4>
+          <div class="b-time"><i class="icon_clock_alt"></i> {{$hotBlogs[$i]->UpdatedDate}}</div>
+        </div>
+      </div>
+  </div>
+  @endfor
+  @endif
+  @if(count($hotBlogs) == 4)
+  <div class="col-lg-12">
+    <div class="blog-item small-size set-bg" data-setbg="{{url('public/data/blogs').'/'.$hotBlogs[3]->Avatar}}">
+      <div class="bi-text">
+        <span class="b-tag">{{$hotBlogs[3]->Category->Name}}</span>
+        <h4><a href="{{url('blogs').'/'.$hotBlogs[3]->BLO_ID.'-'.$hotBlogs[3]->Title}}">{{$hotBlogs[3]->Title}}</a></h4>
+        <div class="b-time"><i class="icon_clock_alt"></i>{{$hotBlogs[3]->UpdatedDate}}</div>
+      </div>
+    </div>
+  </div>
+  @endif
+  @if(count($hotBlogs) == 5)
+  <div class="col-lg-8">
+    <div class="blog-item small-size set-bg" data-setbg="{{url('public/data/blogs').'/'.$hotBlogs[3]->Avatar}}">
+      <div class="bi-text">
+        <span class="b-tag">{{$hotBlogs[3]->Category->Name}}</span>
+        <h4><a href="{{url('blogs').'/'.$hotBlogs[3]->BLO_ID.'-'.$hotBlogs[3]->Title}}">{{$hotBlogs[4]->Title}}</a></h4>
+        <div class="b-time"><i class="icon_clock_alt"></i>{{$hotBlogs[3]->UpdatedDate}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="blog-item small-size set-bg" data-setbg="{{url('public/data/blogs').'/'.$hotBlogs[4]->Avatar}}">
+      <div class="bi-text">
+        <span class="b-tag">{{$hotBlogs[4]->Category->Name}}</span>
+        <h4><a href="{{url('blogs').'/'.$hotBlogs[4]->BLO_ID.'-'.$hotBlogs[4]->Title}}">{{$hotBlogs[4]->Title}}</a></h4>
+        <div class="b-time"><i class="icon_clock_alt"></i>{{$hotBlogs[4]->UpdatedDate}}</div>
+      </div>
+    </div>
+  </div>
+  @endif
+  @endif
+
+  </div>
+  </div>
+</section>
+<!-- Blog Section End -->
 @endsection
 @section('js')
 <script>

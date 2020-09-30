@@ -1,104 +1,167 @@
 @extends('frontend.layout.app')
 @section('content')
-
-
-<section class="site-section">
+<!-- Breadcrumb Section Begin -->
+<div class="breadcrumb-section">
   <div class="container">
-    <div class="row align-items-center">
-      <div class="col-md-4">
-        <div class="heading-wrap  element-animate">
-          <h4 class="sub-heading">Stay with our luxury rooms</h4>
-          <h2 class="heading">Our Story</h2>
-          <p class="">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus illo similique natus, a recusandae? Dolorum, unde a quibusdam est? Corporis deleniti obcaecati quibusdam inventore fuga eveniet! Qui delectus tempore amet!</p>
-
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus illo similique natus, a recusandae? Dolorum, unde a quibusdam est? Corporis deleniti obcaecati quibusdam inventore fuga eveniet! Qui delectus tempore amet!</p>
-
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus illo similique natus, a recusandae? Dolorum, unde a quibusdam est? Corporis deleniti obcaecati quibusdam inventore fuga eveniet! Qui delectus tempore amet!</p>
-
-        </div>
-      </div>
-      <div class="col-md-1"></div>
-      <div class="col-md-7">
-        <img src="{{url('/public/frontend')}}/images/f_img_1.png" alt="Image placeholder" class="img-md-fluid">
-      </div>
-    </div>
-  </div>
-</section>
-<!-- END section -->
-
-
-
-
-
-<section class="site-section bg-light">
-  <div class="container">
-    <div class="row mb-5">
-      <div class="col-md-12 heading-wrap text-center">
-        <h4 class="sub-heading">Our Kind Staff</h4>
-        <h2 class="heading">Our Staff</h2>
-      </div>
-    </div>
-    <div class="row ">
-      <div class="col-md-4">
-        <div class="post-entry">
-          <img src="{{url('/public/frontend')}}/images/person_1.jpg" alt="Image placeholder" class="img-fluid">
-          <div class="body-text">
-            <div class="category">Staff</div>
-            <h3 class="mb-3"><a href="#">Michelle Aguilar</a></h3>
-            <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum deserunt illo quis similique dolore voluptatem culpa voluptas rerum, dolor totam.</p>
-            <p><a href="#" class="btn btn-primary btn-outline-primary btn-sm">Read Bio</a></p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="post-entry">
-          <img src="{{url('/public/frontend')}}/images/person_2.jpg" alt="Image placeholder" class="img-fluid">
-          <div class="body-text">
-            <div class="category">Staff</div>
-            <h3 class="mb-3"><a href="#">Chris Standworth</a></h3>
-            <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum deserunt illo quis similique dolore voluptatem culpa voluptas rerum, dolor totam.</p>
-            <p><a href="#" class="btn btn-primary btn-outline-primary btn-sm">Read Bio</a></p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="post-entry">
-          <img src="{{url('/public/frontend')}}/images/person_3.jpg" alt="Image placeholder" class="img-fluid">
-          <div class="body-text">
-            <div class="category">Cook</div>
-            <h3 class="mb-3"><a href="#">Rob McDonald</a></h3>
-            <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum deserunt illo quis similique dolore voluptatem culpa voluptas rerum, dolor totam.</p>
-            <p><a href="#" class="btn btn-primary btn-outline-primary btn-sm">Read Bio</a></p>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb-text">
+          <h2>About Us</h2>
+          <div class="bt-option">
+            <a href="{{url('/')}}">Home</a>
+            <span>About Us</span>
           </div>
         </div>
       </div>
     </div>
   </div>
-</section>
-<!-- END section -->
+</div>
+<!-- Breadcrumb Section End -->
 
-<section class="section-cover" data-stellar-background-ratio="0.5" style="background-image: url(images/img_5.jpg);">
+<!-- About Us Page Section Begin -->
+@php
+$otherCategories = App\Category::take(3)->get();
+if($otherCategories){
+foreach($otherCategories as $category) {
+$blog = App\Blog::where(['CAT_ID'=> $category->CAT_ID, 'IsPublished'=>1])->first();
+if($blog) $category->Blog = $blog;
+}
+}
+$category = App\Category::where('Code', 'GT')->first();
+if($category) $aboutBlog = App\Blog::where('CAT_ID', $category->CAT_ID)->first();
+@endphp
+@if(isset($aboutBlog))
+<section class="aboutus-page-section spad">
   <div class="container">
-    <div class="row justify-content-center align-items-center intro">
-      <div class="col-md-9 text-center element-animate">
-        <h2>Relax and Enjoy your Holiday</h2>
-        <p class="lead mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto quidem tempore expedita facere facilis, dolores!</p>
-        <div class="btn-play-wrap"><a href="https://vimeo.com/channels/staffpicks/93951774" class="btn-play popup-vimeo "><span class="ion-ios-play"></span></a></div>
+    <div class="about-page-text">
+      <div class="row">
+        <div class="col-12">
+          <div class="ap-title">
+            <h2>{{$aboutBlog->Title}}.</h2>
+            <p>{{$aboutBlog->Description}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          {!!$aboutBlog->Details!!}
+        </div>
+      </div>
+    </div>
+    @if(isset($otherCategories))
+    <div class="about-page-services">
+      <div class="row">
+        @foreach($otherCategories as $category)
+        <div class="col-md-4">
+          <a href="{{url('blogs/categories').'/'.$category->CAT_ID.'-'.App\Helpers\FriendlyUrl::convertToFriendlyUrl($category->Name)}}">
+            <div class="ap-service-item set-bg" data-setbg="{{url('public/data/blogs').'/'.$category->Blog->Avatar}}">
+              <div class="api-text">
+                <h3>{{$category->Name}}</h3>
+              </div>
+            </div>
+          </a>
+        </div>
+        @endforeach
+      </div>
+    </div>
+    @endif
+  </div>
+</section>
+@endif
+<!-- About Us Page Section End -->
+
+<!-- Video Section Begin -->
+<section class="video-section set-bg" data-setbg="{{url('public/frontend')}}/img/video-bg.jpg">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="video-text">
+          <h2>Discover Our Hotel & Services.</h2>
+          <p>It S Hurricane Season But We Are Visiting Hilton Head Island</p>
+          <a href="https://www.youtube.com/watch?v=EzKkl64rRbM" class="play-btn video-popup"><img src="{{url('public/frontend')}}/img/play.png" alt=""></a>
+        </div>
       </div>
     </div>
   </div>
 </section>
-<!-- END section -->
-<!-- END section -->
-<!-- END footer -->
+<!-- Video Section End -->
 
-<!-- loader -->
-</body>
+<!-- Gallery Section Begin -->
+@php
+$roomTypes = App\RoomType::take(4)->get();
+if($roomTypes) {
+foreach($roomTypes as $type) {
+$room = App\Room::where(['RTYP_ID'=>$type->RTYP_ID])->first();
+if($room) {
+$image = App\Image::where('ROO_ID', $room->ROO_ID)->first();
+if($image) $room->Image = $image;
+$type->Room = $room;
+}
+}
+}
 
-</html>
+@endphp
+@if(isset($roomTypes) && count($roomTypes) == 4)
+<section class="gallery-section spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="section-title">
+          <span>Our Gallery</span>
+          <h2>Discover Our Work</h2>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <a href="{{url('rooms/types').'/'.$roomTypes[0]->RTYP_ID.'-'.App\Helpers\FriendlyUrl::convertToFriendlyUrl($roomTypes[0]->Name)}}">
+          <div class="gallery-item set-bg" data-setbg="{{url('public/data/rooms').'/'.$roomTypes[0]->Room->Image->Image}}">
+            <div class="gi-text">
+              <h3>{{$roomTypes[0]->Name}}</h3>
+            </div>
+          </div>
+        </a>
+        <div class="row">
+
+          <div class="col-sm-6">
+          <a href="{{url('rooms/types').'/'.$roomTypes[1]->RTYP_ID.'-'.App\Helpers\FriendlyUrl::convertToFriendlyUrl($roomTypes[1]->Name)}}">
+            <div class="gallery-item set-bg" data-setbg="{{url('public/data/rooms').'/'.$roomTypes[1]->Room->Image->Image}}">
+              <div class="gi-text">
+                <h3>{{$roomTypes[1]->Name}}</h3>
+              </div>
+            </div>
+          </div>
+          </a>
+          
+          <div class="col-sm-6">
+          <a href="{{url('rooms/types').'/'.$roomTypes[2]->RTYP_ID.'-'.App\Helpers\FriendlyUrl::convertToFriendlyUrl($roomTypes[2]->Name)}}">
+            <div class="gallery-item set-bg" data-setbg="{{url('public/data/rooms').'/'.$roomTypes[2]->Room->Image->Image}}">
+              <div class="gi-text">
+                <h3>{{$roomTypes[2]->Name}}</h3>
+              </div>
+            </div>
+          </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+      <a href="{{url('rooms/types').'/'.$roomTypes[3]->RTYP_ID.'-'.App\Helpers\FriendlyUrl::convertToFriendlyUrl($roomTypes[3]->Name)}}">
+        <div class="gallery-item large-item set-bg" data-setbg="{{url('public/data/rooms').'/'.$roomTypes[3]->Room->Image->Image}}">
+          <div class="gi-text">
+            <h3>{{$roomTypes[3]->Name}}</h3>
+          </div>
+        </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+@endif
+<!-- Gallery Section End -->
+
 @endsection
 @section('js')
 <script>
-  $('#about').addClass('active');
+  $('#aboutUs').addClass('active');
 </script>
 @endsection

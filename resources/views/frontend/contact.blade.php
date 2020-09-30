@@ -2,73 +2,66 @@
 @section('content')
 
     <!-- END section -->
-
-    <section class="site-section">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-            <h2 class="mb-5">Contact Form</h2>
-          <form action="#" method="post">
-                  <div class="row">
-                    <div class="col-md-12 form-group">
-                      <label for="name">Name</label>
-                      <input type="text" id="name" class="form-control ">
+    @php
+$banner = App\Banner::where(['IsPublished'=>1])->first();
+$blogs = App\Blog::where(['IsPublished'=>1])->get();
+@endphp
+ <!-- Contact Section Begin -->
+ <section class="contact-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="contact-text">
+                        <h2>Contact Info</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua.</p>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="c-o">Address:</td>
+                                    <td>856 Cordia Extension Apt. 356, Lake, US</td>
+                                </tr>
+                                <tr>
+                                    <td class="c-o">Phone:</td>
+                                    <td>(12) 345 67890</td>
+                                </tr>
+                                <tr>
+                                    <td class="c-o">Email:</td>
+                                    <td>info.colorlib@gmail.com</td>
+                                </tr>
+                                <tr>
+                                    <td class="c-o">Fax:</td>
+                                    <td>+(12) 345 67890</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12 form-group">
-                      <label for="phone">Phone</label>
-                      <input type="text" id="phone" class="form-control ">
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12 form-group">
-                      <label for="email">Email</label>
-                      <input type="email" id="email" class="form-control ">
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12 form-group">
-                      <label for="message">Write Message</label>
-                      <textarea name="message" id="message" class="form-control " cols="30" rows="8"></textarea>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6 form-group">
-                      <input type="submit" value="Send Message" class="btn btn-primary">
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div class="col-md-1"></div>
-              <div class="col-md-5">
-                <h3 class="mb-5">Paragraph</h3>
-                <p class="mb-5"><img src="{{url('/public/frontend')}}/images/img_4.jpg" alt="" class="img-fluid"></p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae labore aspernatur cumque inventore voluptatibus odit doloribus! Ducimus, animi perferendis repellat. Ducimus harum alias quas, quibusdam provident ea sed, sapiente quo.</p>
-                <p>Ullam cumque eveniet, fugiat quas maiores, non modi eos deleniti minima, nesciunt assumenda sequi vitae culpa labore nulla! Cumque vero, magnam ab optio quidem debitis dignissimos nihil nesciunt vitae impedit!</p>
-              </div>
+                </div>
+                <div class="col-lg-7 offset-lg-1">
+                    <form action="#" class="contact-form">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <input type="text" placeholder="Your Name">
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="text" placeholder="Your Email">
+                            </div>
+                            <div class="col-lg-12">
+                                <textarea placeholder="Your Message"></textarea>
+                                <button type="submit">Submit Now</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="map">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.0606825994123!2d-72.8735845851828!3d40.760690042573295!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e85b24c9274c91%3A0xf310d41b791bcb71!2sWilliam%20Floyd%20Pkwy%2C%20Mastic%20Beach%2C%20NY%2C%20USA!5e0!3m2!1sen!2sbd!4v1578582744646!5m2!1sen!2sbd"
+                    height="470" style="border:0;" allowfullscreen=""></iframe>
+            </div>
         </div>
-      </div>
     </section>
-    <!-- END section -->
-
-
-   
-   
-
-    <section class="section-cover" data-stellar-background-ratio="0.5" style="background-image: url(images/img_5.jpg);">
-      <div class="container">
-        <div class="row justify-content-center align-items-center intro">
-          <div class="col-md-9 text-center element-animate">
-            <h2>Relax and Enjoy your Holiday</h2>
-            <p class="lead mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto quidem tempore expedita facere facilis, dolores!</p>
-            <div class="btn-play-wrap"><a href="https://vimeo.com/channels/staffpicks/93951774" class="btn-play popup-vimeo "><span class="ion-ios-play"></span></a></div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </body>
-</html>
+    <!-- Contact Section End -->
 @endsection
 @section('js')
     <script>

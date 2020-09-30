@@ -7,6 +7,9 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0 text-dark">Bills</h1>
+                    @if(isset($from))
+                    {{$from}}
+                    @endif
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -24,6 +27,26 @@
     <section class="content">
         <div class="container-fluid">
             <table id="billTable" class="table table-striped table-bordered" style="width:100%">
+                <form action="get" id="searchByDateForm">
+                    @csrf
+                    <div class="row">
+                        <div class="col-3 form-group form-row">
+                            <label for="name" class="col-sm-4 col-form-label required">Form</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="searchFrom" name="SearchFrom" maxlength="200">
+                            </div>
+                        </div>
+                        <div class="col-3 form-group form-row">
+                            <label for="name" class="col-sm-4 col-form-label required">To</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="searchTo" name="SearchTo" maxlength="200">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <button class="btn btn-primary" onclick="loadData(loadByDate)">Search</button>
+                        </div>
+                    </div>
+                </form>
                 <button type="button" data-toggle="modal" data-target="#billModal" class="btn btn-primary float-right">Add</button>
                 <thead>
                     <tr>
@@ -31,7 +54,7 @@
                         <th>Check-in date</th>
                         <th>Check-out date</th>
                         <th>Price</th>
-                        <th>Employee</th>
+                        <!-- <th>Employee</th> -->
                         <th>Customer</th>
                         <th>Room</th>
                         <th>Edit</th>
@@ -238,8 +261,12 @@
 @section('js')
 <script>
     $('#bills').addClass("active");
+    var loadAllUrl = "http://localhost/HotelManagement/api/admin/bills";
+    var loadByDate = "http://localhost/HotelManagement/api/admin/getBillByDate";
     var currentCusId = 0;
     var currentEmpId = 0;
+    $('#searchFrom').datepicker();
+    $('#searchTo').datepicker();
     $('#billModal').on('hidden.bs.modal', function() {
         loadRoom();
         $('#firstName').attr("disabled", false);
@@ -257,6 +284,7 @@
         });
     });
 
+  
     function loadRoom() {
         $('#roomSelected').text("");
         $("#roomSelector").text("");
@@ -264,7 +292,7 @@
             url: "http://localhost/HotelManagement/api/admin/rooms-available",
             method: "GET",
             success: function(response) {
-                console.log(response);
+                
                 var output = "";
                 response.data.forEach(element => {
                     output += "<option value=" + element.ROO_ID + ">" + element.ROO_ID + "</option>";
@@ -388,7 +416,7 @@
                         title: "Added Successfully",
                         text: "Position added successfully!"
                     });
-                    loadData();
+                    loadData(loadAllUrl);
                     $('#billModal').modal('hide');
                 },
                 error: function(response) {
@@ -412,7 +440,7 @@
                         title: "Updated Successfully",
                         text: "Position updated successfully!"
                     });
-                    loadData();
+                    loadData(loadAllUrl);
                     $('#billModal').modal('hide');
                 },
                 error: function(response) {
@@ -439,7 +467,7 @@
                             swal("Your data file has been deleted!", {
                                 icon: "success",
                             });
-                            loadData();
+                            loadData(loadAllUrl);
                             loadRoom();
                         },
                         error: function(response) {
@@ -455,12 +483,26 @@
 
     }
 
-    function loadData() {
+    function loadData(url = null) {
+        if (url == null) {
+            var form = $('#searchByDateForm')[0];
+            var data = new FormData(form);
+        }
         var table = $('#billTable').DataTable({
             destroy: true,
             ajax: {
-                url: "http://localhost/HotelManagement/api/admin/bills",
+                url: url,
                 method: "GET",
+                data: data,
+                processData: false,
+                contentType:false,
+                // success: function(response) {
+                //     alert(url);
+                //     console.log(response);
+                // },
+                // error: function(response) {
+                //     console.log(response);
+                // }
             },
             columns: [{
                     data: null
@@ -474,12 +516,12 @@
                 {
                     data: "Price"
                 },
-                {
-                    data: null,
-                    render: function(data, type, row) {
-                        return '<i class="pointer text-primary" onclick="showEmp(' + data.EMP_ID + ')">' + data.employee.Name + '</i>';
-                    }
-                },
+                // {
+                //     data: null,
+                //     render: function(data, type, row) {
+                //         return '<i class="pointer text-primary" onclick="showEmp(' + data.EMP_ID + ')">' + data.employee.Name + '</i>';
+                //     }
+                // },
                 {
                     data: null,
                     render: function(data, type, row) {
@@ -520,7 +562,7 @@
         }).draw();
     }
     $(document).ready(function() {
-        loadData();
+        loadData(loadAllUrl);
         loadRoom();
     });
 </script>

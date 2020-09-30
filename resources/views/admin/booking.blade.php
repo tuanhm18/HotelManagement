@@ -100,7 +100,7 @@
                             <div class="form-group form-row">
                                 <label for="txtIdCardNumber" class="col-sm-5 col-xl-4 col-form-label required">Status</label>
                                 <div class="col-sm-7 col-xl-8">
-                                <input type="checkbox" checked data-toggle="toggle" data-onstyle="success" data-on="Checked" data-off="UnChecked">
+                                <input type="checkbox" name="Status" id="status" checked data-toggle="toggle" data-onstyle="success" data-on="Checked" data-off="UnChecked">
                                 </div>
                             </div>
                         </div>
@@ -137,6 +137,7 @@
                 $('#checkInDate').val(response.data.CheckInDate);
                 $('#checkOutDate').val(response.data.CheckOutDate);
                 $('#status').val(response.data.Status);
+                response.data.Status == 1 ? $('#status').bootstrapToggle('on') : $('#status').bootstrapToggle('off');
                 $('#bookingModal').modal('show');
             }
         })

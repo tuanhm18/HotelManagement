@@ -29,6 +29,7 @@
                     <tr>
                         <th>No.</th>
                         <th>Name</th>
+                        <th>Code</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>
@@ -55,6 +56,15 @@
                                         <label for="price" class="col-sm-2 col-form-label required">Name</label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" id="name" name="Name" maxlength="200">
+                                        </div>
+                                        <div id="validateMessage" class="text-danger col-8 offset-md-4 mt-1"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12  form-group form-row">
+                                        <label for="price" class="col-sm-2 col-form-label required">Code</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="code" name="Code" maxlength="200">
                                         </div>
                                         <div id="validateMessage" class="text-danger col-8 offset-md-4 mt-1"></div>
                                     </div>
@@ -86,10 +96,8 @@
             url: "http://localhost/HotelManagement/api/admin/category/" + id,
             type: "GET",
             success: function(response) {
-                $('#numberOfBeds').val(response.data.NumberOfBeds);
-                $('#numberOfRests').val(response.data.NumberOfRests);
-                $('#price').val(response.data.Price);
-                $('#rtyp_id').val(response.data.RTYP_ID)
+                $('#code').val(response.data.Code);
+                $('#id').val(response.data.CAT_ID)
                 $('#name').val(response.data.Name);
             }
         })
@@ -168,6 +176,9 @@
                 },
                 {
                     data: "Name"
+                },
+                {
+                    data: "Code"
                 },
                 {
                     data: null,

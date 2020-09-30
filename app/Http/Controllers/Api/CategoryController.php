@@ -22,6 +22,7 @@ class CategoryController extends Controller
     public function create(Request $request) {
         $category = new Category;
         $category->Name = $request->Name;
+        $category->Code = $request->Code;
         try {
             $category->save();
             return BaseResult::withData($category);

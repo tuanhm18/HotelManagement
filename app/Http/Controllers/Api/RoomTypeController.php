@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 
 class RoomTypeController extends Controller
 {
-
     public function validRoomTypeName($name)
     {
         $roomType = RoomType::where(['Name'=>$name])->first();
@@ -48,6 +47,8 @@ class RoomTypeController extends Controller
         $roomType->NumberOfRests = $request->NumberOfRests;
         $roomType->Price = $request->Price;
         $roomType->Name = $request->Name;
+        $roomType->Size = $request->Size;
+        $roomType->Capacity = $request->Capacity;
         $roomType['CreatedDate'] = Carbon::now();
         try {
             $roomType->save();
@@ -62,8 +63,8 @@ class RoomTypeController extends Controller
         $roomType = RoomType::find($id);
         $roomType->NumberOfBeds = $request->NumberOfBeds;
         $roomType->NumberOfRests = $request->NumberOfRests;
-        $roomType->Price = $request->Price;
-        $roomType->Name = $request->Name;
+        $roomType->Capacity = $request->Capacity;
+        $roomType->Size = $request->Size;
         $roomType['UpdatedDate'] = Carbon::now();
         $roomType->save();
         return $roomType;

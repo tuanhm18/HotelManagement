@@ -39,13 +39,16 @@
       cursor: pointer;
       color: lightgreen;
     }
+
     .error {
       color: red;
     }
+
     .deleteBtn {
       cursor: pointer;
       color: red;
     }
+
     .select2 .select2-container .select2-container--default {
       width: 100% !important;
     }
@@ -94,7 +97,7 @@
             <a href="#" class="dropdown-item">
               <!-- Message Start -->
               <div class="media">
-              
+
                 <img src="{{url('/public/admin')}}/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
                 <div class="media-body">
                   <h3 class="dropdown-item-title">
@@ -197,8 +200,8 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
           @php
-            $avatar = Cookie::get('userAvatar');
-            $userFullName = Cookie::get('userFullName');
+          $avatar = Cookie::get('userAvatar');
+          $userFullName = Cookie::get('userFullName');
           @endphp
           <div class="image">
             <img style="width: 40px;
@@ -338,7 +341,80 @@
       </div>
       <!-- /.sidebar -->
     </aside>
+    <div class="modal fade" id="alertBookingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" style="max-width: 800px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <input value="0" type="hidden" name="BOO_ID" id="boo_id">
+          <div class="modal-body">
+            <form id="bookingForm" action="post">
+              <div class="row">
+                <div class="col-lg-6 mt-sm-2">
+                  <div class="form-group form-row">
+                    <label for="txtFullName" class="col-sm-5 col-form-label required">Identity Number</label>
+                    <div class="col-sm-7">
+                      <input disabled type="text" required class="form-control" id="identityNumber" name="IdentityNumber" maxlength="200">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 mt-sm-2">
+                  <div class="form-group form-row">
+                    <label for="txtIdCardNumber" class="col-sm-5 col-xl-4 col-form-label required">Email</label>
+                    <div class="col-sm-7 col-xl-8">
+                      <input disabled type="text" class="form-control" required id="email" name="Email" maxlength="30">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 mt-sm-2">
+                  <div class="form-group form-row">
+                    <label for="txtFullName" class="col-sm-5 col-form-label required">Phone</label>
+                    <div class="col-sm-7">
+                      <input disabled type="text" class="form-control" required id="phone" name="Phone" maxlength="200">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 mt-sm-2">
+                  <div class="form-group form-row">
+                    <label for="txtIdCardNumber" class="col-sm-5 col-xl-4 col-form-label required">Check In Date</label>
+                    <div class="col-sm-7 col-xl-8">
+                      <input disabled required type="email" class="form-control" id="checkInDate" name="CheckInDate" maxlength="30">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 mt-sm-2">
+                  <div class="form-group form-row">
+                    <label for="txtIdCardNumber" class="col-sm-5 col-xl-4 col-form-label required">Check Out Date</label>
+                    <div class="col-sm-7 col-xl-8">
+                      <input disabled required type="email" class="form-control" id="checkOutDate" name="CheckOutDate" maxlength="30">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 mt-sm-2">
+                  <div class="form-group form-row">
+                    <label for="txtIdCardNumber" class="col-sm-5 col-xl-4 col-form-label required">Status</label>
+                    <div class="col-sm-7 col-xl-8">
+                      <input type="checkbox" name="Status" id="status" checked data-toggle="toggle" data-onstyle="success" data-on="Checked" data-off="UnChecked">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
 
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" onclick="save()" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Content Wrapper. Contains page content -->
     @yield('content')
     <!-- /.content-wrapper -->
@@ -416,7 +492,32 @@
 
     var channel = pusher.subscribe('my-event');
     channel.bind('my-event', function(data) {
-      alert(JSON.stringify(data));
+      $.ajax({
+        url: "http://localhost/HotelManagement/api/admin/booking/" + data.bookingId,
+        method: "GET",
+        success: function(response) {
+          swal({
+              title: "New Booking",
+              text: "You have new booking, want to check it out?",
+              icon: "warning",
+              buttons: true,
+              dangerMode: true,
+            })
+            .then((willDelete) => {
+              if (willDelete) {
+                $('#boo_id').val(response.data.BOO_ID);
+                $('#identityNumber').val(response.data.IdentityNumber);
+                $('#email').val(response.data.Email);
+                $('#phone').val(response.data.Phone);
+                $('#checkInDate').val(response.data.CheckInDate);
+                $('#checkOutDate').val(response.data.CheckOutDate);
+                $('#status').val(response.data.Status);
+                response.data.Status == 1 ? $('#status').bootstrapToggle('on') : $('#status').bootstrapToggle('off');
+                $('#alertBookingModal').modal('show');
+              } 
+            });
+        }
+      })
     });
   </script>
   @yield('js')

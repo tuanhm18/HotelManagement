@@ -42,6 +42,7 @@
                         <th>Number of beds</th>
                         <th>Number of rests</th>
                         <th>Room type name</th>
+                        <th>Description</th>
                         <th>Price</th>
                         <th>Hot</th>
                         <th>Available</th>
@@ -74,7 +75,7 @@
                                         </div>
                                     </div>
                                     <div class="col-6 form-group form-row">
-                                    <label for="numberOfBeds" class="col-sm-4 col-form-label required">Status</label>
+                                        <label for="numberOfBeds" class="col-sm-4 col-form-label required">Status</label>
                                         <div class="col-sm-8 chekbox-status">
                                             <input type="checkbox" checked data-toggle="toggle" name="Status" id="status" data-on="Available" data-off="Being used" data-onstyle="success" data-offstyle="danger">
                                         </div>
@@ -95,6 +96,13 @@
                                             <input type="checkbox" checked data-toggle="toggle" name="IsHot" id="isHot" data-on="Yes" data-off="No" data-onstyle="success" data-offstyle="danger">
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Description</span>
+                                    </div>
+                                    <textarea class="form-control" name="Description" id="description" aria-label="With textarea"></textarea>
                                 </div>
                                 <div class="row">
                                     <div class="custom-file">
@@ -154,6 +162,7 @@
                 $('#roo_id').attr("disabled", true);
                 $('#isAdd').val(0);
                 $('#roo_id').val(response.data.ROO_ID);
+                $('#description').val(response.data.Description);
                 response.data.Status == 1 ? $('#status').bootstrapToggle('on') : $('#status').bootstrapToggle('off');
                 response.data.IsHot == 1 ? $('#isHot').bootstrapToggle('on') : $('#isHot').bootstrapToggle('off');
                 $("#roomTypeSelector").val(response.data.RTYP_ID);
@@ -163,14 +172,15 @@
 
     function save() {
         var ROO_ID = $('#roo_id').val();
-        var status = document.getElementById('status').checked ? 1 : 0;
+        var status = document.getElementById('status').checked ? 0 : 1;
         var roomType = $('#roomTypeSelector').val();
         var isHot = document.getElementById('isHot').checked ? 1 : 0;
         $('#status').val(status);
         $('#isHot').val(isHot);
         var form = $('#roomForm')[0];
         var data = new FormData(form);
-        
+        data.append("Status", status);
+        data.append("IsHot", isHot);
         if ($('#isAdd').val() == 1) {
             $.ajax({
                 url: "http://localhost/HotelManagement/api/admin/rooms",
@@ -287,6 +297,9 @@
                 },
                 {
                     data: "RoomName"
+                },
+                {
+                    data:"Description"
                 },
                 {
                     data: "Price"

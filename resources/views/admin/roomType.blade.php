@@ -30,6 +30,8 @@
                         <th>Name</th>
                         <th>Number Of Beds</th>
                         <th>Number Of Rests</th>
+                        <th>Size</th>
+                        <th>Capacity</th>
                         <th>Price</th>
                         <th>Edit</th>
                         <th>Delete</th>
@@ -81,6 +83,20 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-6 form-group form-row">
+                                        <label for="numberOfBeds" class="col-sm-4 col-form-label required">Capacity</label>
+                                        <div class="col-sm-8">
+                                            <input type="number" class="form-control" id="capacity" name="Capacity" maxlength="200">
+                                        </div>
+                                    </div>
+                                    <div class="col-6 form-group form-row">
+                                        <label for="numberOfRests" class="col-sm-5 col-form-label required">Size</label>
+                                        <div class="col-sm-7">
+                                            <input type="number" class="form-control" id="size" name="Size" maxlength="200">
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -111,7 +127,7 @@
                 $('#numberOfRests').val(response.data.NumberOfRests);
                 $('#price').val(response.data.Price);
                 $('#id').val(response.data.RTYP_ID)
-                $('#name').val(response.data.Name);
+                $('#name').val(response.data.Name);                
                 $('#oldName').val(response.data.Name);
             }
         })
@@ -234,6 +250,12 @@
                 },
                 {
                     data: "NumberOfRests"
+                },
+                {
+                    data: "Size"
+                },
+                {
+                    data: "Capacity"
                 },
                 {
                     data: "Price"

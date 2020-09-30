@@ -18,16 +18,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/admin/login',  ['as' => 'login', 'uses' => 'Admin\UserController@login']);
 
 Route::get('/', 'FrontEnd\SiteController@view');
-Route::get('/rooms', 'FrontEnd\RoomController@view');
+Route::get('/rooms/{id?}', 'FrontEnd\RoomController@view');
 Route::get('/about', 'FrontEnd\AboutController@view');
 Route::get('/contact', 'FrontEnd\ContactController@view');
 Route::get('/booking', 'FrontEnd\BookingController@view');
 Route::post('/booking', 'FrontEnd\BookingController@create');
-Route::get('blogs/{id}', 'FrontEnd\BlogController@view');
-Route::get('test', function() {
-    event(new MyEvent('Welcome'));
-    return "Event has been sent";
-});
+Route::get('blogs/{id?}', 'FrontEnd\BlogController@view');
+Route::get('blogs/tags/{id}', 'FrontEnd\BlogController@getBlogByTags');
+Route::get('blogs/categories/{id}-{Name?}', 'FrontEnd\BlogController@getBlogByCategories');
+Route::get('rooms/types/{id}-{name?}', 'FrontEnd\RoomController@getRoomByRoomType');
 Route::post('/admin/login', 'Admin\UserController@doLogin');
  Route::group(['middleware'=>'auth'], function() {
      Route::get('/admin', 'Admin\SiteController@index');
